@@ -20,7 +20,7 @@ package com.jecelyin.editor.v2.ui.editor;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.core.widget.JecEditText;
+import android.core.widget.EditorView;
 import android.core.widget.TextView;
 import android.graphics.Color;
 import android.os.Parcel;
@@ -62,7 +62,7 @@ import java.io.File;
 public class EditorDelegate implements OnVisibilityChangedListener, TextWatcher {
     public final static String KEY_CLUSTER = "is_cluster";
     private static boolean disableAutoSave = false;
-    public JecEditText mEditText;
+    public EditorView mEditText;
     private Context context;
     private EditorViewGroup mEditorViewGroup;
     private Document document;
@@ -141,7 +141,7 @@ public class EditorDelegate implements OnVisibilityChangedListener, TextWatcher 
     public void setEditorView(EditorViewGroup editorViewGroup) {
         context = editorViewGroup.getContext();
         this.mEditorViewGroup = editorViewGroup;
-        this.mEditText = (JecEditText) editorViewGroup.getEditText();
+        this.mEditText = (EditorView) editorViewGroup.getEditText();
 
         this.orientation = context.getResources().getConfiguration().orientation;
 

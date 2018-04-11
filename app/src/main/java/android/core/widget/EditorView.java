@@ -45,7 +45,7 @@ import com.jecelyin.editor.v2.ui.widget.editor.FastScroller;
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>
  */
-public class JecEditText extends TextView {
+public class EditorView extends TextView {
     private OnEditorSizeChangedListener onEditorSizeChangedListener;
     private UndoManager undoManager;
     private EditorHelper editorHelper;
@@ -156,11 +156,11 @@ public class JecEditText extends TextView {
         void onEditorSizeChanged(int w, int h, int oldw, int oldh);
     }
 
-    public JecEditText(Context context) {
+    public EditorView(Context context) {
         this(context, null);
     }
 
-    public JecEditText(Context context, AttributeSet attrs) {
+    public EditorView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
