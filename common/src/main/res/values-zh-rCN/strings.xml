@@ -18,15 +18,6 @@
   -->
 
 <resources>
-    <string name="crash_report">崩溃报告</string>
-    <string name="crash_contact">Email（可选）</string>
-    <string name="crash_comment">告诉我们怎么崩溃的吧（可选）：</string>
-    <string name="crash_report_success">已经提交成功，感谢您的支持！</string>
-    <string name="crash_stacktrace">错误：</string>
-    <string name="crash_submit">提交</string>
-    <string name="crash_submit_fail_x">提交失败：%s</string>
-    <string name="network_unavailable">Network Unavailable</string>
-    <string name="submitting">正在提交…</string>
     <string name="can_not_be_empty">不能为空</string>
     <string name="no_data">没有数据</string>
     <string name="directory">目录</string>
@@ -186,13 +177,6 @@
     <string name="enable_root">启用Root权限</string>
     <string name="my_name">作者：彭春瑜 (QQ群：87272821)</string>
     <string name="open_with_external_browser">使用外部浏览器打开</string>
-    <string name="contact_email_optional">联系Email（可选）</string>
-    <string name="with_error_logs">错误日志</string>
-    <string name="content">内容</string>
-    <string name="send">发送</string>
-    <string name="feedback_content_length_must_be_greater_than_x_char">反馈内容长度必须大于%d个字</string>
-    <string name="feedback_submit_error_x">提交反馈失败：%s</string>
-    <string name="submit_success">提交成功</string>
     <string name="writing">正在写入</string>
     <string name="keyword">关键字</string>
     <string name="find_keyword_is_empty">查找关键字不能为空</string>
@@ -206,7 +190,6 @@
     </string-array>
     <string name="screen_orientation">屏幕方向</string>
     <string name="exit">退出</string>
-    <string name="unknown_exception_and_report_message_x">未知异常,请告诉我这是什么情况下发生的,谢谢\n代码:%s</string>
     <string name="keep_backup_file">保留备份文件</string>
     <string name="keep_backup_file_summary">建议保留备份文件，避免文件异外损坏而无法恢复文件</string>
     <string name="save_all_without_new_document_message">全部保存将跳过新建文档</string>
@@ -222,11 +205,6 @@
     <string name="confirm_change_theme_message">改变主题不会自动保存当前文档, 确认放弃文档改变而改变主题?</string>
 
     <string name="untitled_file_name">untitled.txt</string>
-    <string name="translate_confirm_message">要打开 getlocalization.com 网站翻译, 请按“网站翻译“按钮, 在本地翻译请按“本地翻译“按钮</string>
-    <string name="translate_external_text">网站翻译</string>
-    <string name="translate_internal_text">本地翻译</string>
-    <string name="cannt_load_lang_file">无法加载语言文件</string>
-    <string name="local_translate_message">翻译完成后请Email: jecelyin@gmail.com, 谢谢</string>
     <string name="editor_initialing">编辑器正在初始化中…</string>
     <string name="out_of_memory_error">内存不足</string>
     <string name="enable_drawers">启用标签页和主菜单的滑动</string>

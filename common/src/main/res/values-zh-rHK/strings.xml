@@ -18,15 +18,6 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="crash_report">崩潰報告</string>
-    <string name="crash_contact">Email（可選）</string>
-    <string name="crash_comment">告訴我們怎麼崩潰的吧（可選） ：</string>
-    <string name="crash_report_success">已經提交成功，感謝您的支持！</string>
-    <string name="crash_stacktrace">錯誤：</string>
-    <string name="crash_submit">提交</string>
-    <string name="crash_submit_fail_x">提交失敗：%s</string>
-    <string name="network_unavailable">網絡不可用</string>
-    <string name="submitting">正在提交…</string>
     <string name="can_not_be_empty">不能為空</string>
     <string name="no_data">沒有數據</string>
     <string name="directory">目錄</string>
@@ -186,13 +177,6 @@
     <string name="enable_root">啟用根權限</string>
     <string name="my_name">作者：彭春瑜（QQ群： 87272821 ）</string>
     <string name="open_with_external_browser">使用外部瀏覽器打開</string>
-    <string name="contact_email_optional">聯繫電子郵件（可選）</string>
-    <string name="with_error_logs">錯誤日誌</string>
-    <string name="content">內容</string>
-    <string name="send">發送</string>
-    <string name="feedback_content_length_must_be_greater_than_x_char">反饋內容長度必須大於%d個字</string>
-    <string name="feedback_submit_error_x">提交反饋失敗：%s</string>
-    <string name="submit_success">提交成功</string>
     <string name="writing">正在寫入</string>
     <string name="keyword">關鍵字</string>
     <string name="find_keyword_is_empty">查找關鍵字不能為空</string>
@@ -206,7 +190,6 @@
     </string-array>
     <string name="screen_orientation">屏幕方向</string>
     <string name="exit">退出</string>
-    <string name="unknown_exception_and_report_message_x">未知異常，請告訴我這是什麼情況下發生的，謝謝\n代碼：%s</string>
     <string name="keep_backup_file">保留備份文件</string>
     <string name="keep_backup_file_summary">建議保留備份文件，避免文件異外損壞而無法恢復文件</string>
     <string name="save_all_without_new_document_message">全部保存將跳過新建文檔</string>
@@ -222,11 +205,6 @@
     <string name="confirm_change_theme_message">改變主題不會自動保存當前文檔，確認放棄文檔改變而改變主題？</string>
 
     <string name="untitled_file_name">untitled.txt</string>
-    <string name="translate_confirm_message">要打開 getlocalization.com 網站翻譯，請按“網站翻譯”按鈕，在本地翻譯請按“本地翻譯”按鈕</string>
-    <string name="translate_external_text">網站翻譯</string>
-    <string name="translate_internal_text">本地翻譯</string>
-    <string name="cannt_load_lang_file">無法加載語言文件</string>
-    <string name="local_translate_message">翻譯完後請Email给: jecelyin@gmail.com, 謝謝</string>
     <string name="editor_initialing">編輯器正在初始化中…</string>
     <string name="enable_drawers">啟用標籤頁和主菜單的滑動</string>
     <string name="out_of_memory_error">內存不足</string>

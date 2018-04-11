@@ -12,9 +12,7 @@
         style="@style/Base.Widget.AppCompat.ProgressBar"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_centerHorizontal="true"
         android:indeterminate="true"
-        android:visibility="gone"
         tools:visibility="visible" />
 
     <android.support.v7.widget.AppCompatTextView

@@ -18,15 +18,6 @@
   -->
 
 <resources>
-    <string name="crash_report">Rapporto sul blocco</string>
-    <string name="crash_contact">Email (facoltativa)</string>
-    <string name="crash_comment">come ricreare il blocco (Optional):</string>
-    <string name="crash_report_success">Successo, Grazie!</string>
-    <string name="crash_stacktrace">Stacktrace:</string>
-    <string name="crash_submit">Invia</string>
-    <string name="crash_submit_fail_x">Errore: %s</string>
-    <string name="network_unavailable">Rete non disponibile</string>
-    <string name="submitting">In invio…</string>
     <string name="can_not_be_empty">Non puo\' essere vuoto</string>
     <string name="no_data">Nessun Dato</string>
     <string name="directory">Cartella</string>
@@ -178,13 +169,6 @@
     <string name="enable_root">Abilita Root</string>
     <string name="my_name">Autore: Jecelyin Peng</string>
     <string name="open_with_external_browser">Apri con browser esterno</string>
-    <string name="contact_email_optional">Contatto email (opzionale)</string>
-    <string name="with_error_logs">Logs Errori</string>
-    <string name="content">Contenuto</string>
-    <string name="send">Invia</string>
-    <string name="feedback_content_length_must_be_greater_than_x_char">La lunghezza del contenuto del Feedback deve essere maggiore di %d caratteri</string>
-    <string name="feedback_submit_error_x">Errore invio feedback: %s</string>
-    <string name="submit_success">Feedback inviato</string>
     <string name="writing">In scrittura</string>
     <string name="keyword">parola chiave</string>
     <string name="find_keyword_is_empty">parola chiave non puo\' essere vuota</string>
@@ -206,7 +190,6 @@
         <item>Portrait</item>
     </string-array>
     <string name="exit">Esci</string>
-    <string name="unknown_exception_and_report_message_x">blocco sconosciuto, prego comunicare quale operazione era in corso, Grazie\nCodice: %s</string>
     <string name="keep_backup_file">Conserva salvataggio del documento</string>
     <string name="keep_backup_file_summary">Si suggerisce di conservare un salvataggio del documento per evitare perdite in caso di blocco</string>
     <string name="save_all_without_new_document_message">Salva tutto senza messaggio documento nuovo</string>
@@ -220,11 +203,6 @@
     <string name="enable_fullscreen_mode_message">Il riavvio dell\'app attivera\' il modo Schermo Intero</string>
     <string name="disabled_fullscreen_mode_message">Il riavvio dell\'app disattivera\' il modo Schermo Intero</string>
     <string name="confirm_change_theme_message">Il Cambio Tema non salvera\' i documenti, Confermi il Non salvataggio dei documenti per il Cambio Tema?</string>
-    <string name="translate_confirm_message">Per aprire la traduzione sul sito getlocalization.com , premi il bottone "Traduzione su sito Web"  per tradurre localmente premi il bottone "Traduzione Locale"</string>
-    <string name="translate_external_text">Traduzione su sito Web</string>
-    <string name="translate_internal_text">Traduzione Locale</string>
-    <string name="cannt_load_lang_file">Non riesco a caricare il file di linguaggio</string>
-    <string name="local_translate_message">Quando hai finito la traduzione ti prego di inviarla a jecelyin@gmail.com Grazie!</string>
     <string name="untitled_file_name">untitled.txt</string>
     <string name="editor_initialing">Editor initialing…</string>
 </resources>
