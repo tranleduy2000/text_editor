@@ -23,7 +23,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.jecelyin.editor.v2.common.app.JecActivity;
+import com.jecelyin.common.app.JecActivity;
 
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>

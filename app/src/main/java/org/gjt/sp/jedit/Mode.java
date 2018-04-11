@@ -20,7 +20,7 @@ package org.gjt.sp.jedit;
 
 //{{{ Imports
 
-import com.jecelyin.editor.v2.common.utils.DLog;
+import com.jecelyin.common.utils.L;
 import com.jecelyin.editor.v2.highlight.SyntaxParser;
 import org.gjt.sp.jedit.syntax.TokenMarker;
 
@@ -91,7 +91,7 @@ public class Mode {
                         Pattern.CASE_INSENSITIVE).matcher("");
             }
         } catch (PatternSyntaxException re) {
-            DLog.e("Invalid filename/firstline"
+            L.e("Invalid filename/firstline"
                     + " globs in mode " + name, re);
         }
 
@@ -137,7 +137,7 @@ public class Mode {
             SyntaxParser.loadMode(this);
 //			ModeProvider.instance.loadMode(this);
             if (marker == null)
-                DLog.e("Mode not correctly loaded, token marker is still null");
+                L.e("Mode not correctly loaded, token marker is still null");
         }
     } //}}}
 

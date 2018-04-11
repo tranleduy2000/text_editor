@@ -19,7 +19,7 @@
 package android.core.text;
 
 
-import com.jecelyin.editor.v2.common.utils.MethodReflection;
+import com.jecelyin.common.utils.MethodReflection;
 
 /**
  * Access the ICU bidi implementation.

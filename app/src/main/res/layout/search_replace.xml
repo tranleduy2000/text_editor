@@ -13,7 +13,7 @@
         android:paddingRight="@dimen/md_dialog_frame_margin"
         android:paddingStart="@dimen/md_listitem_margin_left">
 
-        <com.jecelyin.editor.v2.common.widget.DrawClickableEditText
+        <com.jecelyin.common.widget.DrawClickableEditText
             android:id="@+id/find_edit_text"
             style="@style/MaterialEditText"
             android:layout_width="match_parent"
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:text="@string/replace" />
 
-        <com.jecelyin.editor.v2.common.widget.DrawClickableEditText
+        <com.jecelyin.common.widget.DrawClickableEditText
             android:id="@+id/replace_edit_text"
             style="@style/MaterialEditText"
             android:layout_width="match_parent"

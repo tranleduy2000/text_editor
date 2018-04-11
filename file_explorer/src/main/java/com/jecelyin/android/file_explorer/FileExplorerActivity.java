@@ -37,8 +37,8 @@ import com.jecelyin.android.file_explorer.io.JecFile;
 import com.jecelyin.android.file_explorer.io.LocalFile;
 import com.jecelyin.android.file_explorer.listener.OnClipboardDataChangedListener;
 import com.jecelyin.android.file_explorer.util.FileListSorter;
-import com.jecelyin.editor.v2.common.utils.IOUtils;
-import com.jecelyin.editor.v2.common.utils.UIUtils;
+import com.jecelyin.common.utils.IOUtils;
+import com.jecelyin.common.utils.UIUtils;
 import com.jecelyin.editor.v2.FullScreenActivity;
 import com.jecelyin.editor.v2.Pref;
 

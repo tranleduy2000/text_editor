@@ -20,7 +20,7 @@ package com.jecelyin.editor.v2.ui.editor;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.core.widget.IEditAreaView;
+import android.core.widget.JecEditText;
 import android.core.widget.TextView;
 import android.graphics.Color;
 import android.os.Parcel;
@@ -35,19 +35,20 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.duy.text.editor.R;
+import com.jecelyin.editor.v2.Pref;
 import com.jecelyin.editor.v2.common.Command;
 import com.jecelyin.editor.v2.common.OnVisibilityChangedListener;
 import com.jecelyin.editor.v2.common.SaveListener;
-import com.jecelyin.editor.v2.common.utils.DLog;
-import com.jecelyin.editor.v2.common.utils.UIUtils;
+import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.UIUtils;
 import com.jecelyin.editor.v2.ui.activities.MainActivity;
 import com.jecelyin.editor.v2.ui.dialog.DocumentInfoDialog;
 import com.jecelyin.editor.v2.ui.dialog.FinderDialog;
 import com.jecelyin.editor.v2.ui.widget.menu.MenuDef;
-import com.jecelyin.editor.v2.Pref;
 import com.jecelyin.editor.v2.view.EditorViewGroup;
 
 import org.gjt.sp.jedit.Catalog;
@@ -62,7 +63,7 @@ import java.io.File;
 public class EditorDelegate implements OnVisibilityChangedListener, TextWatcher {
     public final static String KEY_CLUSTER = "is_cluster";
     private static boolean disableAutoSave = false;
-    public IEditAreaView mEditText;
+    public EditText mEditText;
     private Context context;
     private EditorViewGroup mEditorViewGroup;
     private Document document;
@@ -141,7 +142,7 @@ public class EditorDelegate implements OnVisibilityChangedListener, TextWatcher 
     public void setEditorView(EditorViewGroup editorViewGroup) {
         context = editorViewGroup.getContext();
         this.mEditorViewGroup = editorViewGroup;
-        this.mEditText = (IEditAreaView) editorViewGroup.getEditText();
+        this.mEditText = (JecEditText) editorViewGroup.getEditText();
 
         this.orientation = context.getResources().getConfiguration().orientation;
 
@@ -273,8 +274,7 @@ public class EditorDelegate implements OnVisibilityChangedListener, TextWatcher 
                 if (!readonly)
                     return mEditText.paste();
             case SELECT_ALL:
-                mEditText.selectAllText();
-                return true;
+                return mEditText.selectAll();
             case DUPLICATION:
                 if (!readonly)
                     mEditText.duplication();
@@ -476,7 +476,7 @@ public class EditorDelegate implements OnVisibilityChangedListener, TextWatcher 
         if (loaded && !disableAutoSave && document != null && document.getFile() != null && Pref.getInstance(context).isAutoSave()) {
             int newOrientation = context.getResources().getConfiguration().orientation;
             if (orientation != newOrientation) {
-                DLog.d("current is screen orientation, discard auto save!");
+                L.d("current is screen orientation, discard auto save!");
                 orientation = newOrientation;
             } else {
                 document.save();

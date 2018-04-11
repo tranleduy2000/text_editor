@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 import com.jecelyin.android.file_explorer.R;
 import com.jecelyin.android.file_explorer.io.JecFile;
-import com.jecelyin.editor.v2.common.listeners.OnItemClickListener;
+import com.jecelyin.common.listeners.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -21,8 +21,8 @@ package com.jecelyin.editor.v2.utils;
 import android.content.Context;
 import android.content.res.AssetManager;
 
-import com.jecelyin.editor.v2.common.utils.DLog;
-import com.jecelyin.editor.v2.common.utils.SysUtils;
+import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.SysUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -43,7 +43,7 @@ public class BundlesUtils {
     public static void unzipBundles(Context context) throws IOException {
         File cacheDir = SysUtils.getCacheDir(context);
         File okFile = new File(cacheDir, ".bundles_unzip_ok");
-        if (DLog.DEBUG && okFile.isFile())
+        if (L.DEBUG && okFile.isFile())
             return;
         AssetManager assetManager = context.getAssets();
         BufferedReader reader = null;
@@ -64,7 +64,7 @@ public class BundlesUtils {
                     File outFile = new File(cacheDir, mLine);
                     File path = outFile.getParentFile();
                     if (!path.isDirectory() && !path.mkdirs()) {
-                        DLog.e("can't create dir: " + path.getPath());
+                        L.e("can't create dir: " + path.getPath());
                         continue;
                     }
                     out = new FileOutputStream(outFile);

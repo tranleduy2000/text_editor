@@ -34,9 +34,9 @@ import com.jecelyin.android.file_explorer.io.JecFile;
 import com.jecelyin.android.file_explorer.model.FileItemModel;
 import com.jecelyin.android.file_explorer.util.MimeTypes;
 import com.jecelyin.android.file_explorer.util.OnCheckedChangeListener;
-import com.jecelyin.editor.v2.common.adapter.BindingViewHolder;
-import com.jecelyin.editor.v2.common.listeners.OnItemClickListener;
-import com.jecelyin.editor.v2.common.utils.StringUtils;
+import com.jecelyin.common.adapter.BindingViewHolder;
+import com.jecelyin.common.listeners.OnItemClickListener;
+import com.jecelyin.common.utils.StringUtils;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.text.SimpleDateFormat;

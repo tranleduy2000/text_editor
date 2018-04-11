@@ -23,7 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.jecelyin.editor.v2.common.adapter.SimpleAdapter;
+import com.jecelyin.common.adapter.SimpleAdapter;
 import com.duy.text.editor.R;
 import com.jecelyin.editor.v2.utils.ExtGrep;
 

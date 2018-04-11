@@ -36,7 +36,7 @@ import android.webkit.WebViewClient;
 
 import com.duy.text.editor.R;
 import com.duy.text.editor.databinding.BrowserActivityBinding;
-import com.jecelyin.editor.v2.common.utils.SysUtils;
+import com.jecelyin.common.utils.SysUtils;
 
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>

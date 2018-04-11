@@ -28,7 +28,7 @@ import android.view.ViewGroup;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.jecelyin.editor.v2.common.adapter.ViewPagerAdapter;
+import com.jecelyin.common.adapter.ViewPagerAdapter;
 import com.duy.text.editor.R;
 import com.jecelyin.editor.v2.common.Command;
 import com.jecelyin.editor.v2.common.SaveListener;

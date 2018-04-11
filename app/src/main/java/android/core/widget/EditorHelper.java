@@ -25,28 +25,28 @@ import android.text.Editable;
  * @author Jecelyin Peng <jecelyin@gmail.com>
  */
 class EditorHelper {
-    private final IEditAreaView editAreaView;
+    private final JecEditText jecEditText;
 
-    public EditorHelper(IEditAreaView editAreaView) {
-        this.editAreaView = editAreaView;
+    public EditorHelper(JecEditText jecEditText) {
+        this.jecEditText = jecEditText;
     }
 
     public void duplication() {
-        int start = editAreaView.getSelectionStart();
-        int end = editAreaView.getSelectionEnd();
+        int start = jecEditText.getSelectionStart();
+        int end = jecEditText.getSelectionEnd();
         SpannableStringBuilder text = new SpannableStringBuilder();
         int offset;
-        Editable mText = editAreaView.getEditableText();
+        Editable mText = jecEditText.getEditableText();
         if (end == start) {//重复行
             int s = start, e = end;
             while (--s >= 0 && mText.charAt(s) != '\n' && mText.charAt(s) != '\r') ;
-            if (s < 0) s = 0;
+            if(s < 0)s = 0;
             int length = mText.length();
             while (e < length && mText.charAt(e) != '\n' && mText.charAt(e) != '\r') {
                 e++;
             }
             //fix first line nowrap
-            if (s == 0)
+            if(s == 0)
                 text.append('\n');
             text.append(mText.subSequence(s, e));
             offset = e;
@@ -59,19 +59,19 @@ class EditorHelper {
     }
 
     public void convertWrapCharTo(String chars) {
-        Editable text = editAreaView.getText();
+        Editable text = jecEditText.getText();
         int offset = text.length(), len = chars.length();
-        while (--offset >= 0) {
-            if (text.charAt(offset) == '\n') {
+        while ( --offset >=0 ) {
+            if(text.charAt(offset) == '\n') {
                 //\r\n
-                if (offset > 0 && text.charAt(offset - 1) == '\r') {
-                    text.replace(offset - 1, offset + 1, chars, 0, len);
+                if(offset > 0 && text.charAt(offset-1) == '\r') {
+                    text.replace(offset-1, offset+1, chars, 0, len);
                     offset--;
                 } else {
-                    text.replace(offset, offset + 1, chars, 0, len);
+                    text.replace(offset, offset+1, chars, 0, len);
                 }
-            } else if (text.charAt(offset) == '\r') {
-                text.replace(offset, offset + 1, chars, 0, len);
+            } else if(text.charAt(offset) == '\r') {
+                text.replace(offset, offset+1, chars, 0, len);
             }
         }
     }

@@ -22,7 +22,7 @@ import android.os.AsyncTask;
 import android.text.Editable;
 
 import com.jecelyin.android.file_explorer.io.RootFile;
-import com.jecelyin.editor.v2.common.utils.IOUtils;
+import com.jecelyin.common.utils.IOUtils;
 import com.stericson.RootTools.RootTools;
 
 import java.io.BufferedWriter;
@@ -35,13 +35,18 @@ import java.io.OutputStreamWriter;
  * @author Jecelyin Peng <jecelyin@gmail.com>
  */
 public class FileWriter extends AsyncTask<Editable, Void, Exception> {
-    private final static int BUFFER_SIZE = 16 * 1024;
     private final String encoding;
     private final File file;
+    private final static int BUFFER_SIZE = 16*1024;
     private final File backupFile;
     private final File orgiFile;
     private final boolean keepBackupFile;
     private FileWriteListener fileWriteListener;
+
+    public static interface FileWriteListener {
+        public void onSuccess();
+        public void onError(Exception e);
+    }
 
     public FileWriter(File file, File orgiFile, String encoding, boolean keepBackupFile) {
         this.file = file;
@@ -49,10 +54,6 @@ public class FileWriter extends AsyncTask<Editable, Void, Exception> {
         this.backupFile = makeBackupFile(file);
         this.encoding = encoding;
         this.keepBackupFile = keepBackupFile;
-    }
-
-    private static File makeBackupFile(File file) {
-        return new File(file.getParent(), ".920bak." + file.getName());
     }
 
     public void write(Editable text) {
@@ -65,15 +66,18 @@ public class FileWriter extends AsyncTask<Editable, Void, Exception> {
 
     @Override
     protected Exception doInBackground(Editable... params) {
-        if (orgiFile == null) {
-            if (file.isFile() && !IOUtils.copyFile(file, backupFile)) {
-                return new IOException("Couldn't copy file " + file + " to backup file " + backupFile);
-            }
-        } else {
-            if (file.isFile() && !RootTools.copyFile(file.getPath(), backupFile.getPath(), true, true)) {
-                return new IOException("Couldn't copy file " + file
-                        + " to backup file " + backupFile);
-            }
+
+//        if(backupFile.exists()) {
+//            if(!backupFile.delete()) {
+//                return new IOException("Couldn't remove old backup file " + backupFile);
+//            }
+//        }
+
+        if(file.isFile() && (orgiFile == null
+                ? !IOUtils.copyFile(file, backupFile)
+                : !RootTools.copyFile(file.getPath(), backupFile.getPath(), true, true))) {
+            return new IOException("Couldn't copy file " + file
+                    + " to backup file " + backupFile);
         }
 
         Editable text = params[0];
@@ -83,7 +87,7 @@ public class FileWriter extends AsyncTask<Editable, Void, Exception> {
             int size = text.length();
             if (size > 0) {
                 int start = 0, end = BUFFER_SIZE;
-                for (; ; ) {
+                for (;;) {
                     end = Math.min(end, size);
                     text.getChars(start, end, buffer, 0);
 
@@ -103,11 +107,11 @@ public class FileWriter extends AsyncTask<Editable, Void, Exception> {
         }
 
         // 注意路径可能是 symbolic links
-        if (orgiFile != null && !RootTools.copyFile(file.getAbsolutePath(), (new RootFile(orgiFile.getPath())).getAbsolutePath(), true, false)) {
+        if (orgiFile != null && !RootTools.copyFile(file.getAbsolutePath() , (new RootFile(orgiFile.getPath())).getAbsolutePath(), true, false)) {
             return new IOException("Can't copy " + file.getPath() + " content to " + orgiFile.getPath());
         }
-        if (file.exists()) {
-            if (!keepBackupFile && backupFile.exists() && !backupFile.delete()) {
+        if(file.exists()) {
+            if(!keepBackupFile && backupFile.exists() && !backupFile.delete()) {
                 return new IOException("Couldn't remove backup file " + backupFile);
             }
         }
@@ -116,20 +120,16 @@ public class FileWriter extends AsyncTask<Editable, Void, Exception> {
 
     @Override
     protected void onPostExecute(Exception e) {
-        if (fileWriteListener == null) {
+        if(fileWriteListener == null)
             return;
-        }
-        if (e == null) {
+        if(e == null)
             fileWriteListener.onSuccess();
-        } else {
+        else
             fileWriteListener.onError(e);
-        }
     }
 
-    public interface FileWriteListener {
-        void onSuccess();
-
-        void onError(Exception e);
+    private static File makeBackupFile(File file) {
+        return new File(file.getParent(), ".920bak." + file.getName());
     }
 
 }

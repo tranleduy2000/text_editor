@@ -60,7 +60,7 @@
             android:orientation="vertical"
             android:showDividers="middle">
 
-            <com.jecelyin.editor.v2.common.widget.FormatTextView
+            <com.jecelyin.common.widget.FormatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
@@ -68,13 +68,13 @@
                 android:padding="10dp"
                 android:text="@string/project_url" />
 
-            <com.jecelyin.editor.v2.common.widget.FormatTextView
+            <com.jecelyin.common.widget.FormatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="@string/my_name" />
 
-            <com.jecelyin.editor.v2.common.widget.FormatTextView
+            <com.jecelyin.common.widget.FormatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"

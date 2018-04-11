@@ -20,7 +20,7 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.text.TextPaint;
 
-import com.jecelyin.editor.v2.common.utils.MethodReflection;
+import com.jecelyin.common.utils.MethodReflection;
 
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>

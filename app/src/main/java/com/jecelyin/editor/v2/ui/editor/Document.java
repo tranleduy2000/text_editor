@@ -33,10 +33,10 @@ import com.jecelyin.editor.v2.highlight.Buffer;
 import com.jecelyin.editor.v2.highlight.HighlightInfo;
 import com.jecelyin.editor.v2.io.FileReader;
 import com.jecelyin.editor.v2.task.SaveTask;
-import com.jecelyin.editor.v2.common.utils.DLog;
-import com.jecelyin.editor.v2.common.utils.StringUtils;
-import com.jecelyin.editor.v2.common.utils.SysUtils;
-import com.jecelyin.editor.v2.common.utils.UIUtils;
+import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.StringUtils;
+import com.jecelyin.common.utils.SysUtils;
+import com.jecelyin.common.utils.UIUtils;
 import com.jecelyin.editor.v2.Pref;
 import com.stericson.RootTools.RootTools;
 
@@ -106,7 +106,7 @@ public class Document implements ReadFileListener, TextWatcher {
             }
             return digest.digest();
         } catch (NoSuchAlgorithmException e) {
-            DLog.e("Can't Calculate MD5 hash!", e);
+            L.e("Can't Calculate MD5 hash!", e);
             return charSequence.toString().getBytes();
         }
     }
@@ -356,7 +356,7 @@ public class Document implements ReadFileListener, TextWatcher {
             return;
         DefaultTokenHandler tokenHandler;
 //        L.d("hl startLine=" + startLine + " endLine=" + endLine);
-        DLog.startTracing(null);
+        L.startTracing(null);
         if (styles == null)
             styles = StyleLoader.loadStyles(context);
         ArrayList<HighlightInfo> mergerArray;
@@ -388,11 +388,11 @@ public class Document implements ReadFileListener, TextWatcher {
         for (HighlightInfo hi : mergerArray) {
             if (hi.endOffset > length) {
                 // TODO: 15/12/27 不应该出现这种情况，要找到原因并解决
-                DLog.e("assert hi.endOffset %d > maxLength %d", hi.endOffset, length);
+                L.e("assert hi.endOffset %d > maxLength %d", hi.endOffset, length);
                 hi.endOffset = length;
             }
             if (hi.startOffset >= hi.endOffset) {
-                DLog.e("hi.startOffset %d >= hi.endOffset %d", hi.startOffset, hi.endOffset);
+                L.e("hi.startOffset %d >= hi.endOffset %d", hi.startOffset, hi.endOffset);
                 continue;
             }
             fcs = new ForegroundColorSpan(hi.color);

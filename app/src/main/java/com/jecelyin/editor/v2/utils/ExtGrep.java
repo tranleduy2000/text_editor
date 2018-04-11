@@ -5,11 +5,11 @@ import android.os.Parcelable;
 import android.text.Editable;
 
 import com.jecelyin.editor.v2.TextEditorApplication;
-import com.jecelyin.editor.v2.common.task.JecAsyncTask;
-import com.jecelyin.editor.v2.common.task.TaskListener;
-import com.jecelyin.editor.v2.common.task.TaskResult;
-import com.jecelyin.editor.v2.common.utils.DLog;
-import com.jecelyin.editor.v2.common.utils.UIUtils;
+import com.jecelyin.common.task.JecAsyncTask;
+import com.jecelyin.common.task.TaskListener;
+import com.jecelyin.common.task.TaskResult;
+import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.UIUtils;
 import com.duy.text.editor.R;
 import com.jecelyin.editor.v2.io.FileEncodingDetector;
 
@@ -183,7 +183,7 @@ public class ExtGrep implements Parcelable {
                 }
 
             } catch (IOException e) {
-                DLog.e(e);
+                L.e(e);
             }
         }
 
@@ -537,7 +537,7 @@ public class ExtGrep implements Parcelable {
                 }
             }
         } catch (Exception ioe) {
-            DLog.e(ioe);
+            L.e(ioe);
         } finally {
             if (bfr != null)
                 try {

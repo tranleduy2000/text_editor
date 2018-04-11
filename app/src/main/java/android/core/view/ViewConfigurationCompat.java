@@ -20,8 +20,8 @@ package android.core.view;
 
 import android.view.ViewConfiguration;
 
-import com.jecelyin.editor.v2.common.utils.DLog;
-import com.jecelyin.editor.v2.common.utils.MethodReflection;
+import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.MethodReflection;
 
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>
@@ -37,7 +37,7 @@ public class ViewConfigurationCompat {
             }
             return getScaledDoubleTapTouchSlop.get(viewConfiguration, "getScaledDoubleTapTouchSlop");
         } catch (Throwable e) {
-            DLog.e(e);
+            L.e(e);
             final int TOUCH_SLOP = 8;
             return TOUCH_SLOP;
         }

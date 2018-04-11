@@ -21,8 +21,8 @@ package android.core.view;
 import android.os.Build;
 import android.view.View;
 
-import com.jecelyin.editor.v2.common.utils.DLog;
-import com.jecelyin.editor.v2.common.utils.MethodReflection;
+import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.MethodReflection;
 
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>
@@ -41,7 +41,7 @@ public class ViewCompat {
             }
             invalidateParentCaches.invoke(view);
         } catch (Throwable e) {
-            DLog.e(e);
+            L.e(e);
         }
 
     }

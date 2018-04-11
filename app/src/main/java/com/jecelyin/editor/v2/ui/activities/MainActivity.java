@@ -73,10 +73,10 @@ import com.jecelyin.editor.v2.ui.widget.menu.MenuFactory;
 import com.jecelyin.editor.v2.ui.widget.menu.MenuItemInfo;
 import com.jecelyin.editor.v2.utils.DBHelper;
 import com.jecelyin.android.file_explorer.FileExplorerActivity;
-import com.jecelyin.editor.v2.common.utils.IOUtils;
-import com.jecelyin.editor.v2.common.utils.DLog;
-import com.jecelyin.editor.v2.common.utils.SysUtils;
-import com.jecelyin.editor.v2.common.utils.UIUtils;
+import com.jecelyin.common.utils.IOUtils;
+import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.SysUtils;
+import com.jecelyin.common.utils.UIUtils;
 import com.jecelyin.editor.v2.Pref;
 
 import org.gjt.sp.jedit.Catalog;
@@ -129,7 +129,7 @@ public class MainActivity extends BaseActivity
         try {
             super.onRestoreInstanceState(savedInstanceState);
         } catch (Exception e) {
-            DLog.d(e); //ignore exception: Unmarshalling unknown type code 7602281 at offset 58340
+            L.d(e); //ignore exception: Unmarshalling unknown type code 7602281 at offset 58340
         }
     }
 
@@ -337,14 +337,14 @@ public class MainActivity extends BaseActivity
                 UIUtils.alert(getContext(), getString(R.string.cannt_handle_intent_x, getIntent().toString()));
             }
         } catch (Throwable e) {
-            DLog.e(e);
+            L.e(e);
             UIUtils.alert(getContext(), getString(R.string.handle_intent_x_error, getIntent().toString() + "\n" + e.getMessage()));
         }
     }
 
     private boolean processIntentImpl() throws Throwable {
         Intent intent = getIntent();
-        DLog.d("intent=" + intent);
+        L.d("intent=" + intent);
         if (intent == null)
             return true; //pass hint
 

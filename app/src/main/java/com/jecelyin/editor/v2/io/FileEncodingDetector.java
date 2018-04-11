@@ -18,10 +18,10 @@
 
 package com.jecelyin.editor.v2.io;
 
+import android.core.detector.CharsetDetector;
 import android.text.TextUtils;
 
-import com.jecelyin.editor.v2.common.utils.DLog;
-import android.core.detector.CharsetDetector;
+import com.jecelyin.common.utils.L;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -35,6 +35,16 @@ public class FileEncodingDetector {
     public final static String DEFAULT_ENCODING = "UTF-8";
 
     public static String detectEncoding(File file) {
+//        CharsetDetector detector = new CharsetDetector();
+//        try {
+//            detector.setText(new BufferedInputStream(new FileInputStream(file)));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        CharsetMatch detect = detector.detect();
+//        if(detect == null)
+//            return DEFAULT_ENCODING;
+//        String encoding = detect.getName();
         String encoding = null;
         try {
             BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file));
@@ -42,9 +52,9 @@ public class FileEncodingDetector {
             bufferedInputStream.close();
 
         } catch (Exception e) {
-            DLog.e(e);
+            L.e(e);
         }
-        if (TextUtils.isEmpty(encoding)) {
+        if(TextUtils.isEmpty(encoding)) {
             encoding = DEFAULT_ENCODING;
         }
 

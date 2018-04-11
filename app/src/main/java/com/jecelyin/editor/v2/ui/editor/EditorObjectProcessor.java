@@ -21,7 +21,7 @@ package com.jecelyin.editor.v2.ui.editor;
 import android.content.res.TypedArray;
 import android.core.text.SpannableStringBuilder;
 import android.core.text.method.LinkMovementMethod;
-import android.core.widget.IEditAreaView;
+import android.core.widget.JecEditText;
 import android.graphics.Color;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
@@ -33,8 +33,8 @@ import android.text.style.UpdateAppearance;
 import android.view.View;
 
 import com.duy.text.editor.R;
-import com.jecelyin.editor.v2.common.task.TaskListener;
-import com.jecelyin.editor.v2.common.utils.DLog;
+import com.jecelyin.common.task.TaskListener;
+import com.jecelyin.common.utils.L;
 import com.jecelyin.editor.v2.utils.ExtGrep;
 
 import java.io.File;
@@ -52,7 +52,7 @@ public class EditorObjectProcessor {
     }
 
     private static class FindInFilesProcessor {
-        private final IEditAreaView editText;
+        private final JecEditText editText;
         private final EditorDelegate editorDelegate;
         private final int findResultsKeywordColor;
         private final int findResultsPathColor;
@@ -93,7 +93,7 @@ public class EditorObjectProcessor {
                 public void onError(Exception e) {
                     editText.append(e.getMessage());
                     editText.append(editText.getContext().getString(R.string.zero_matches));
-                    DLog.e(e);
+                    L.e(e);
                 }
             });
         }

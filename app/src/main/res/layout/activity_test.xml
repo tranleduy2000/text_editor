@@ -17,20 +17,23 @@
   -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.duy.text.editor.com.jecelyin.editor.v2.TestActivity">
+    android:layout_height="match_parent">
 
-    <EditText
+    <com.duy.text.editor.views.EditorView
         android:id="@+id/edit_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@null"
-        android:gravity="top"
+        android:bufferType="spannable"
+        android:cursorVisible="true"
+        android:gravity="top|start"
         android:imeOptions="flagNoExtractUi"
         android:padding="8dp"
+        android:singleLine="false"
         android:text="asdhashdhashd asd ahsdha asdh sahdhashdhashd hsahdh ahsdh asdas da s"
+        android:textCursorDrawable="@null"
+        android:textIsSelectable="true"
         android:textSize="14sp"
         android:typeface="monospace" />
 </FrameLayout>

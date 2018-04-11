@@ -45,12 +45,12 @@ import com.jecelyin.android.file_explorer.io.RootFile;
 import com.jecelyin.android.file_explorer.listener.FileListResultListener;
 import com.jecelyin.android.file_explorer.listener.OnClipboardPasteFinishListener;
 import com.jecelyin.android.file_explorer.util.FileListSorter;
-import com.jecelyin.editor.v2.common.app.JecFragment;
-import com.jecelyin.editor.v2.common.listeners.OnItemClickListener;
-import com.jecelyin.editor.v2.common.task.JecAsyncTask;
-import com.jecelyin.editor.v2.common.task.TaskListener;
-import com.jecelyin.editor.v2.common.task.TaskResult;
-import com.jecelyin.editor.v2.common.utils.UIUtils;
+import com.jecelyin.common.app.JecFragment;
+import com.jecelyin.common.listeners.OnItemClickListener;
+import com.jecelyin.common.task.JecAsyncTask;
+import com.jecelyin.common.task.TaskListener;
+import com.jecelyin.common.task.TaskResult;
+import com.jecelyin.common.utils.UIUtils;
 import com.jecelyin.editor.v2.Pref;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 

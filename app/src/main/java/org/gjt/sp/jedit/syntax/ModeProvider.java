@@ -2,7 +2,7 @@ package org.gjt.sp.jedit.syntax;
 
 //{{{ Imports
 
-import com.jecelyin.editor.v2.common.utils.DLog;
+import com.jecelyin.common.utils.L;
 import org.gjt.sp.jedit.Catalog;
 import org.gjt.sp.jedit.Mode;
 
@@ -117,7 +117,7 @@ public class ModeProvider {
 
     //{{{ error() method
     protected void error(String file, Throwable e) {
-        DLog.e(file, e);
+        L.e(file, e);
     } //}}}
 
 }

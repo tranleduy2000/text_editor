@@ -25,10 +25,10 @@ import com.jecelyin.android.file_explorer.io.JecFile;
 import com.jecelyin.android.file_explorer.listener.OnClipboardDataChangedListener;
 import com.jecelyin.android.file_explorer.listener.OnClipboardPasteFinishListener;
 import com.jecelyin.android.file_explorer.util.FileUtils;
-import com.jecelyin.editor.v2.common.app.ProgressDialog;
-import com.jecelyin.editor.v2.common.task.JecAsyncTask;
-import com.jecelyin.editor.v2.common.task.TaskResult;
-import com.jecelyin.editor.v2.common.utils.UIUtils;
+import com.jecelyin.common.app.ProgressDialog;
+import com.jecelyin.common.task.JecAsyncTask;
+import com.jecelyin.common.task.TaskResult;
+import com.jecelyin.common.utils.UIUtils;
 
 import java.util.ArrayList;
 import java.util.List;

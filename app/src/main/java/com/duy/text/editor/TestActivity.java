@@ -18,20 +18,24 @@
 
 package com.duy.text.editor;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.core.util.GrowingArrayUtils;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.RequiresPermission;
+import android.support.v4.app.ActivityCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.widget.TextView;
 
-import com.jecelyin.editor.v2.common.utils.DLog;
+import com.duy.text.editor.views.EditorView;
+import com.jecelyin.common.utils.L;
 import com.jecelyin.editor.v2.io.CharArrayBuffer;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 
@@ -39,18 +43,22 @@ public class TestActivity extends Activity implements TextWatcher {
 
     private static final String TAG = "TestActivity";
     private final static int BUFFER_SIZE = 16 * 1024;
-    private TextView editText;
+    private EditorView editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+
         editText = findViewById(R.id.edit_text);
-        editText.setSaveEnabled(false);
+        editText.setupEditor();
         editText.addTextChangedListener(this);
 
-        if (DLog.DEBUG)
-            DLog.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
+        if (L.DEBUG)
+            L.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+        }
     }
 
     @Override
@@ -60,9 +68,9 @@ public class TestActivity extends Activity implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (DLog.DEBUG) {
-            DLog.d(TAG, "onTextChanged: " + s.length());
-            DLog.d(TAG, "onTextChanged: line count " + editText.getLayout().getLineCount());
+        if (L.DEBUG) {
+            L.d(TAG, "onTextChanged: " + (s != null ? s.length() : "0"));
+            L.d(TAG, "onTextChanged: line count " + (editText.getLayout() != null ? editText.getLayout().getLineCount() : ""));
         }
     }
 
@@ -74,8 +82,23 @@ public class TestActivity extends Activity implements TextWatcher {
     @Override
     protected void onStart() {
         super.onStart();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        read();
+    }
+
+    @RequiresPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    private void read() {
         try {
-            File file = new File(getCacheDir(), "temp.txt");
+            File file = new File(Environment.getExternalStorageDirectory(), "test.txt");
             LineNumberReader reader = new LineNumberReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 
             char[] buf = new char[BUFFER_SIZE];
@@ -86,25 +109,27 @@ public class TestActivity extends Activity implements TextWatcher {
             }
 
             reader.close();
-            editText.setText(new String(arrayBuffer.buffer()));
+            String text = new String(arrayBuffer.buffer());
+            editText.setText(text.substring(0, Math.min(1024, text.length())));
         } catch (Throwable e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        try {
-            File file = new File(getCacheDir(), "temp.txt");
-            file.createNewFile();
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-            fileOutputStream.write(editText.getText().toString().getBytes());
-            fileOutputStream.flush();
-            fileOutputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            File file = new File(getCacheDir(), "temp.txt");
+//            file.createNewFile();
+//            FileOutputStream fileOutputStream = new FileOutputStream(file);
+//            fileOutputStream.write(editText.getText().toString().getBytes());
+//            fileOutputStream.flush();
+//            fileOutputStream.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override

@@ -19,7 +19,7 @@
 package com.jecelyin.editor.v2.ui.dialog;
 
 import android.content.Context;
-import android.core.widget.IEditAreaView;
+import android.core.widget.JecEditText;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  */
 public class DocumentInfoDialog extends AbstractDialog {
     private CharSequence path;
-    private IEditAreaView editAreaView;
+    private JecEditText editAreaView;
     private Document document;
 
     public DocumentInfoDialog(Context context) {
@@ -47,7 +47,7 @@ public class DocumentInfoDialog extends AbstractDialog {
         this.path = path;
     }
 
-    public void setEditAreaView(IEditAreaView editAreaView) {
+    public void setEditAreaView(JecEditText editAreaView) {
         this.editAreaView = editAreaView;
     }
 

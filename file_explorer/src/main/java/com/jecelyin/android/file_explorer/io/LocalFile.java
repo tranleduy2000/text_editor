@@ -24,7 +24,7 @@ import com.jecelyin.android.file_explorer.ExplorerException;
 import com.jecelyin.android.file_explorer.listener.BoolResultListener;
 import com.jecelyin.android.file_explorer.listener.FileListResultListener;
 import com.jecelyin.android.file_explorer.listener.ProgressUpdateListener;
-import com.jecelyin.editor.v2.common.utils.IOUtils;
+import com.jecelyin.common.utils.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;

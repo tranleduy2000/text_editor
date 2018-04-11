@@ -18,26 +18,26 @@
 
 package com.jecelyin.editor.v2.io;
 
-import android.text.TextUtils;
-
 import android.core.text.SpannableStringBuilder;
 import android.core.util.GrowingArrayUtils;
-import com.jecelyin.editor.v2.common.utils.DLog;
+import android.text.TextUtils;
+
+import com.jecelyin.common.utils.L;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.io.LineNumberReader;
 
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>
  */
 public class FileReader {
-    private final static int BUFFER_SIZE = 16 * 1024;
     private SpannableStringBuilder ssb = null;
     private File file;
     private String encoding;
     private int lineNumber;
+//    private int BUFFER_SIZE = 8192;
+    private final static int BUFFER_SIZE = 16*1024;
 
     public FileReader(File file, String encodingName) {
         this.file = file;
@@ -46,15 +46,25 @@ public class FileReader {
 
     public boolean read() {
         try {
-            if (TextUtils.isEmpty(encoding))
+            if(TextUtils.isEmpty(encoding))
                 encoding = FileEncodingDetector.detectEncoding(file);
 
-            DLog.d(file.getPath() + " encoding is " + encoding);
+            L.d(file.getPath()+" encoding is "+encoding);
             LineNumberReader reader = new LineNumberReader(new InputStreamReader(new FileInputStream(file), encoding));
-
+//            String line, firstLine = null;
+//            while ((line = reader.readLine()) != null) {
+//                if (firstLine == null && !line.trim().isEmpty())
+//                    firstLine = line;
+//
+//                int offset = buffer.getOffset();
+//                if(offset < 0)
+//                    throw new ArrayIndexOutOfBoundsException(offset);
+//                //仅支持\r\n , \n两种结束符
+//                buffer.append(offset, line + (reader.isLastWasCR() ? "\r\n" : "\n"));
+//            }
             char[] buf = new char[BUFFER_SIZE];
             int len;
-            CharArrayBuffer arrayBuffer = new CharArrayBuffer(GrowingArrayUtils.growSize((int) file.length()));
+            CharArrayBuffer arrayBuffer = new CharArrayBuffer(GrowingArrayUtils.growSize((int)file.length()));
             while ((len = reader.read(buf, 0, BUFFER_SIZE)) != -1) {
                 arrayBuffer.append(buf, 0, len);
             }
@@ -66,7 +76,7 @@ public class FileReader {
 
             return true;
         } catch (Exception e) {
-            DLog.e(e);
+            L.e(e);
             return false;
         }
     }

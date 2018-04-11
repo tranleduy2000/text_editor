@@ -36,10 +36,10 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.folderselector.FolderChooserDialog;
-import com.jecelyin.editor.v2.common.task.TaskListener;
-import com.jecelyin.editor.v2.common.utils.DLog;
-import com.jecelyin.editor.v2.common.utils.UIUtils;
-import com.jecelyin.editor.v2.common.widget.DrawClickableEditText;
+import com.jecelyin.common.task.TaskListener;
+import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.UIUtils;
+import com.jecelyin.common.widget.DrawClickableEditText;
 import com.jecelyin.editor.v2.Pref;
 import com.duy.text.editor.R;
 import com.jecelyin.editor.v2.ui.editor.EditorDelegate;
@@ -268,7 +268,7 @@ public class FinderDialog extends AbstractDialog implements DrawClickableEditTex
 
                     @Override
                     public void onError(Exception e) {
-                        DLog.e(e);
+                        L.e(e);
                         UIUtils.toast(context, e.getMessage());
                     }
                 }
@@ -403,7 +403,7 @@ public class FinderDialog extends AbstractDialog implements DrawClickableEditTex
 
                         @Override
                         public void onError(Exception e) {
-                            DLog.e(e);
+                            L.e(e);
                             UIUtils.toast(fragment.getContext(), e.getMessage());
                         }
                     });

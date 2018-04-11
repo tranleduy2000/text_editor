@@ -34,7 +34,7 @@ import com.jecelyin.android.file_explorer.listener.BoolResultListener;
 import com.jecelyin.android.file_explorer.listener.OnClipboardPasteFinishListener;
 import com.jecelyin.android.file_explorer.util.MimeTypes;
 import com.jecelyin.android.file_explorer.util.OnCheckedChangeListener;
-import com.jecelyin.editor.v2.common.utils.UIUtils;
+import com.jecelyin.common.utils.UIUtils;
 
 import java.io.File;
 import java.util.ArrayList;

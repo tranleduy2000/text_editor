@@ -18,12 +18,11 @@
 
 package android.core.view;
 
-import android.content.Context;
 import android.text.style.SuggestionSpan;
 import android.view.inputmethod.InputMethodManager;
 
-import com.jecelyin.editor.v2.common.utils.DLog;
-import com.jecelyin.editor.v2.common.utils.MethodReflection;
+import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.MethodReflection;
 
 
 /**
@@ -33,19 +32,22 @@ public class InputMethodManagerCompat {
     /**
      * Private optimization: retrieve the global InputMethodManager instance,
      * if it exists.
-     *
-     * @param context
      */
-    public static InputMethodManager peekInstance(Context context) {
-        InputMethodManager manager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        return manager;
+    public static InputMethodManager peekInstance() {
+        try {
+            return (InputMethodManager) MethodReflection.getStaticMethod(InputMethodManager.class, "peekInstance", null, null);
+        } catch (Throwable e) {
+            L.e(e);
+            return null;
+        }
+//        return InputMethodManager.peekInstance();
     }
 
     public static boolean isCursorAnchorInfoEnabled(InputMethodManager imm) {
         try {
             return (Boolean) MethodReflection.callGet(imm, "isCursorAnchorInfoEnabled");
         } catch (Throwable e) {
-            DLog.e(e);
+            L.e(e);
             return true;
         }
 //        return imm.isCursorAnchorInfoEnabled();
@@ -60,17 +62,17 @@ public class InputMethodManagerCompat {
                     new Object[]{imm, span, originalString, index}
             );
         } catch (Throwable e) {
-            DLog.e(e);
+            L.e(e);
         }
 //        imm.notifySuggestionPicked(span, originalString, index);
     }
 
     public static void registerSuggestionSpansForNotification(InputMethodManager imm, SuggestionSpan[] spans) {
-//        public void registerSuggestionSpansForNotification (SuggestionSpan[]spans)
+        //public void registerSuggestionSpansForNotification(SuggestionSpan[] spans)
         try {
             MethodReflection.callAny(imm, "registerSuggestionSpansForNotification", new Class[]{SuggestionSpan[].class}, new Object[]{spans});
         } catch (Throwable e) {
-            DLog.e(e);
+            L.e(e);
         }
 //        imm.registerSuggestionSpansForNotification(spans);
     }
@@ -79,7 +81,7 @@ public class InputMethodManagerCompat {
         try {
             MethodReflection.callAny(imm, "setUpdateCursorAnchorInfoMode", new Class[]{int.class}, new Object[]{cursorUpdateMode});
         } catch (Throwable e) {
-            DLog.e(e);
+            L.e(e);
         }
 //        imm.setUpdateCursorAnchorInfoMode(cursorUpdateMode);
     }

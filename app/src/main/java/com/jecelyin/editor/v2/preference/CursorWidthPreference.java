@@ -23,7 +23,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jecelyin.editor.v2.common.utils.SysUtils;
+import com.jecelyin.common.utils.SysUtils;
 import com.duy.text.editor.R;
 import com.jecelyin.editor.v2.adapter.RangeAdapter;
 

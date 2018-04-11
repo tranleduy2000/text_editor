@@ -3,15 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://D:\github\920-text-editor-v2-17.8.23\920-Text-Editor.iml" filepath="D:\github\920-text-editor-v2-17.8.23\920-Text-Editor.iml" />
-      <module fileurl="file://D:\github\text_editor\920-text-editor-v2-17.8.23.iml" filepath="D:\github\text_editor\920-text-editor-v2-17.8.23.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
       <module fileurl="file://$PROJECT_DIR$/file_explorer/file_explorer.iml" filepath="$PROJECT_DIR$/file_explorer/file_explorer.iml" />
       <module fileurl="file://$PROJECT_DIR$/styles/styles.iml" filepath="$PROJECT_DIR$/styles/styles.iml" />
-      <module fileurl="file://D:\github\text_editor\styles\styles.iml" filepath="D:\github\text_editor\styles\styles.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/text_editor.iml" filepath="$PROJECT_DIR$/.idea/modules/text_editor.iml" />
       <module fileurl="file://$PROJECT_DIR$/tools/tools.iml" filepath="$PROJECT_DIR$/tools/tools.iml" />
-      <module fileurl="file://D:\github\text_editor\tools\tools.iml" filepath="D:\github\text_editor\tools\tools.iml" />
     </modules>
   </component>
 </project>

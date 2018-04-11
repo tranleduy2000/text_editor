@@ -24,7 +24,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 
 import com.jecelyin.editor.v2.ui.activities.MainActivity;
-import com.jecelyin.editor.v2.common.utils.DrawableUtils;
+import com.jecelyin.common.utils.DrawableUtils;
 import com.duy.text.editor.R;
 import com.jecelyin.editor.v2.adapter.MainMenuAdapter;
 

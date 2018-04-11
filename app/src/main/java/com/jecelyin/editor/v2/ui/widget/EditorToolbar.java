@@ -25,7 +25,7 @@ import android.graphics.Paint;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 
-import com.jecelyin.editor.v2.common.utils.SysUtils;
+import com.jecelyin.common.utils.SysUtils;
 
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>

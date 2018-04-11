@@ -34,7 +34,7 @@ import android.view.MotionEvent;
 import android.widget.SectionIndexer;
 
 import com.duy.text.editor.R;
-import com.jecelyin.editor.v2.common.utils.DLog;
+import com.jecelyin.common.utils.L;
 
 /**
  * Helper class for AbsListView to draw and control the Fast Scroll thumb
@@ -231,7 +231,7 @@ public class FastScroller {
         if (totalItemCount - visibleItemCount > 0 && mState != STATE_DRAGGING) {
             mThumbY = ((mList.getHeight() - mThumbH) * firstVisibleItem)
                     / (totalItemCount - visibleItemCount);
-            DLog.d("FSL onScroll thumbY=" + mThumbY);
+            L.d("FSL onScroll thumbY=" + mThumbY);
             if (mChangedBounds) {
                 resetThumbPos();
                 mChangedBounds = false;
@@ -271,10 +271,10 @@ public class FastScroller {
         int index = (int) (position * count);
         try {
             int offset = mList.getLayout().getLineStart(index);
-            DLog.d("FSL scrollTo position=" + position + " offset=" + offset + " " + index + "/" + count);
+            L.d("FSL scrollTo position=" + position + " offset=" + offset + " " + index + "/" + count);
             Selection.setSelection((Spannable) mList.getText(), offset, offset);
         } catch (Exception e) {
-            DLog.e("FSL scrollTo error", e);
+            L.e("FSL scrollTo error", e);
         }
 
     }
@@ -340,7 +340,7 @@ public class FastScroller {
                     return true;
                 }
                 mThumbY = newThumbY;
-                DLog.d("FSL onTouchEvent thumbY=" + mThumbY);
+                L.d("FSL onTouchEvent thumbY=" + mThumbY);
                 // If the previous scrollTo is still pending
 //                if (mScrollCompleted) {
                 scrollTo((float) mThumbY / (viewHeight - mThumbH));
@@ -354,7 +354,7 @@ public class FastScroller {
     boolean isPointInside(float x, float y) {
         int width = mList.getWidth();
         final int thumbY = mThumbY;
-        DLog.d("FSL isPointInside y=" + y + " thumbY=" + thumbY);
+        L.d("FSL isPointInside y=" + y + " thumbY=" + thumbY);
         return x > width - mThumbW && y >= thumbY && y <= thumbY + mThumbH;
     }
 
