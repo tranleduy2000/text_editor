@@ -128,32 +128,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-//import android.text.Selection;
-//import android.text.TextDirectionHeuristic;
-//import android.text.TextDirectionHeuristics;
-//import android.text.style.SuggestionSpan;
-
-//import android.text.Layout;
-
-//import android.text.method.ArrowKeyMovementMethod;
-//import android.text.method.MovementMethod;
-//import android.view.ViewRootImpl;
-
-//import android.content.res.CompatibilityInfo;
-//import android.graphics.Insets;
-//import android.text.method.TransformationMethod2;
-
-//import android.text.method.AllCapsTransformationMethod;
-
-//import android.text.style.SpellCheckSpan;
-//import com.android.internal.util.FastMath;
-
-//import android.text.TextUtils;
-//import android.text.TextUtils.TruncateAt;
-//import android.text.method.WordIterator;
-
-//import android.content.UndoManager;
-
 /**
  * Displays text to the user and optionally allows them to edit it.  A TextView
  * is a complete text editor, however the basic class is configured to not
@@ -173,73 +147,7 @@ import java.util.Locale;
  * See {link android.R.styleable#TextView TextView Attributes},
  * {link android.R.styleable#View View Attributes}
  *
- * @attr ref android.R.styleable#TextView_text
- * @attr ref android.R.styleable#TextView_bufferType
- * @attr ref android.R.styleable#TextView_hint
- * @attr ref android.R.styleable#TextView_textColor
- * @attr ref android.R.styleable#TextView_textColorHighlight
- * @attr ref android.R.styleable#TextView_textColorHint
- * @attr ref android.R.styleable#TextView_textAppearance
- * @attr ref android.R.styleable#TextView_textColorLink
- * @attr ref android.R.styleable#TextView_textSize
- * @attr ref android.R.styleable#TextView_textScaleX
- * @attr ref android.R.styleable#TextView_fontFamily
- * @attr ref android.R.styleable#TextView_typeface
- * @attr ref android.R.styleable#TextView_textStyle
- * @attr ref android.R.styleable#TextView_cursorVisible
- * @attr ref android.R.styleable#TextView_maxLines
- * @attr ref android.R.styleable#TextView_maxHeight
- * @attr ref android.R.styleable#TextView_lines
- * @attr ref android.R.styleable#TextView_height
- * @attr ref android.R.styleable#TextView_minLines
- * @attr ref android.R.styleable#TextView_minHeight
- * @attr ref android.R.styleable#TextView_maxEms
- * @attr ref android.R.styleable#TextView_maxWidth
- * @attr ref android.R.styleable#TextView_ems
- * @attr ref android.R.styleable#TextView_width
- * @attr ref android.R.styleable#TextView_minEms
- * @attr ref android.R.styleable#TextView_minWidth
- * @attr ref android.R.styleable#TextView_gravity
- * @attr ref android.R.styleable#TextView_scrollHorizontally
- * @attr ref android.R.styleable#TextView_password
- * @attr ref android.R.styleable#TextView_singleLine
- * @attr ref android.R.styleable#TextView_selectAllOnFocus
- * @attr ref android.R.styleable#TextView_includeFontPadding
- * @attr ref android.R.styleable#TextView_maxLength
- * @attr ref android.R.styleable#TextView_shadowColor
- * @attr ref android.R.styleable#TextView_shadowDx
- * @attr ref android.R.styleable#TextView_shadowDy
- * @attr ref android.R.styleable#TextView_shadowRadius
- * @attr ref android.R.styleable#TextView_autoLink
- * @attr ref android.R.styleable#TextView_linksClickable
- * @attr ref android.R.styleable#TextView_numeric
- * @attr ref android.R.styleable#TextView_digits
- * @attr ref android.R.styleable#TextView_phoneNumber
- * @attr ref android.R.styleable#TextView_inputMethod
- * @attr ref android.R.styleable#TextView_capitalize
- * @attr ref android.R.styleable#TextView_autoText
- * @attr ref android.R.styleable#TextView_editable
- * @attr ref android.R.styleable#TextView_freezesText
- * @attr ref android.R.styleable#TextView_ellipsize
- * @attr ref android.R.styleable#TextView_drawableTop
- * @attr ref android.R.styleable#TextView_drawableBottom
- * @attr ref android.R.styleable#TextView_drawableRight
- * @attr ref android.R.styleable#TextView_drawableLeft
- * @attr ref android.R.styleable#TextView_drawableStart
- * @attr ref android.R.styleable#TextView_drawableEnd
- * @attr ref android.R.styleable#TextView_drawablePadding
- * @attr ref android.R.styleable#TextView_lineSpacingExtra
- * @attr ref android.R.styleable#TextView_lineSpacingMultiplier
- * @attr ref android.R.styleable#TextView_marqueeRepeatLimit
- * @attr ref android.R.styleable#TextView_inputType
- * @attr ref android.R.styleable#TextView_imeOptions
- * @attr ref android.R.styleable#TextView_privateImeOptions
- * @attr ref android.R.styleable#TextView_imeActionLabel
- * @attr ref android.R.styleable#TextView_imeActionId
- * @attr ref android.R.styleable#TextView_editorExtras
- * @attr ref android.R.styleable#TextView_elegantTextHeight
- * @attr ref android.R.styleable#TextView_letterSpacing
- * @attr ref android.R.styleable#TextView_fontFeatureSettings
+
  */
 @RemoteView
 public class TextView extends View implements ViewTreeObserver.OnPreDrawListener, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -667,14 +575,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
                 bufferType = BufferType.SPANNABLE;
         }
 
-        // This call will save the initial left/right drawables
-//        setCompoundDrawablesWithIntrinsicBounds(
-//            drawableLeft, drawableTop, drawableRight, drawableBottom);
-//        setRelativeDrawablesIfNeeded(drawableStart, drawableEnd);
-//        setCompoundDrawablePadding(drawablePadding);
-
-        // Same as setSingleLine(), but make sure the transformation method and the maximum number
-        // of lines of height are unchanged for multi-line TextViews.
         setInputTypeSingleLine(singleLine);
         applySingleLine(singleLine, singleLine, singleLine);
 
@@ -682,27 +582,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
             ellipsize = 3; // END
         }
 
-//        switch (ellipsize) {
-//            case 1:
-//                setEllipsize(TruncateAt.START);
-//                break;
-//            case 2:
-//                setEllipsize(TruncateAt.MIDDLE);
-//                break;
-//            case 3:
-//                setEllipsize(TruncateAt.END);
-//                break;
-//            case 4:
-//                if (ViewConfiguration.get(context).isFadingMarqueeEnabled()) {
-//                    setHorizontalFadingEdgeEnabled(true);
-//                    mMarqueeFadeMode = MARQUEE_FADE_NORMAL;
-//                } else {
-//                    setHorizontalFadingEdgeEnabled(false);
-//                    mMarqueeFadeMode = MARQUEE_FADE_SWITCH_SHOW_ELLIPSIS;
-//                }
-//                setEllipsize(TruncateAt.MARQUEE);
-//                break;
-//        }
 
         setTextColor(textColor != null ? textColor : ColorStateList.valueOf(0xFF000000));
         setHintTextColor(textColorHint);
@@ -711,13 +590,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
             setHighlightColor(textColorHighlight);
         }
         setRawTextSize(textSize);
-//        setElegantTextHeight(elegant);
-//        setLetterSpacing(letterSpacing);
-//        setFontFeatureSettings(fontFeatureSettings);
-
-//        if (allCaps) {
-//            setTransformationMethod(new AllCapsTransformationMethod(getContext()));
-//        }
 
         if (password || passwordInputType || webPasswordInputType || numberPasswordInputType) {
             setTransformationMethod(PasswordTransformationMethod.getInstance());
@@ -748,32 +620,11 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
          * However, TextViews that have input or movement methods *are*
          * focusable by default.
          */
-//        a = context.obtainStyledAttributes(
-//                attrs, android.R.styleable.View, defStyleAttr, defStyleRes);
 
         boolean focusable = mMovement != null || getKeyListener() != null;
         boolean clickable = focusable || isClickable();
         boolean longClickable = focusable || isLongClickable();
 
-//        n = a.getIndexCount();
-//        for (int i = 0; i < n; i++) {
-//            int attr = a.getIndex(i);
-//
-//            switch (attr) {
-//            case android.R.styleable.View_focusable:
-//                focusable = a.getBoolean(attr, focusable);
-//                break;
-//
-//            case android.R.styleable.View_clickable:
-//                clickable = a.getBoolean(attr, clickable);
-//                break;
-//
-//            case android.R.styleable.View_longClickable:
-//                longClickable = a.getBoolean(attr, longClickable);
-//                break;
-//            }
-//        }
-//        a.recycle();
 
         setFocusable(focusable);
         setClickable(clickable);
@@ -815,44 +666,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         setTypeface(tf, styleIndex);
     }
 
-//    private void setRelativeDrawablesIfNeeded(Drawable start, Drawable end) {
-//        boolean hasRelativeDrawables = (start != null) || (end != null);
-//        if (hasRelativeDrawables) {
-//            Drawables dr = mDrawables;
-//            if (dr == null) {
-//                mDrawables = dr = new Drawables(getContext());
-//            }
-//            mDrawables.mOverride = true;
-//            final Rect compoundRect = dr.mCompoundRect;
-//            int[] state = getDrawableState();
-//            if (start != null) {
-//                start.setBounds(0, 0, start.getIntrinsicWidth(), start.getIntrinsicHeight());
-//                start.setState(state);
-//                start.copyBounds(compoundRect);
-//                start.setCallback(this);
-//
-//                dr.mDrawableStart = start;
-//                dr.mDrawableSizeStart = compoundRect.width();
-//                dr.mDrawableHeightStart = compoundRect.height();
-//            } else {
-//                dr.mDrawableSizeStart = dr.mDrawableHeightStart = 0;
-//            }
-//            if (end != null) {
-//                end.setBounds(0, 0, end.getIntrinsicWidth(), end.getIntrinsicHeight());
-//                end.setState(state);
-//                end.copyBounds(compoundRect);
-//                end.setCallback(this);
-//
-//                dr.mDrawableEnd = end;
-//                dr.mDrawableSizeEnd = compoundRect.width();
-//                dr.mDrawableHeightEnd = compoundRect.height();
-//            } else {
-//                dr.mDrawableSizeEnd = dr.mDrawableHeightEnd = 0;
-//            }
-//            resetResolvedDrawables();
-//            resolveDrawables();
-//        }
-//    }
 
     @Override
     public void setEnabled(boolean enabled) {
