@@ -37,9 +37,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.duy.text.editor.R;
+import com.duy.text.editor.databinding.FileExplorerFragmentBinding;
 import com.jecelyin.android.file_explorer.adapter.FileListItemAdapter;
 import com.jecelyin.android.file_explorer.adapter.PathButtonAdapter;
-import com.jecelyin.android.file_explorer.databinding.FileExplorerFragmentBinding;
 import com.jecelyin.android.file_explorer.io.JecFile;
 import com.jecelyin.android.file_explorer.io.RootFile;
 import com.jecelyin.android.file_explorer.listener.FileListResultListener;
@@ -51,6 +52,7 @@ import com.jecelyin.common.task.JecAsyncTask;
 import com.jecelyin.common.task.TaskListener;
 import com.jecelyin.common.task.TaskResult;
 import com.jecelyin.common.utils.UIUtils;
+import com.jecelyin.editor.v2.Pref;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;

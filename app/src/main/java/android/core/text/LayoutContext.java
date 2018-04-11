@@ -20,6 +20,8 @@ package android.core.text;
 
 import android.graphics.Paint;
 
+import com.jecelyin.editor.v2.Pref;
+
 
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>

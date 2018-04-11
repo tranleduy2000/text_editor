@@ -31,8 +31,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.duy.text.editor.R;
+import com.duy.text.editor.databinding.FileExplorerActivityBinding;
 import com.jecelyin.android.file_explorer.adapter.FileListPagerAdapter;
-import com.jecelyin.android.file_explorer.databinding.FileExplorerActivityBinding;
 import com.jecelyin.android.file_explorer.io.JecFile;
 import com.jecelyin.android.file_explorer.io.LocalFile;
 import com.jecelyin.android.file_explorer.listener.OnClipboardDataChangedListener;
@@ -40,6 +41,7 @@ import com.jecelyin.android.file_explorer.util.FileListSorter;
 import com.jecelyin.common.utils.IOUtils;
 import com.jecelyin.common.utils.UIUtils;
 import com.jecelyin.editor.v2.FullScreenActivity;
+import com.jecelyin.editor.v2.Pref;
 
 import java.io.File;
 import java.nio.charset.Charset;

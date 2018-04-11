@@ -23,7 +23,7 @@ import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.widget.Checkable;
 
-import com.jecelyin.android.file_explorer.R;
+import com.duy.text.editor.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 /**

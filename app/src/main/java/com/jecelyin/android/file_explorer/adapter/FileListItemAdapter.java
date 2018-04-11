@@ -28,8 +28,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jecelyin.android.file_explorer.R;
-import com.jecelyin.android.file_explorer.databinding.FileListItemBinding;
+import com.duy.text.editor.R;
+import com.duy.text.editor.databinding.FileListItemBinding;
 import com.jecelyin.android.file_explorer.io.JecFile;
 import com.jecelyin.android.file_explorer.model.FileItemModel;
 import com.jecelyin.android.file_explorer.util.MimeTypes;
