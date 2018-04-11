@@ -35,16 +35,15 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.duy.text.editor.R;
+import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.UIUtils;
 import com.jecelyin.editor.v2.Pref;
 import com.jecelyin.editor.v2.common.Command;
 import com.jecelyin.editor.v2.common.OnVisibilityChangedListener;
 import com.jecelyin.editor.v2.common.SaveListener;
-import com.jecelyin.common.utils.L;
-import com.jecelyin.common.utils.UIUtils;
 import com.jecelyin.editor.v2.ui.activities.MainActivity;
 import com.jecelyin.editor.v2.ui.dialog.DocumentInfoDialog;
 import com.jecelyin.editor.v2.ui.dialog.FinderDialog;
@@ -63,7 +62,7 @@ import java.io.File;
 public class EditorDelegate implements OnVisibilityChangedListener, TextWatcher {
     public final static String KEY_CLUSTER = "is_cluster";
     private static boolean disableAutoSave = false;
-    public EditText mEditText;
+    public JecEditText mEditText;
     private Context context;
     private EditorViewGroup mEditorViewGroup;
     private Document document;
@@ -170,9 +169,9 @@ public class EditorDelegate implements OnVisibilityChangedListener, TextWatcher 
 
         noticeDocumentChanged();
 
-        if (!"com.jecelyin.editor.v2".equals(context.getPackageName())) {
-            mEditText.setEnabled(false);
-        }
+//        if (!"com.jecelyin.editor.v2".equals(context.getPackageName())) {
+//            mEditText.setEnabled(false);
+//        }
         loaded = true;
 
     }

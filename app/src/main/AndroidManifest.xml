@@ -22,7 +22,11 @@
             android:name="com.jecelyin.editor.v2.ui.activities.MainActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.EDIT" />
@@ -65,11 +69,9 @@
         <activity android:name="com.jecelyin.editor.v2.ui.activities.BrowserActivity" />
         <activity
             android:name=".TestActivity"
-            android:label="@string/title_activity_test">  <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            android:label="@string/title_activity_test">
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter></activity>
+        </activity>
     </application>
 
 </manifest>
