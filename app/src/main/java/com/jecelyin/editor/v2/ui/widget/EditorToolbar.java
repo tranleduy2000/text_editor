@@ -55,6 +55,7 @@ public class EditorToolbar extends Toolbar {
         titlePaint.setColor(Color.WHITE);
         titlePaint.setTextSize(SysUtils.dpAsPixels(getContext(), 10));
         titlePaint.setTextAlign(Paint.Align.LEFT);
+        titlePaint.setAntiAlias(true);
     }
 
     @Override
