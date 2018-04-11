@@ -21,13 +21,13 @@ package com.jecelyin.editor.v2.adapter;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.jecelyin.common.widget.CheckableImageView;
 import com.duy.text.editor.R;
 import com.jecelyin.editor.v2.common.Command;
 import com.jecelyin.editor.v2.ui.manager.MenuManager;
@@ -124,12 +124,12 @@ public class MainMenuAdapter extends RecyclerView.Adapter {
      */
     static class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView mTextView;
-        CheckableImageView mCheckBox;
+        SwitchCompat mCheckBox;
 
         ItemViewHolder(View view) {
             super(view);
             mTextView = (TextView) view.findViewById(R.id.textView);
-            mCheckBox = (CheckableImageView) view.findViewById(R.id.checkbox);
+            mCheckBox = (SwitchCompat) view.findViewById(R.id.checkbox);
         }
     }
 
