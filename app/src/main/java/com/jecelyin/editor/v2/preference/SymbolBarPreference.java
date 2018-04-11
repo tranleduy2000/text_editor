@@ -24,6 +24,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.jecelyin.editor.v2.Pref;
 
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>

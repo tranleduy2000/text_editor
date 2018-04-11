@@ -20,8 +20,8 @@ package com.jecelyin.editor.v2.ui.editor;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.core.widget.EditorView;
 import android.core.widget.BaseEditorView;
+import android.core.widget.EditorView;
 import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -40,6 +40,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.duy.text.editor.R;
 import com.jecelyin.common.utils.L;
 import com.jecelyin.common.utils.UIUtils;
+import com.jecelyin.editor.v2.Pref;
 import com.jecelyin.editor.v2.common.Command;
 import com.jecelyin.editor.v2.common.OnVisibilityChangedListener;
 import com.jecelyin.editor.v2.common.SaveListener;

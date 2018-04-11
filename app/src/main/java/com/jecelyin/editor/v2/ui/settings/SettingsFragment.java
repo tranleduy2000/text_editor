@@ -29,6 +29,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroup;
 
 import com.duy.text.editor.R;
+import com.jecelyin.editor.v2.Pref;
 import com.jecelyin.editor.v2.preference.JecListPreference;
 import com.jecelyin.editor.v2.ui.activities.AboutActivity;
 
