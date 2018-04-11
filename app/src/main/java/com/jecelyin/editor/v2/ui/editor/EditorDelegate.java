@@ -21,7 +21,7 @@ package com.jecelyin.editor.v2.ui.editor;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.core.widget.EditorView;
-import android.core.widget.TextView;
+import android.core.widget.BaseEditorView;
 import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -469,7 +469,7 @@ public class EditorDelegate implements OnVisibilityChangedListener, TextWatcher 
         }
         if (mEditText != null) {
             mEditText.setFreezesText(true);
-            ss.editorState = (TextView.SavedState) mEditText.onSaveInstanceState();
+            ss.editorState = (BaseEditorView.SavedState) mEditText.onSaveInstanceState();
         }
 
         if (loaded && !disableAutoSave && document != null && document.getFile() != null && Pref.getInstance(context).isAutoSave()) {
@@ -509,7 +509,7 @@ public class EditorDelegate implements OnVisibilityChangedListener, TextWatcher 
         String title;
         String encoding;
         String modeName;
-        TextView.SavedState editorState;
+        BaseEditorView.SavedState editorState;
         byte[] textMd5;
         boolean root;
         File rootFile;
@@ -533,7 +533,7 @@ public class EditorDelegate implements OnVisibilityChangedListener, TextWatcher 
             this.modeName = in.readString();
             int hasState = in.readInt();
             if (hasState == 1)
-                this.editorState = in.readParcelable(TextView.SavedState.class.getClassLoader());
+                this.editorState = in.readParcelable(BaseEditorView.SavedState.class.getClassLoader());
             this.textMd5 = in.createByteArray();
             this.textLength = in.readInt();
         }

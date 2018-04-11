@@ -45,7 +45,7 @@ import com.jecelyin.editor.v2.ui.widget.editor.FastScroller;
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>
  */
-public class EditorView extends TextView {
+public class EditorView extends BaseEditorView {
     /**
      * Indicates that we are not in the middle of a touch gesture
      */

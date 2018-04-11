@@ -19,7 +19,7 @@ package android.core.text.method;
 import android.core.text.Layout;
 import android.core.text.MetaKeyKeyListenerCompat;
 import android.core.view.MotionEventCompat;
-import android.core.widget.TextView;
+import android.core.widget.BaseEditorView;
 import android.text.NoCopySpan;
 import android.text.Spannable;
 import android.text.method.MetaKeyKeyListener;
@@ -37,7 +37,7 @@ public class Touch {
      * the text that will be visible after scrolling to the specified
      * Y position.
      */
-    public static void scrollTo(TextView widget, Layout layout, int x, int y) {
+    public static void scrollTo(BaseEditorView widget, Layout layout, int x, int y) {
         final int horizontalPadding = widget.getTotalPaddingLeft() + widget.getTotalPaddingRight();
         final int availableWidth = widget.getWidth() + horizontalPadding;
 
@@ -64,7 +64,7 @@ public class Touch {
      * Handles touch events for dragging.  You may want to do other actions
      * like moving the cursor on touch as well.
      */
-    public static boolean onTouchEvent(TextView widget, Spannable buffer,
+    public static boolean onTouchEvent(BaseEditorView widget, Spannable buffer,
                                        MotionEvent event) {
         DragState[] ds;
 
@@ -176,7 +176,7 @@ public class Touch {
      * @param widget The text view.
      * @param buffer The text buffer.
      */
-    public static int getInitialScrollX(TextView widget, Spannable buffer) {
+    public static int getInitialScrollX(BaseEditorView widget, Spannable buffer) {
         DragState[] ds = buffer.getSpans(0, buffer.length(), DragState.class);
         return ds.length > 0 ? ds[0].mScrollX : -1;
     }
@@ -185,7 +185,7 @@ public class Touch {
      * @param widget The text view.
      * @param buffer The text buffer.
      */
-    public static int getInitialScrollY(TextView widget, Spannable buffer) {
+    public static int getInitialScrollY(BaseEditorView widget, Spannable buffer) {
         DragState[] ds = buffer.getSpans(0, buffer.length(), DragState.class);
         return ds.length > 0 ? ds[0].mScrollY : -1;
     }

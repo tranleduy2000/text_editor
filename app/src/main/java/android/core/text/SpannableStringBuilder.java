@@ -22,7 +22,7 @@ import android.core.text.method.Touch;
 import android.core.util.ArrayUtils;
 import android.core.util.EmptyArray;
 import android.core.util.GrowingArrayUtils;
-import android.core.widget.TextView;
+import android.core.widget.BaseEditorView;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.text.Editable;
@@ -977,8 +977,8 @@ public class SpannableStringBuilder implements CharSequence, GetChars, Spannable
             return span instanceof URLSpan;
         } else if (ParcelableSpan.class == kind) {
             return span instanceof ParcelableSpan;
-        } else if (TextView.ChangeWatcher.class == kind) {
-            return span instanceof TextView.ChangeWatcher;
+        } else if (BaseEditorView.ChangeWatcher.class == kind) {
+            return span instanceof BaseEditorView.ChangeWatcher;
         } else if (ForegroundColorSpan.class == kind) {
             return span instanceof ForegroundColorSpan;
         } else if (LineBackgroundSpan.class == kind) {

@@ -21,7 +21,7 @@ package android.core.text.method;
 import android.core.text.Layout;
 import android.core.text.MetaKeyKeyListenerCompat;
 import android.core.text.Selection;
-import android.core.widget.TextView;
+import android.core.widget.BaseEditorView;
 import android.graphics.Rect;
 import android.os.Build;
 import android.text.Spannable;
@@ -48,7 +48,7 @@ public class ArrowKeyMovementMethod extends BaseMovementMethod implements Moveme
         return layout.getLineTop(layout.getLineForOffset(Selection.getSelectionEnd(buffer)));
     }
 
-    private static int getPageHeight(TextView widget) {
+    private static int getPageHeight(BaseEditorView widget) {
         // This calculation does not take into account the view transformations that
         // may have been applied to the child or its containers.  In case of scaling or
         // rotation, the calculated page height may be incorrect.
@@ -69,7 +69,7 @@ public class ArrowKeyMovementMethod extends BaseMovementMethod implements Moveme
     }
 
     @Override
-    protected boolean handleMovementKey(TextView widget, Spannable buffer, int keyCode,
+    protected boolean handleMovementKey(BaseEditorView widget, Spannable buffer, int keyCode,
                                         int movementMetaState, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_CENTER:
@@ -87,7 +87,7 @@ public class ArrowKeyMovementMethod extends BaseMovementMethod implements Moveme
     }
 
     @Override
-    protected boolean left(TextView widget, Spannable buffer) {
+    protected boolean left(BaseEditorView widget, Spannable buffer) {
         final Layout layout = widget.getLayout();
         if (isSelecting(buffer)) {
             return Selection.extendLeft(buffer, layout);
@@ -97,7 +97,7 @@ public class ArrowKeyMovementMethod extends BaseMovementMethod implements Moveme
     }
 
     @Override
-    protected boolean right(TextView widget, Spannable buffer) {
+    protected boolean right(BaseEditorView widget, Spannable buffer) {
         final Layout layout = widget.getLayout();
         if (isSelecting(buffer)) {
             return Selection.extendRight(buffer, layout);
@@ -107,7 +107,7 @@ public class ArrowKeyMovementMethod extends BaseMovementMethod implements Moveme
     }
 
     @Override
-    protected boolean up(TextView widget, Spannable buffer) {
+    protected boolean up(BaseEditorView widget, Spannable buffer) {
         final Layout layout = widget.getLayout();
         if (isSelecting(buffer)) {
             return Selection.extendUp(buffer, layout);
@@ -117,7 +117,7 @@ public class ArrowKeyMovementMethod extends BaseMovementMethod implements Moveme
     }
 
     @Override
-    protected boolean down(TextView widget, Spannable buffer) {
+    protected boolean down(BaseEditorView widget, Spannable buffer) {
         final Layout layout = widget.getLayout();
         if (isSelecting(buffer)) {
             return Selection.extendDown(buffer, layout);
@@ -127,7 +127,7 @@ public class ArrowKeyMovementMethod extends BaseMovementMethod implements Moveme
     }
 
     @Override
-    protected boolean pageUp(TextView widget, Spannable buffer) {
+    protected boolean pageUp(BaseEditorView widget, Spannable buffer) {
         final Layout layout = widget.getLayout();
         final boolean selecting = isSelecting(buffer);
         final int targetY = getCurrentLineTop(buffer, layout) - getPageHeight(widget);
@@ -151,7 +151,7 @@ public class ArrowKeyMovementMethod extends BaseMovementMethod implements Moveme
     }
 
     @Override
-    protected boolean pageDown(TextView widget, Spannable buffer) {
+    protected boolean pageDown(BaseEditorView widget, Spannable buffer) {
         final Layout layout = widget.getLayout();
         final boolean selecting = isSelecting(buffer);
         final int targetY = getCurrentLineTop(buffer, layout) + getPageHeight(widget);
@@ -175,7 +175,7 @@ public class ArrowKeyMovementMethod extends BaseMovementMethod implements Moveme
     }
 
     @Override
-    protected boolean top(TextView widget, Spannable buffer) {
+    protected boolean top(BaseEditorView widget, Spannable buffer) {
         if (isSelecting(buffer)) {
             Selection.extendSelection(buffer, 0);
         } else {
@@ -185,7 +185,7 @@ public class ArrowKeyMovementMethod extends BaseMovementMethod implements Moveme
     }
 
     @Override
-    protected boolean bottom(TextView widget, Spannable buffer) {
+    protected boolean bottom(BaseEditorView widget, Spannable buffer) {
         if (isSelecting(buffer)) {
             Selection.extendSelection(buffer, buffer.length());
         } else {
@@ -195,7 +195,7 @@ public class ArrowKeyMovementMethod extends BaseMovementMethod implements Moveme
     }
 
     @Override
-    protected boolean lineStart(TextView widget, Spannable buffer) {
+    protected boolean lineStart(BaseEditorView widget, Spannable buffer) {
         final Layout layout = widget.getLayout();
         if (isSelecting(buffer)) {
             return Selection.extendToLeftEdge(buffer, layout);
@@ -205,7 +205,7 @@ public class ArrowKeyMovementMethod extends BaseMovementMethod implements Moveme
     }
 
     @Override
-    protected boolean lineEnd(TextView widget, Spannable buffer) {
+    protected boolean lineEnd(BaseEditorView widget, Spannable buffer) {
         final Layout layout = widget.getLayout();
         if (isSelecting(buffer)) {
             return Selection.extendToRightEdge(buffer, layout);
@@ -218,7 +218,7 @@ public class ArrowKeyMovementMethod extends BaseMovementMethod implements Moveme
      * {@hide}
      */
     @Override
-    protected boolean leftWord(TextView widget, Spannable buffer) {
+    protected boolean leftWord(BaseEditorView widget, Spannable buffer) {
         final int selectionEnd = widget.getSelectionEnd();
         final WordIterator wordIterator = widget.getWordIterator();
         wordIterator.setCharSequence(buffer, selectionEnd, selectionEnd);
@@ -229,7 +229,7 @@ public class ArrowKeyMovementMethod extends BaseMovementMethod implements Moveme
      * {@hide}
      */
     @Override
-    protected boolean rightWord(TextView widget, Spannable buffer) {
+    protected boolean rightWord(BaseEditorView widget, Spannable buffer) {
         final int selectionEnd = widget.getSelectionEnd();
         final WordIterator wordIterator = widget.getWordIterator();
         wordIterator.setCharSequence(buffer, selectionEnd, selectionEnd);
@@ -237,17 +237,17 @@ public class ArrowKeyMovementMethod extends BaseMovementMethod implements Moveme
     }
 
     @Override
-    protected boolean home(TextView widget, Spannable buffer) {
+    protected boolean home(BaseEditorView widget, Spannable buffer) {
         return lineStart(widget, buffer);
     }
 
     @Override
-    protected boolean end(TextView widget, Spannable buffer) {
+    protected boolean end(BaseEditorView widget, Spannable buffer) {
         return lineEnd(widget, buffer);
     }
 
     @Override
-    public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
+    public boolean onTouchEvent(BaseEditorView widget, Spannable buffer, MotionEvent event) {
         int initialScrollX = -1;
         int initialScrollY = -1;
         final int action = event.getAction();
@@ -337,12 +337,12 @@ public class ArrowKeyMovementMethod extends BaseMovementMethod implements Moveme
     }
 
     @Override
-    public void initialize(TextView widget, Spannable text) {
+    public void initialize(BaseEditorView widget, Spannable text) {
         Selection.setSelection(text, 0);
     }
 
     @Override
-    public void onTakeFocus(TextView view, Spannable text, int dir) {
+    public void onTakeFocus(BaseEditorView view, Spannable text, int dir) {
         if ((dir & (View.FOCUS_FORWARD | View.FOCUS_DOWN)) != 0) {
             if (view.getLayout() == null) {
                 // This shouldn't be null, but do something sensible if it is.

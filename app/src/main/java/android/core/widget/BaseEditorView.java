@@ -147,7 +147,7 @@ import java.util.Locale;
  * {link android.R.styleable#View View Attributes}
  */
 @RemoteView
-public class TextView extends View implements ViewTreeObserver.OnPreDrawListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class BaseEditorView extends View implements ViewTreeObserver.OnPreDrawListener, SharedPreferences.OnSharedPreferenceChangeListener {
     static final String LOG_TAG = "TextView";
     static final boolean DEBUG_EXTRACT = false;
     static final int ID_SELECT_ALL = android.R.id.selectAll;
@@ -307,15 +307,15 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
     private boolean mHighlightPathBogus = true;
     private LayoutContext layoutContext = new LayoutContext();
 
-    public TextView(Context context) {
+    public BaseEditorView(Context context) {
         this(context, null);
     }
 
-    public TextView(Context context, AttributeSet attrs) {
+    public BaseEditorView(Context context, AttributeSet attrs) {
         this(context, attrs, android.R.attr.textViewStyle);
     }
 
-    public TextView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public BaseEditorView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         int defStyleRes = 0; //jec+
 
@@ -2620,10 +2620,10 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
     }
 
     /**
-     * Like {@link #setText(CharSequence, TextView.BufferType)},
+     * Like {@link #setText(CharSequence, BaseEditorView.BufferType)},
      * except that the cursor position (if any) is retained in the new text.
      *
-     * @see #setText(CharSequence, TextView.BufferType)
+     * @see #setText(CharSequence, BaseEditorView.BufferType)
      */
     public final void setTextKeepState(CharSequence text, BufferType type) {
         int start = getSelectionStart();
@@ -6400,7 +6400,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
     public void onInitializeAccessibilityEvent(AccessibilityEvent event) {
         super.onInitializeAccessibilityEvent(event);
 
-        event.setClassName(TextView.class.getName());
+        event.setClassName(BaseEditorView.class.getName());
         final boolean isPassword = hasPasswordTransformationMethod();
         event.setPassword(isPassword);
 
@@ -6415,7 +6415,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
     public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
         super.onInitializeAccessibilityNodeInfo(info);
 
-        info.setClassName(TextView.class.getName());
+        info.setClassName(BaseEditorView.class.getName());
         final boolean isPassword = hasPasswordTransformationMethod();
         info.setPassword(isPassword);
 
@@ -6874,7 +6874,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
                 return mEditor != null && mEditor.hasInsertionController();
 
             case DragEvent.ACTION_DRAG_ENTERED:
-                TextView.this.requestFocus();
+                BaseEditorView.this.requestFocus();
                 return true;
 
             case DragEvent.ACTION_DRAG_LOCATION:
@@ -7207,7 +7207,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
          *                 otherwise, this is null.
          * @return Return true if you have consumed the action, else false.
          */
-        boolean onEditorAction(TextView v, int actionId, KeyEvent event);
+        boolean onEditorAction(BaseEditorView v, int actionId, KeyEvent event);
     }
 
     /**
@@ -7293,7 +7293,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         private static final byte MARQUEE_STARTING = 0x1;
         private static final byte MARQUEE_RUNNING = 0x2;
 
-        private final WeakReference<TextView> mView;
+        private final WeakReference<BaseEditorView> mView;
         private final Choreographer mChoreographer;
         private final float mPixelsPerSecond;
         private byte mStatus = MARQUEE_STOPPED;
@@ -7332,10 +7332,10 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
             }
         };
 
-        Marquee(TextView v) {
+        Marquee(BaseEditorView v) {
             final float density = v.getContext().getResources().getDisplayMetrics().density;
             mPixelsPerSecond = MARQUEE_DP_PER_SECOND * density;
-            mView = new WeakReference<TextView>(v);
+            mView = new WeakReference<BaseEditorView>(v);
             mChoreographer = Choreographer.getInstance();
         }
 
@@ -7373,7 +7373,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
 
         private void resetScroll() {
             mScroll = 0.0f;
-            final TextView textView = mView.get();
+            final BaseEditorView textView = mView.get();
             if (textView != null) textView.invalidate();
         }
 
@@ -7383,7 +7383,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
                 return;
             }
             mRepeatLimit = repeatLimit;
-            final TextView textView = mView.get();
+            final BaseEditorView textView = mView.get();
             if (textView != null && textView.mLayout != null) {
                 mStatus = MARQUEE_STARTING;
                 mScroll = 0.0f;
@@ -7432,10 +7432,10 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
     }
 
     public static class ChangeWatcher implements TextWatcher, SpanWatcher {
-        private WeakReference<TextView> textView;
+        private WeakReference<BaseEditorView> textView;
 //        private CharSequence mBeforeText;
 
-        public ChangeWatcher(TextView textView) {
+        public ChangeWatcher(BaseEditorView textView) {
             this.textView = new WeakReference<>(textView);
         }
 
@@ -7444,7 +7444,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
             if (DEBUG_EXTRACT) Log.v(LOG_TAG, "beforeTextChanged start=" + start
                     + " before=" + before + " after=" + after + ": " + buffer);
 
-            TextView tv = textView.get();
+            BaseEditorView tv = textView.get();
             if (tv == null) return;
             tv.sendBeforeTextChanged(buffer, start, before, after);
         }
@@ -7452,7 +7452,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         public void onTextChanged(CharSequence buffer, int start, int before, int after) {
             if (DEBUG_EXTRACT) Log.v(LOG_TAG, "onTextChanged start=" + start
                     + " before=" + before + " after=" + after + ": " + buffer);
-            TextView tv = textView.get();
+            BaseEditorView tv = textView.get();
             if (tv == null) return;
             tv.handleTextChanged(buffer, start, before, after);
 
@@ -7460,7 +7460,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
 
         public void afterTextChanged(Editable buffer) {
             if (DEBUG_EXTRACT) Log.v(LOG_TAG, "afterTextChanged: " + buffer);
-            TextView tv = textView.get();
+            BaseEditorView tv = textView.get();
             if (tv == null) return;
 
             tv.sendAfterTextChanged(buffer);
@@ -7473,7 +7473,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         public void onSpanChanged(Spannable buf, Object what, int s, int e, int st, int en) {
             if (DEBUG_EXTRACT) Log.v(LOG_TAG, "onSpanChanged s=" + s + " e=" + e
                     + " st=" + st + " en=" + en + " what=" + what + ": " + buf);
-            TextView tv = textView.get();
+            BaseEditorView tv = textView.get();
             if (tv == null) return;
 
             tv.spanChange(buf, what, s, st, e, en);
@@ -7482,7 +7482,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         public void onSpanAdded(Spannable buf, Object what, int s, int e) {
             if (DEBUG_EXTRACT) Log.v(LOG_TAG, "onSpanAdded s=" + s + " e=" + e
                     + " what=" + what + ": " + buf);
-            TextView tv = textView.get();
+            BaseEditorView tv = textView.get();
             if (tv == null) return;
 
             tv.spanChange(buf, what, -1, s, -1, e);
@@ -7491,7 +7491,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         public void onSpanRemoved(Spannable buf, Object what, int s, int e) {
             if (DEBUG_EXTRACT) Log.v(LOG_TAG, "onSpanRemoved s=" + s + " e=" + e
                     + " what=" + what + ": " + buf);
-            TextView tv = textView.get();
+            BaseEditorView tv = textView.get();
             if (tv == null) return;
 
             tv.spanChange(buf, what, s, -1, e, -1);

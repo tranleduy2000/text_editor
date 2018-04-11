@@ -20,7 +20,7 @@ package android.core.text.method;
 
 import android.core.text.Layout;
 import android.core.text.MetaKeyKeyListenerCompat;
-import android.core.widget.TextView;
+import android.core.widget.BaseEditorView;
 import android.text.Spannable;
 import android.text.method.MetaKeyKeyListener;
 import android.view.InputDevice;
@@ -37,11 +37,11 @@ public class BaseMovementMethod implements MovementMethod {
     }
 
     @Override
-    public void initialize(TextView widget, Spannable text) {
+    public void initialize(BaseEditorView widget, Spannable text) {
     }
 
     @Override
-    public boolean onKeyDown(TextView widget, Spannable text, int keyCode, KeyEvent event) {
+    public boolean onKeyDown(BaseEditorView widget, Spannable text, int keyCode, KeyEvent event) {
         final int movementMetaState = getMovementMetaState(text, event);
         boolean handled = handleMovementKey(widget, text, keyCode, movementMetaState, event);
         if (handled) {
@@ -52,7 +52,7 @@ public class BaseMovementMethod implements MovementMethod {
     }
 
     @Override
-    public boolean onKeyOther(TextView widget, Spannable text, KeyEvent event) {
+    public boolean onKeyOther(BaseEditorView widget, Spannable text, KeyEvent event) {
         final int movementMetaState = getMovementMetaState(text, event);
         final int keyCode = event.getKeyCode();
         if (keyCode != KeyEvent.KEYCODE_UNKNOWN
@@ -75,26 +75,26 @@ public class BaseMovementMethod implements MovementMethod {
     }
 
     @Override
-    public boolean onKeyUp(TextView widget, Spannable text, int keyCode, KeyEvent event) {
+    public boolean onKeyUp(BaseEditorView widget, Spannable text, int keyCode, KeyEvent event) {
         return false;
     }
 
     @Override
-    public void onTakeFocus(TextView widget, Spannable text, int direction) {
+    public void onTakeFocus(BaseEditorView widget, Spannable text, int direction) {
     }
 
     @Override
-    public boolean onTouchEvent(TextView widget, Spannable text, MotionEvent event) {
+    public boolean onTouchEvent(BaseEditorView widget, Spannable text, MotionEvent event) {
         return false;
     }
 
     @Override
-    public boolean onTrackballEvent(TextView widget, Spannable text, MotionEvent event) {
+    public boolean onTrackballEvent(BaseEditorView widget, Spannable text, MotionEvent event) {
         return false;
     }
 
     @Override
-    public boolean onGenericMotionEvent(TextView widget, Spannable text, MotionEvent event) {
+    public boolean onGenericMotionEvent(BaseEditorView widget, Spannable text, MotionEvent event) {
         if ((event.getSource() & InputDevice.SOURCE_CLASS_POINTER) != 0) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_SCROLL: {
@@ -154,9 +154,9 @@ public class BaseMovementMethod implements MovementMethod {
      * Performs a movement key action.
      * The default implementation decodes the key down and invokes movement actions
      * such as {@link #down} and {@link #up}.
-     * {@link #onKeyDown(TextView, android.text.Spannable, int, android.view.KeyEvent)} calls this method once
+     * {@link #onKeyDown(BaseEditorView, android.text.Spannable, int, android.view.KeyEvent)} calls this method once
      * to handle an {@link android.view.KeyEvent#ACTION_DOWN}.
-     * {@link #onKeyOther(TextView, android.text.Spannable, android.view.KeyEvent)} calls this method repeatedly
+     * {@link #onKeyOther(BaseEditorView, android.text.Spannable, android.view.KeyEvent)} calls this method repeatedly
      * to handle each repetition of an {@link android.view.KeyEvent#ACTION_MULTIPLE}.
      *
      * @param widget            The text view.
@@ -167,7 +167,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @param event             The key event.
      * @return True if the event was handled.
      */
-    protected boolean handleMovementKey(TextView widget, Spannable buffer,
+    protected boolean handleMovementKey(BaseEditorView widget, Spannable buffer,
                                         int keyCode, int movementMetaState, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_LEFT:
@@ -259,7 +259,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @param buffer The text buffer.
      * @return True if the event was handled.
      */
-    protected boolean left(TextView widget, Spannable buffer) {
+    protected boolean left(BaseEditorView widget, Spannable buffer) {
         return false;
     }
 
@@ -271,7 +271,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @param buffer The text buffer.
      * @return True if the event was handled.
      */
-    protected boolean right(TextView widget, Spannable buffer) {
+    protected boolean right(BaseEditorView widget, Spannable buffer) {
         return false;
     }
 
@@ -283,7 +283,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @param buffer The text buffer.
      * @return True if the event was handled.
      */
-    protected boolean up(TextView widget, Spannable buffer) {
+    protected boolean up(BaseEditorView widget, Spannable buffer) {
         return false;
     }
 
@@ -295,7 +295,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @param buffer The text buffer.
      * @return True if the event was handled.
      */
-    protected boolean down(TextView widget, Spannable buffer) {
+    protected boolean down(BaseEditorView widget, Spannable buffer) {
         return false;
     }
 
@@ -307,7 +307,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @param buffer The text buffer.
      * @return True if the event was handled.
      */
-    protected boolean pageUp(TextView widget, Spannable buffer) {
+    protected boolean pageUp(BaseEditorView widget, Spannable buffer) {
         return false;
     }
 
@@ -319,7 +319,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @param buffer The text buffer.
      * @return True if the event was handled.
      */
-    protected boolean pageDown(TextView widget, Spannable buffer) {
+    protected boolean pageDown(BaseEditorView widget, Spannable buffer) {
         return false;
     }
 
@@ -331,7 +331,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @param buffer The text buffer.
      * @return True if the event was handled.
      */
-    protected boolean top(TextView widget, Spannable buffer) {
+    protected boolean top(BaseEditorView widget, Spannable buffer) {
         return false;
     }
 
@@ -343,7 +343,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @param buffer The text buffer.
      * @return True if the event was handled.
      */
-    protected boolean bottom(TextView widget, Spannable buffer) {
+    protected boolean bottom(BaseEditorView widget, Spannable buffer) {
         return false;
     }
 
@@ -355,7 +355,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @param buffer The text buffer.
      * @return True if the event was handled.
      */
-    protected boolean lineStart(TextView widget, Spannable buffer) {
+    protected boolean lineStart(BaseEditorView widget, Spannable buffer) {
         return false;
     }
 
@@ -367,21 +367,21 @@ public class BaseMovementMethod implements MovementMethod {
      * @param buffer The text buffer.
      * @return True if the event was handled.
      */
-    protected boolean lineEnd(TextView widget, Spannable buffer) {
+    protected boolean lineEnd(BaseEditorView widget, Spannable buffer) {
         return false;
     }
 
     /**
      * {@hide}
      */
-    protected boolean leftWord(TextView widget, Spannable buffer) {
+    protected boolean leftWord(BaseEditorView widget, Spannable buffer) {
         return false;
     }
 
     /**
      * {@hide}
      */
-    protected boolean rightWord(TextView widget, Spannable buffer) {
+    protected boolean rightWord(BaseEditorView widget, Spannable buffer) {
         return false;
     }
 
@@ -395,7 +395,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @param buffer The text buffer.
      * @return True if the event was handled.
      */
-    protected boolean home(TextView widget, Spannable buffer) {
+    protected boolean home(BaseEditorView widget, Spannable buffer) {
         return false;
     }
 
@@ -409,31 +409,31 @@ public class BaseMovementMethod implements MovementMethod {
      * @param buffer The text buffer.
      * @return True if the event was handled.
      */
-    protected boolean end(TextView widget, Spannable buffer) {
+    protected boolean end(BaseEditorView widget, Spannable buffer) {
         return false;
     }
 
-    private int getTopLine(TextView widget) {
+    private int getTopLine(BaseEditorView widget) {
         return widget.getLayout().getLineForVertical(widget.getScrollY());
     }
 
-    private int getBottomLine(TextView widget) {
+    private int getBottomLine(BaseEditorView widget) {
         return widget.getLayout().getLineForVertical(widget.getScrollY() + getInnerHeight(widget));
     }
 
-    private int getInnerWidth(TextView widget) {
+    private int getInnerWidth(BaseEditorView widget) {
         return widget.getWidth() - widget.getTotalPaddingLeft() - widget.getTotalPaddingRight();
     }
 
-    private int getInnerHeight(TextView widget) {
+    private int getInnerHeight(BaseEditorView widget) {
         return widget.getHeight() - widget.getTotalPaddingTop() - widget.getTotalPaddingBottom();
     }
 
-    private int getCharacterWidth(TextView widget) {
+    private int getCharacterWidth(BaseEditorView widget) {
         return (int) Math.ceil(widget.getPaint().getFontSpacing());
     }
 
-    private int getScrollBoundsLeft(TextView widget) {
+    private int getScrollBoundsLeft(BaseEditorView widget) {
         final Layout layout = widget.getLayout();
         final int topLine = getTopLine(widget);
         final int bottomLine = getBottomLine(widget);
@@ -450,7 +450,7 @@ public class BaseMovementMethod implements MovementMethod {
         return left;
     }
 
-    private int getScrollBoundsRight(TextView widget) {
+    private int getScrollBoundsRight(BaseEditorView widget) {
         final Layout layout = widget.getLayout();
         final int topLine = getTopLine(widget);
         final int bottomLine = getBottomLine(widget);
@@ -477,7 +477,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @return True if the event was handled.
      * @hide
      */
-    protected boolean scrollLeft(TextView widget, Spannable buffer, int amount) {
+    protected boolean scrollLeft(BaseEditorView widget, Spannable buffer, int amount) {
         final int minScrollX = getScrollBoundsLeft(widget);
         int scrollX = widget.getScrollX();
         if (scrollX > minScrollX) {
@@ -498,7 +498,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @return True if the event was handled.
      * @hide
      */
-    protected boolean scrollRight(TextView widget, Spannable buffer, int amount) {
+    protected boolean scrollRight(BaseEditorView widget, Spannable buffer, int amount) {
         final int maxScrollX = getScrollBoundsRight(widget) - getInnerWidth(widget);
         int scrollX = widget.getScrollX();
         if (scrollX < maxScrollX) {
@@ -519,7 +519,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @return True if the event was handled.
      * @hide
      */
-    protected boolean scrollUp(TextView widget, Spannable buffer, int amount) {
+    protected boolean scrollUp(BaseEditorView widget, Spannable buffer, int amount) {
         final Layout layout = widget.getLayout();
         final int top = widget.getScrollY();
         int topLine = layout.getLineForVertical(top);
@@ -546,7 +546,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @return True if the event was handled.
      * @hide
      */
-    protected boolean scrollDown(TextView widget, Spannable buffer, int amount) {
+    protected boolean scrollDown(BaseEditorView widget, Spannable buffer, int amount) {
         final Layout layout = widget.getLayout();
         final int innerHeight = getInnerHeight(widget);
         final int bottom = widget.getScrollY() + innerHeight;
@@ -576,7 +576,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @return True if the event was handled.
      * @hide
      */
-    protected boolean scrollPageUp(TextView widget, Spannable buffer) {
+    protected boolean scrollPageUp(BaseEditorView widget, Spannable buffer) {
         final Layout layout = widget.getLayout();
         final int top = widget.getScrollY() - getInnerHeight(widget);
         int topLine = layout.getLineForVertical(top);
@@ -596,7 +596,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @return True if the event was handled.
      * @hide
      */
-    protected boolean scrollPageDown(TextView widget, Spannable buffer) {
+    protected boolean scrollPageDown(BaseEditorView widget, Spannable buffer) {
         final Layout layout = widget.getLayout();
         final int innerHeight = getInnerHeight(widget);
         final int bottom = widget.getScrollY() + innerHeight + innerHeight;
@@ -618,7 +618,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @return True if the event was handled.
      * @hide
      */
-    protected boolean scrollTop(TextView widget, Spannable buffer) {
+    protected boolean scrollTop(BaseEditorView widget, Spannable buffer) {
         final Layout layout = widget.getLayout();
         if (getTopLine(widget) >= 0) {
             Touch.scrollTo(widget, layout, widget.getScrollX(), layout.getLineTop(0));
@@ -636,7 +636,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @return True if the event was handled.
      * @hide
      */
-    protected boolean scrollBottom(TextView widget, Spannable buffer) {
+    protected boolean scrollBottom(BaseEditorView widget, Spannable buffer) {
         final Layout layout = widget.getLayout();
         final int lineCount = layout.getLineCount();
         if (getBottomLine(widget) <= lineCount - 1) {
@@ -656,7 +656,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @return True if the event was handled.
      * @hide
      */
-    protected boolean scrollLineStart(TextView widget, Spannable buffer) {
+    protected boolean scrollLineStart(BaseEditorView widget, Spannable buffer) {
         final int minScrollX = getScrollBoundsLeft(widget);
         int scrollX = widget.getScrollX();
         if (scrollX > minScrollX) {
@@ -675,7 +675,7 @@ public class BaseMovementMethod implements MovementMethod {
      * @return True if the event was handled.
      * @hide
      */
-    protected boolean scrollLineEnd(TextView widget, Spannable buffer) {
+    protected boolean scrollLineEnd(BaseEditorView widget, Spannable buffer) {
         final int maxScrollX = getScrollBoundsRight(widget) - getInnerWidth(widget);
         int scrollX = widget.getScrollX();
         if (scrollX < maxScrollX) {

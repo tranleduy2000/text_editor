@@ -109,11 +109,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 
-//import android.text.Layout;
-
-//import android.text.method.MovementMethod;
-
-//import android.view.RenderNode;
 
 /**
  * Helper class used by TextView to handle editable text views.
@@ -201,10 +196,10 @@ public class Editor {
     private Rect mTempRect;
 
     //    final CursorAnchorInfoNotifier mCursorAnchorInfoNotifier = new CursorAnchorInfoNotifier();
-    private TextView mTextView;
+    private BaseEditorView mTextView;
     private GestureDetector mGestureDetector;
 
-    Editor(TextView textView) {
+    Editor(BaseEditorView textView) {
         mTextView = textView;
         mGestureDetector = new GestureDetector(mTextView.getContext(), new GestureListener());
     }
@@ -606,7 +601,7 @@ public class Editor {
     }
 
     /**
-     * Unlike {@link TextView#textCanBeSelected()}, this method is based on the <i>current</i> state
+     * Unlike {@link BaseEditorView#textCanBeSelected()}, this method is based on the <i>current</i> state
      * of the TextView. textCanBeSelected() has to be true (this is one of the conditions to have
      * a selection controller (see {@link #prepareCursorControllers()}), but this is not sufficient.
      */
@@ -1212,7 +1207,7 @@ public class Editor {
                 if (req != null) {
                     InputMethodManager imm = InputMethodManagerCompat.peekInstance();
                     if (imm != null) {
-                        if (TextView.DEBUG_EXTRACT) Log.v(TextView.LOG_TAG,
+                        if (BaseEditorView.DEBUG_EXTRACT) Log.v(BaseEditorView.LOG_TAG,
                                 "Retrieving extracted start=" + ims.mChangedStart +
                                         " end=" + ims.mChangedEnd +
                                         " delta=" + ims.mChangedDelta);
@@ -1221,7 +1216,7 @@ public class Editor {
                         }
                         if (extractTextInternal(req, ims.mChangedStart, ims.mChangedEnd,
                                 ims.mChangedDelta, ims.mExtractedText)) {
-                            if (TextView.DEBUG_EXTRACT) Log.v(TextView.LOG_TAG,
+                            if (BaseEditorView.DEBUG_EXTRACT) Log.v(BaseEditorView.LOG_TAG,
                                     "Reporting extracted start=" +
                                             ims.mExtractedText.partialStartOffset +
                                             " end=" + ims.mExtractedText.partialEndOffset +
@@ -1519,7 +1514,7 @@ public class Editor {
         }
 
         if (!canSelectText() || !mTextView.requestFocus()) {
-            Log.w(TextView.LOG_TAG,
+            Log.w(BaseEditorView.LOG_TAG,
                     "TextView does not support text selection. Action mode cancelled.");
             return false;
         }
@@ -1929,10 +1924,10 @@ public class Editor {
     }
 
     private static class DragLocalState {
-        public TextView sourceTextView;
+        public BaseEditorView sourceTextView;
         public int start, end;
 
-        public DragLocalState(TextView sourceTextView, int start, int end) {
+        public DragLocalState(BaseEditorView sourceTextView, int start, int end) {
             this.sourceTextView = sourceTextView;
             this.start = start;
             this.end = end;
@@ -1945,7 +1940,7 @@ public class Editor {
         CharSequence imeActionLabel;
         int imeActionId;
         Bundle extras;
-        TextView.OnEditorActionListener onEditorActionListener;
+        BaseEditorView.OnEditorActionListener onEditorActionListener;
         boolean enterDown;
     }
 
@@ -2049,7 +2044,7 @@ public class Editor {
         }
     }
 
-    public static class TextModifyOperation extends UndoOperation<TextView> {
+    public static class TextModifyOperation extends UndoOperation<BaseEditorView> {
         public static final Parcelable.ClassLoaderCreator<TextModifyOperation> CREATOR
                 = new Parcelable.ClassLoaderCreator<TextModifyOperation>() {
             public TextModifyOperation createFromParcel(Parcel in) {
@@ -2095,7 +2090,7 @@ public class Editor {
         private void swapText() {
             // Both undo and redo involves swapping the contents of the range
             // in the text view with our local text.
-            TextView tv = getOwnerData();
+            BaseEditorView tv = getOwnerData();
             Editable editable = (Editable) tv.getText();
             CharSequence curText;
             //jec fix: java.lang.IndexOutOfBoundsException: getChars (4 ... 6) ends beyond length 0
@@ -3174,7 +3169,7 @@ public class Editor {
             mode.setSubtitle(null);
             mode.setTitleOptionalHint(true);
 
-            menu.add(0, TextView.ID_SELECT_ALL, 0, R.string.selectAll).
+            menu.add(0, BaseEditorView.ID_SELECT_ALL, 0, R.string.selectAll).
                     setIcon(styledAttributes.getResourceId(
                             R.styleable.SelectionModeDrawables_actionModeSelectAllDrawable, 0)).
                     setAlphabeticShortcut('a').
@@ -3182,7 +3177,7 @@ public class Editor {
                             MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
             if (mTextView.canCut()) {
-                menu.add(0, TextView.ID_CUT, 0, R.string.cut).
+                menu.add(0, BaseEditorView.ID_CUT, 0, R.string.cut).
                         setIcon(styledAttributes.getResourceId(
                                 R.styleable.SelectionModeDrawables_actionModeCutDrawable, 0)).
                         setAlphabeticShortcut('x').
@@ -3191,7 +3186,7 @@ public class Editor {
             }
 
             if (mTextView.canCopy()) {
-                menu.add(0, TextView.ID_COPY, 0, R.string.copy).
+                menu.add(0, BaseEditorView.ID_COPY, 0, R.string.copy).
                         setIcon(styledAttributes.getResourceId(
                                 R.styleable.SelectionModeDrawables_actionModeCopyDrawable, 0)).
                         setAlphabeticShortcut('c').
@@ -3200,7 +3195,7 @@ public class Editor {
             }
 
             if (mTextView.canPaste()) {
-                menu.add(0, TextView.ID_PASTE, 0, R.string.paste).
+                menu.add(0, BaseEditorView.ID_PASTE, 0, R.string.paste).
                         setIcon(styledAttributes.getResourceId(
                                 R.styleable.SelectionModeDrawables_actionModePasteDrawable, 0)).
                         setAlphabeticShortcut('v').
@@ -3806,7 +3801,7 @@ public class Editor {
             super.show();
 
             final long durationSinceCutOrCopy =
-                    SystemClock.uptimeMillis() - TextView.LAST_CUT_OR_COPY_TIME;
+                    SystemClock.uptimeMillis() - BaseEditorView.LAST_CUT_OR_COPY_TIME;
             if (durationSinceCutOrCopy < RECENT_CUT_COPY_DURATION) {
                 showActionPopupWindow(0);
             }

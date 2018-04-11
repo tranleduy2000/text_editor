@@ -18,7 +18,7 @@
 
 package android.core.text.method;
 
-import android.core.widget.TextView;
+import android.core.widget.BaseEditorView;
 import android.text.Spannable;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -36,26 +36,26 @@ import android.view.MotionEvent;
  * </p>
  */
 public interface MovementMethod {
-    public void initialize(TextView widget, Spannable text);
+    public void initialize(BaseEditorView widget, Spannable text);
 
-    public boolean onKeyDown(TextView widget, Spannable text, int keyCode, KeyEvent event);
+    public boolean onKeyDown(BaseEditorView widget, Spannable text, int keyCode, KeyEvent event);
 
-    public boolean onKeyUp(TextView widget, Spannable text, int keyCode, KeyEvent event);
+    public boolean onKeyUp(BaseEditorView widget, Spannable text, int keyCode, KeyEvent event);
 
     /**
      * If the key listener wants to other kinds of key events, return true,
      * otherwise return false and the caller (i.e. the widget host)
      * will handle the key.
      */
-    public boolean onKeyOther(TextView view, Spannable text, KeyEvent event);
+    public boolean onKeyOther(BaseEditorView view, Spannable text, KeyEvent event);
 
-    public void onTakeFocus(TextView widget, Spannable text, int direction);
+    public void onTakeFocus(BaseEditorView widget, Spannable text, int direction);
 
-    public boolean onTrackballEvent(TextView widget, Spannable text, MotionEvent event);
+    public boolean onTrackballEvent(BaseEditorView widget, Spannable text, MotionEvent event);
 
-    public boolean onTouchEvent(TextView widget, Spannable text, MotionEvent event);
+    public boolean onTouchEvent(BaseEditorView widget, Spannable text, MotionEvent event);
 
-    public boolean onGenericMotionEvent(TextView widget, Spannable text, MotionEvent event);
+    public boolean onGenericMotionEvent(BaseEditorView widget, Spannable text, MotionEvent event);
 
     /**
      * Returns true if this movement method allows arbitrary selection

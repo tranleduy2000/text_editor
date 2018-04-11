@@ -23,7 +23,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.core.text.Selection;
-import android.core.widget.TextView;
+import android.core.widget.BaseEditorView;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
@@ -59,7 +59,7 @@ public class FastScroller {
     private int mThumbW;
     private int mThumbY;
 
-    private TextView mList;
+    private BaseEditorView mList;
     //private boolean mScrollCompleted;
     private int mVisibleItem;
     private Paint mPaint;
@@ -82,7 +82,7 @@ public class FastScroller {
 
 //    private String TAG = "FastScroller";
 
-    public FastScroller(Context context, TextView textView) {
+    public FastScroller(Context context, BaseEditorView textView) {
         mList = textView;
         init(context);
     }
@@ -209,7 +209,7 @@ public class FastScroller {
     }
 
 
-    public void onScroll(TextView textView, int firstVisibleItem, int visibleItemCount,
+    public void onScroll(BaseEditorView textView, int firstVisibleItem, int visibleItemCount,
                          int totalItemCount) {
 
         //Log.d(TAG, "onScroll firstVisibleItem:"+String.valueOf(firstVisibleItem)

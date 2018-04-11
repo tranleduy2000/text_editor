@@ -35,7 +35,7 @@ class FlingRunnable implements Runnable {
      * Tracks the decay of a fling scroll
      */
     private final Scroller mScroller;
-    final private TextView mWidget;
+    final private BaseEditorView mWidget;
     int mTouchMode = TOUCH_MODE_REST;
     /**
      * Y value reported by mScroller on the previous fling
@@ -43,7 +43,7 @@ class FlingRunnable implements Runnable {
     private int mLastFlingY;
     private int maxY;
 
-    FlingRunnable(Context context, TextView parent) {
+    FlingRunnable(Context context, BaseEditorView parent) {
         mScroller = new Scroller(context);
         mWidget = parent;
     }

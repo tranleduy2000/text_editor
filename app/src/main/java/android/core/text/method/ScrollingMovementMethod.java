@@ -19,7 +19,7 @@
 package android.core.text.method;
 
 import android.core.text.Layout;
-import android.core.widget.TextView;
+import android.core.widget.BaseEditorView;
 import android.text.Spannable;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,72 +38,72 @@ public class ScrollingMovementMethod extends BaseMovementMethod implements Movem
     }
 
     @Override
-    protected boolean left(TextView widget, Spannable buffer) {
+    protected boolean left(BaseEditorView widget, Spannable buffer) {
         return scrollLeft(widget, buffer, 1);
     }
 
     @Override
-    protected boolean right(TextView widget, Spannable buffer) {
+    protected boolean right(BaseEditorView widget, Spannable buffer) {
         return scrollRight(widget, buffer, 1);
     }
 
     @Override
-    protected boolean up(TextView widget, Spannable buffer) {
+    protected boolean up(BaseEditorView widget, Spannable buffer) {
         return scrollUp(widget, buffer, 1);
     }
 
     @Override
-    protected boolean down(TextView widget, Spannable buffer) {
+    protected boolean down(BaseEditorView widget, Spannable buffer) {
         return scrollDown(widget, buffer, 1);
     }
 
     @Override
-    protected boolean pageUp(TextView widget, Spannable buffer) {
+    protected boolean pageUp(BaseEditorView widget, Spannable buffer) {
         return scrollPageUp(widget, buffer);
     }
 
     @Override
-    protected boolean pageDown(TextView widget, Spannable buffer) {
+    protected boolean pageDown(BaseEditorView widget, Spannable buffer) {
         return scrollPageDown(widget, buffer);
     }
 
     @Override
-    protected boolean top(TextView widget, Spannable buffer) {
+    protected boolean top(BaseEditorView widget, Spannable buffer) {
         return scrollTop(widget, buffer);
     }
 
     @Override
-    protected boolean bottom(TextView widget, Spannable buffer) {
+    protected boolean bottom(BaseEditorView widget, Spannable buffer) {
         return scrollBottom(widget, buffer);
     }
 
     @Override
-    protected boolean lineStart(TextView widget, Spannable buffer) {
+    protected boolean lineStart(BaseEditorView widget, Spannable buffer) {
         return scrollLineStart(widget, buffer);
     }
 
     @Override
-    protected boolean lineEnd(TextView widget, Spannable buffer) {
+    protected boolean lineEnd(BaseEditorView widget, Spannable buffer) {
         return scrollLineEnd(widget, buffer);
     }
 
     @Override
-    protected boolean home(TextView widget, Spannable buffer) {
+    protected boolean home(BaseEditorView widget, Spannable buffer) {
         return top(widget, buffer);
     }
 
     @Override
-    protected boolean end(TextView widget, Spannable buffer) {
+    protected boolean end(BaseEditorView widget, Spannable buffer) {
         return bottom(widget, buffer);
     }
 
     @Override
-    public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
+    public boolean onTouchEvent(BaseEditorView widget, Spannable buffer, MotionEvent event) {
         return Touch.onTouchEvent(widget, buffer, event);
     }
 
     @Override
-    public void onTakeFocus(TextView widget, Spannable text, int dir) {
+    public void onTakeFocus(BaseEditorView widget, Spannable text, int dir) {
         Layout layout = widget.getLayout();
 
         if (layout != null && (dir & View.FOCUS_FORWARD) != 0) {

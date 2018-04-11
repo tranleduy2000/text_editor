@@ -20,7 +20,7 @@ package android.core.text.method;
 
 import android.core.text.Layout;
 import android.core.text.Selection;
-import android.core.widget.TextView;
+import android.core.widget.BaseEditorView;
 import android.text.NoCopySpan;
 import android.text.Spannable;
 import android.text.style.ClickableSpan;
@@ -52,7 +52,7 @@ public class LinkMovementMethod extends ScrollingMovementMethod {
     }
 
     @Override
-    protected boolean handleMovementKey(TextView widget, Spannable buffer, int keyCode,
+    protected boolean handleMovementKey(BaseEditorView widget, Spannable buffer, int keyCode,
                                         int movementMetaState, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_CENTER:
@@ -69,7 +69,7 @@ public class LinkMovementMethod extends ScrollingMovementMethod {
     }
 
     @Override
-    protected boolean up(TextView widget, Spannable buffer) {
+    protected boolean up(BaseEditorView widget, Spannable buffer) {
         if (action(UP, widget, buffer)) {
             return true;
         }
@@ -78,7 +78,7 @@ public class LinkMovementMethod extends ScrollingMovementMethod {
     }
 
     @Override
-    protected boolean down(TextView widget, Spannable buffer) {
+    protected boolean down(BaseEditorView widget, Spannable buffer) {
         if (action(DOWN, widget, buffer)) {
             return true;
         }
@@ -87,7 +87,7 @@ public class LinkMovementMethod extends ScrollingMovementMethod {
     }
 
     @Override
-    protected boolean left(TextView widget, Spannable buffer) {
+    protected boolean left(BaseEditorView widget, Spannable buffer) {
         if (action(UP, widget, buffer)) {
             return true;
         }
@@ -96,7 +96,7 @@ public class LinkMovementMethod extends ScrollingMovementMethod {
     }
 
     @Override
-    protected boolean right(TextView widget, Spannable buffer) {
+    protected boolean right(BaseEditorView widget, Spannable buffer) {
         if (action(DOWN, widget, buffer)) {
             return true;
         }
@@ -104,7 +104,7 @@ public class LinkMovementMethod extends ScrollingMovementMethod {
         return super.right(widget, buffer);
     }
 
-    private boolean action(int what, TextView widget, Spannable buffer) {
+    private boolean action(int what, BaseEditorView widget, Spannable buffer) {
         Layout layout = widget.getLayout();
 
         int padding = widget.getTotalPaddingTop() +
@@ -202,7 +202,7 @@ public class LinkMovementMethod extends ScrollingMovementMethod {
     }
 
     @Override
-    public boolean onTouchEvent(TextView widget, Spannable buffer,
+    public boolean onTouchEvent(BaseEditorView widget, Spannable buffer,
                                 MotionEvent event) {
         int action = event.getAction();
 
@@ -242,13 +242,13 @@ public class LinkMovementMethod extends ScrollingMovementMethod {
     }
 
     @Override
-    public void initialize(TextView widget, Spannable text) {
+    public void initialize(BaseEditorView widget, Spannable text) {
         Selection.removeSelection(text);
         text.removeSpan(FROM_BELOW);
     }
 
     @Override
-    public void onTakeFocus(TextView view, Spannable text, int dir) {
+    public void onTakeFocus(BaseEditorView view, Spannable text, int dir) {
         Selection.removeSelection(text);
 
         if ((dir & View.FOCUS_BACKWARD) != 0) {

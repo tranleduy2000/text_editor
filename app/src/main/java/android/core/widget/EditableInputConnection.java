@@ -37,7 +37,7 @@ class EditableInputConnection extends BaseInputConnection {
     private static final boolean DEBUG = false;
     private static final String TAG = "EditableInputConnection";
 
-    private final TextView mTextView;
+    private final BaseEditorView mTextView;
     private final InputMethodManager mIMM;
 
     // Keeps track of nested begin/end batch edit to ensure this connection always has a
@@ -45,7 +45,7 @@ class EditableInputConnection extends BaseInputConnection {
     // A negative value means that this connection has been finished by the InputMethodManager.
     private int mBatchEditNesting;
 
-    public EditableInputConnection(TextView textview) {
+    public EditableInputConnection(BaseEditorView textview) {
         super(textview, true);
         mTextView = textview;
         mIMM = (InputMethodManager) textview.getContext().getSystemService(
@@ -54,7 +54,7 @@ class EditableInputConnection extends BaseInputConnection {
 
     @Override
     public Editable getEditable() {
-        TextView tv = mTextView;
+        BaseEditorView tv = mTextView;
         if (tv != null) {
             return tv.getEditableText();
         }
