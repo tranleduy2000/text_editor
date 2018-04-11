@@ -7122,7 +7122,7 @@ public class BaseEditorView extends View implements ViewTreeObserver.OnPreDrawLi
 
         int gutterPadding = SysUtils.dpAsPixels(getContext(), 8);
         //预留2位空间，避免过多设置padding导致卡
-        layoutContext.gutterWidth = (int) layoutContext.lineNumberPaint.measureText(Integer.toString(lineNumber * 100));
+        layoutContext.gutterWidth = (int) layoutContext.lineNumberPaint.measureText(Integer.toString(lineNumber /** 100*/));
         layoutContext.gutterWidth += gutterPadding;
         layoutContext.lineNumberX = layoutContext.gutterWidth - SysUtils.dpAsPixels(getContext(), 4);
         if (getPaddingLeft() != layoutContext.gutterWidth + gutterPadding) {
