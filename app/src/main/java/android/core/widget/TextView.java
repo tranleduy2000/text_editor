@@ -288,9 +288,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
 
     private static final int CHANGE_WATCHER_PRIORITY = 100;
 
-    // New state used to change background based on whether this TextView is multiline.
-//    private static final int[] MULTILINE_STATE_SET = { R.attr.state_multiline };
-
     // System wide time for last cut or copy action.
     static long LAST_CUT_OR_COPY_TIME;
 
@@ -327,176 +324,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
     protected int mPaddingBottom = 0;
 
     private int mLastCursorOffset = -1;
-//    private TruncateAt mEllipsize;
-
-//    static class Drawables {
-//        final static int DRAWABLE_NONE = -1;
-//        final static int DRAWABLE_RIGHT = 0;
-//        final static int DRAWABLE_LEFT = 1;
-//
-//        final Rect mCompoundRect = new Rect();
-//
-//        Drawable mDrawableTop, mDrawableBottom, mDrawableLeft, mDrawableRight,
-//                mDrawableStart, mDrawableEnd, mDrawableError, mDrawableTemp;
-//
-//        Drawable mDrawableLeftInitial, mDrawableRightInitial;
-//        boolean mIsRtlCompatibilityMode;
-//        boolean mOverride;
-//
-//        int mDrawableSizeTop, mDrawableSizeBottom, mDrawableSizeLeft, mDrawableSizeRight,
-//                mDrawableSizeStart, mDrawableSizeEnd, mDrawableSizeError, mDrawableSizeTemp;
-//
-//        int mDrawableWidthTop, mDrawableWidthBottom, mDrawableHeightLeft, mDrawableHeightRight,
-//                mDrawableHeightStart, mDrawableHeightEnd, mDrawableHeightError, mDrawableHeightTemp;
-//
-//        int mDrawablePadding;
-//
-//        int mDrawableSaved = DRAWABLE_NONE;
-//
-//        public Drawables(Context context) {
-//            final int targetSdkVersion = context.getApplicationInfo().targetSdkVersion;
-//            mIsRtlCompatibilityMode = (targetSdkVersion < JELLY_BEAN_MR1 ||
-//                !context.getApplicationInfo().hasRtlSupport());
-//            mOverride = false;
-//        }
-//
-//        public void resolveWithLayoutDirection(int layoutDirection) {
-//            // First reset "left" and "right" drawables to their initial values
-//            mDrawableLeft = mDrawableLeftInitial;
-//            mDrawableRight = mDrawableRightInitial;
-//
-//            if (mIsRtlCompatibilityMode) {
-//                // Use "start" drawable as "left" drawable if the "left" drawable was not defined
-//                if (mDrawableStart != null && mDrawableLeft == null) {
-//                    mDrawableLeft = mDrawableStart;
-//                    mDrawableSizeLeft = mDrawableSizeStart;
-//                    mDrawableHeightLeft = mDrawableHeightStart;
-//                }
-//                // Use "end" drawable as "right" drawable if the "right" drawable was not defined
-//                if (mDrawableEnd != null && mDrawableRight == null) {
-//                    mDrawableRight = mDrawableEnd;
-//                    mDrawableSizeRight = mDrawableSizeEnd;
-//                    mDrawableHeightRight = mDrawableHeightEnd;
-//                }
-//            } else {
-//                // JB-MR1+ normal case: "start" / "end" drawables are overriding "left" / "right"
-//                // drawable if and only if they have been defined
-//                switch(layoutDirection) {
-//                    case LAYOUT_DIRECTION_RTL:
-//                        if (mOverride) {
-//                            mDrawableRight = mDrawableStart;
-//                            mDrawableSizeRight = mDrawableSizeStart;
-//                            mDrawableHeightRight = mDrawableHeightStart;
-//
-//                            mDrawableLeft = mDrawableEnd;
-//                            mDrawableSizeLeft = mDrawableSizeEnd;
-//                            mDrawableHeightLeft = mDrawableHeightEnd;
-//                        }
-//                        break;
-//
-//                    case LAYOUT_DIRECTION_LTR:
-//                    default:
-//                        if (mOverride) {
-//                            mDrawableLeft = mDrawableStart;
-//                            mDrawableSizeLeft = mDrawableSizeStart;
-//                            mDrawableHeightLeft = mDrawableHeightStart;
-//
-//                            mDrawableRight = mDrawableEnd;
-//                            mDrawableSizeRight = mDrawableSizeEnd;
-//                            mDrawableHeightRight = mDrawableHeightEnd;
-//                        }
-//                        break;
-//                }
-//            }
-//            applyErrorDrawableIfNeeded(layoutDirection);
-//            updateDrawablesLayoutDirection(layoutDirection);
-//        }
-//
-//        private void updateDrawablesLayoutDirection(int layoutDirection) {
-//            if (mDrawableLeft != null) {
-//                mDrawableLeft.setLayoutDirection(layoutDirection);
-//            }
-//            if (mDrawableRight != null) {
-//                mDrawableRight.setLayoutDirection(layoutDirection);
-//            }
-//            if (mDrawableTop != null) {
-//                mDrawableTop.setLayoutDirection(layoutDirection);
-//            }
-//            if (mDrawableBottom != null) {
-//                mDrawableBottom.setLayoutDirection(layoutDirection);
-//            }
-//        }
-//
-//        public void setErrorDrawable(Drawable dr, TextView tv) {
-//            if (mDrawableError != dr && mDrawableError != null) {
-//                mDrawableError.setCallback(null);
-//            }
-//            mDrawableError = dr;
-//
-//            final Rect compoundRect = mCompoundRect;
-//            int[] state = tv.getDrawableState();
-//
-//            if (mDrawableError != null) {
-//                mDrawableError.setState(state);
-//                mDrawableError.copyBounds(compoundRect);
-//                mDrawableError.setCallback(tv);
-//                mDrawableSizeError = compoundRect.width();
-//                mDrawableHeightError = compoundRect.height();
-//            } else {
-//                mDrawableSizeError = mDrawableHeightError = 0;
-//            }
-//        }
-//
-//        private void applyErrorDrawableIfNeeded(int layoutDirection) {
-//            // first restore the initial state if needed
-//            switch (mDrawableSaved) {
-//                case DRAWABLE_LEFT:
-//                    mDrawableLeft = mDrawableTemp;
-//                    mDrawableSizeLeft = mDrawableSizeTemp;
-//                    mDrawableHeightLeft = mDrawableHeightTemp;
-//                    break;
-//                case DRAWABLE_RIGHT:
-//                    mDrawableRight = mDrawableTemp;
-//                    mDrawableSizeRight = mDrawableSizeTemp;
-//                    mDrawableHeightRight = mDrawableHeightTemp;
-//                    break;
-//                case DRAWABLE_NONE:
-//                default:
-//            }
-//            // then, if needed, assign the Error drawable to the correct location
-//            if (mDrawableError != null) {
-//                switch(layoutDirection) {
-//                    case LAYOUT_DIRECTION_RTL:
-//                        mDrawableSaved = DRAWABLE_LEFT;
-//
-//                        mDrawableTemp = mDrawableLeft;
-//                        mDrawableSizeTemp = mDrawableSizeLeft;
-//                        mDrawableHeightTemp = mDrawableHeightLeft;
-//
-//                        mDrawableLeft = mDrawableError;
-//                        mDrawableSizeLeft = mDrawableSizeError;
-//                        mDrawableHeightLeft = mDrawableHeightError;
-//                        break;
-//                    case LAYOUT_DIRECTION_LTR:
-//                    default:
-//                        mDrawableSaved = DRAWABLE_RIGHT;
-//
-//                        mDrawableTemp = mDrawableRight;
-//                        mDrawableSizeTemp = mDrawableSizeRight;
-//                        mDrawableHeightTemp = mDrawableHeightRight;
-//
-//                        mDrawableRight = mDrawableError;
-//                        mDrawableSizeRight = mDrawableSizeError;
-//                        mDrawableHeightRight = mDrawableHeightError;
-//                        break;
-//                }
-//            }
-//        }
-//    }
-//
-//    Drawables mDrawables;
-
-//    private CharWrapper mCharWrapper;
 
     private Marquee mMarquee;
     private boolean mRestartMarquee;
@@ -646,26 +473,17 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
     }
 
     public TextView(Context context, AttributeSet attrs, int defStyleAttr) {
-//        this(context, attrs, defStyleAttr, 0);
-//    }
-//
-//    @SuppressWarnings("deprecation")
-//    public TextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-//        super(context, attrs, defStyleAttr, defStyleRes);
         super(context, attrs, defStyleAttr);
         int defStyleRes = 0; //jec+
 
         mText = "";
 
         final Resources res = getResources();
-//        final CompatibilityInfo compat = res.getCompatibilityInfo();
 
         mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.density = res.getDisplayMetrics().density;
-//        mTextPaint.setCompatibilityScaling(compat.applicationScale);
 
         mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-//        mHighlightPaint.setCompatibilityScaling(compat.applicationScale);
 
         mMovement = getDefaultMovementMethod();
 
@@ -687,99 +505,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         float letterSpacing = 0;
         String fontFeatureSettings = null;
 
-//        final Resources.Theme theme = context.getTheme();
-
-        /*
-         * Look the appearance up without checking first if it exists because
-         * almost every TextView has one and it greatly simplifies the logic
-         * to be able to parse the appearance first and then let specific tags
-         * for this View override it.
-         */
-//        TypedArray a = theme.obtainStyledAttributes(attrs,
-//                android.R.styleable.TextViewAppearance, defStyleAttr, defStyleRes);
-//        TypedArray appearance = null;
-//        int ap = a.getResourceId(
-//                android.R.styleable.TextViewAppearance_textAppearance, -1);
-//        a.recycle();
-//        if (ap != -1) {
-//            appearance = theme.obtainStyledAttributes(
-//                    ap, android.R.styleable.TextAppearance);
-//        }
-//        if (appearance != null) {
-//            int n = appearance.getIndexCount();
-//            for (int i = 0; i < n; i++) {
-//                int attr = appearance.getIndex(i);
-//
-//                switch (attr) {
-//                case android.R.styleable.TextAppearance_textColorHighlight:
-//                    textColorHighlight = appearance.getColor(attr, textColorHighlight);
-//                    break;
-//
-//                case android.R.styleable.TextAppearance_textColor:
-//                    textColor = appearance.getColorStateList(attr);
-//                    break;
-//
-//                case android.R.styleable.TextAppearance_textColorHint:
-//                    textColorHint = appearance.getColorStateList(attr);
-//                    break;
-//
-//                case android.R.styleable.TextAppearance_textColorLink:
-//                    textColorLink = appearance.getColorStateList(attr);
-//                    break;
-//
-//                case android.R.styleable.TextAppearance_textSize:
-//                    textSize = appearance.getDimensionPixelSize(attr, textSize);
-//                    break;
-//
-//                case android.R.styleable.TextAppearance_typeface:
-//                    typefaceIndex = appearance.getInt(attr, -1);
-//                    break;
-//
-//                case android.R.styleable.TextAppearance_fontFamily:
-//                    fontFamily = appearance.getString(attr);
-//                    break;
-//
-//                case android.R.styleable.TextAppearance_textStyle:
-//                    styleIndex = appearance.getInt(attr, -1);
-//                    break;
-//
-//                case android.R.styleable.TextAppearance_textAllCaps:
-//                    allCaps = appearance.getBoolean(attr, false);
-//                    break;
-//
-//                case android.R.styleable.TextAppearance_shadowColor:
-//                    shadowcolor = appearance.getInt(attr, 0);
-//                    break;
-//
-//                case android.R.styleable.TextAppearance_shadowDx:
-//                    dx = appearance.getFloat(attr, 0);
-//                    break;
-//
-//                case android.R.styleable.TextAppearance_shadowDy:
-//                    dy = appearance.getFloat(attr, 0);
-//                    break;
-//
-//                case android.R.styleable.TextAppearance_shadowRadius:
-//                    r = appearance.getFloat(attr, 0);
-//                    break;
-//
-//                case android.R.styleable.TextAppearance_elegantTextHeight:
-//                    elegant = appearance.getBoolean(attr, false);
-//                    break;
-//
-//                case android.R.styleable.TextAppearance_letterSpacing:
-//                    letterSpacing = appearance.getFloat(attr, 0);
-//                    break;
-//
-//                case android.R.styleable.TextAppearance_fontFeatureSettings:
-//                    fontFeatureSettings = appearance.getString(attr);
-//                    break;
-//                }
-//            }
-//
-//            appearance.recycle();
-//        }
-
         boolean editable = getDefaultEditable();
         CharSequence inputMethod = null;
         int numeric = 0;
@@ -800,339 +525,15 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         boolean password = false;
         int inputType = EditorInfo.TYPE_NULL;
 
-//        a = theme.obtainStyledAttributes(
-//                    attrs, android.R.styleable.TextView, defStyleAttr, defStyleRes);
-//
-//        int n = a.getIndexCount();
-//        for (int i = 0; i < n; i++) {
-//            int attr = a.getIndex(i);
-//
-//            switch (attr) {
-//            case android.R.styleable.TextView_editable:
-//                editable = a.getBoolean(attr, editable);
-//                break;
-//
-//            case android.R.styleable.TextView_inputMethod:
-//                inputMethod = a.getText(attr);
-//                break;
-//
-//            case android.R.styleable.TextView_numeric:
-//                numeric = a.getInt(attr, numeric);
-//                break;
-//
-//            case android.R.styleable.TextView_digits:
-//                digits = a.getText(attr);
-//                break;
-//
-//            case android.R.styleable.TextView_phoneNumber:
-//                phone = a.getBoolean(attr, phone);
-//                break;
-//
-//            case android.R.styleable.TextView_autoText:
-//                autotext = a.getBoolean(attr, autotext);
-//                break;
-//
-//            case android.R.styleable.TextView_capitalize:
-//                autocap = a.getInt(attr, autocap);
-//                break;
-//
-//            case android.R.styleable.TextView_bufferType:
-//                buffertype = a.getInt(attr, buffertype);
-//                break;
-//
-//            case android.R.styleable.TextView_selectAllOnFocus:
-//                selectallonfocus = a.getBoolean(attr, selectallonfocus);
-//                break;
-//
-//            case android.R.styleable.TextView_autoLink:
-//                mAutoLinkMask = a.getInt(attr, 0);
-//                break;
-//
-//            case android.R.styleable.TextView_linksClickable:
-//                mLinksClickable = a.getBoolean(attr, true);
-//                break;
-//
-//            case android.R.styleable.TextView_drawableLeft:
-//                drawableLeft = a.getDrawable(attr);
-//                break;
-//
-//            case android.R.styleable.TextView_drawableTop:
-//                drawableTop = a.getDrawable(attr);
-//                break;
-//
-//            case android.R.styleable.TextView_drawableRight:
-//                drawableRight = a.getDrawable(attr);
-//                break;
-//
-//            case android.R.styleable.TextView_drawableBottom:
-//                drawableBottom = a.getDrawable(attr);
-//                break;
-//
-//            case android.R.styleable.TextView_drawableStart:
-//                drawableStart = a.getDrawable(attr);
-//                break;
-//
-//            case android.R.styleable.TextView_drawableEnd:
-//                drawableEnd = a.getDrawable(attr);
-//                break;
-//
-//            case android.R.styleable.TextView_drawablePadding:
-//                drawablePadding = a.getDimensionPixelSize(attr, drawablePadding);
-//                break;
-//
-//            case android.R.styleable.TextView_maxLines:
-//                setMaxLines(a.getInt(attr, -1));
-//                break;
-//
-//            case android.R.styleable.TextView_maxHeight:
-//                setMaxHeight(a.getDimensionPixelSize(attr, -1));
-//                break;
-//
-//            case android.R.styleable.TextView_lines:
-//                setLines(a.getInt(attr, -1));
-//                break;
-//
-//            case android.R.styleable.TextView_height:
-//                setHeight(a.getDimensionPixelSize(attr, -1));
-//                break;
-//
-//            case android.R.styleable.TextView_minLines:
-//                setMinLines(a.getInt(attr, -1));
-//                break;
-//
-//            case android.R.styleable.TextView_minHeight:
-//                setMinHeight(a.getDimensionPixelSize(attr, -1));
-//                break;
-//
-//            case android.R.styleable.TextView_maxEms:
-//                setMaxEms(a.getInt(attr, -1));
-//                break;
-//
-//            case android.R.styleable.TextView_maxWidth:
-//                setMaxWidth(a.getDimensionPixelSize(attr, -1));
-//                break;
-//
-//            case android.R.styleable.TextView_ems:
-//                setEms(a.getInt(attr, -1));
-//                break;
-//
-//            case android.R.styleable.TextView_width:
-//                setWidth(a.getDimensionPixelSize(attr, -1));
-//                break;
-//
-//            case android.R.styleable.TextView_minEms:
-//                setMinEms(a.getInt(attr, -1));
-//                break;
-//
-//            case android.R.styleable.TextView_minWidth:
-//                setMinWidth(a.getDimensionPixelSize(attr, -1));
-//                break;
-//
-//            case android.R.styleable.TextView_gravity:
-//                setGravity(a.getInt(attr, -1));
         setGravity(Gravity.START|Gravity.TOP);
-//                break;
-//
-//            case android.R.styleable.TextView_hint:
-//                hint = a.getText(attr);
-//                break;
-//
-//            case android.R.styleable.TextView_text:
-//                text = a.getText(attr);
-//                break;
-//
-//            case android.R.styleable.TextView_scrollHorizontally:
-//                if (a.getBoolean(attr, false)) {
-//                    setHorizontallyScrolling(true);
-//                }
-//                break;
-//
-//            case android.R.styleable.TextView_singleLine:
-//                singleLine = a.getBoolean(attr, singleLine);
-//                break;
-//
-//            case android.R.styleable.TextView_ellipsize:
-//                ellipsize = a.getInt(attr, ellipsize);
-//                break;
-//
-//            case android.R.styleable.TextView_marqueeRepeatLimit:
-//                setMarqueeRepeatLimit(a.getInt(attr, mMarqueeRepeatLimit));
-//                break;
-//
-//            case android.R.styleable.TextView_includeFontPadding:
-//                if (!a.getBoolean(attr, true)) {
-//                    setIncludeFontPadding(false);
-//                }
-//                break;
-//
-//            case android.R.styleable.TextView_cursorVisible:
-//                if (!a.getBoolean(attr, true)) {
-//                    setCursorVisible(false);
-//                }
-//                break;
-//
-//            case android.R.styleable.TextView_maxLength:
-//                maxlength = a.getInt(attr, -1);
-//                break;
-//
-//            case android.R.styleable.TextView_textScaleX:
-//                setTextScaleX(a.getFloat(attr, 1.0f));
         setTextScaleX(1.0f);
-//                break;
-//
-//            case android.R.styleable.TextView_freezesText:
-//                mFreezesText = a.getBoolean(attr, false);
-//                break;
-//
-//            case android.R.styleable.TextView_shadowColor:
-//                shadowcolor = a.getInt(attr, 0);
-//                break;
-//
-//            case android.R.styleable.TextView_shadowDx:
-//                dx = a.getFloat(attr, 0);
-//                break;
-//
-//            case android.R.styleable.TextView_shadowDy:
-//                dy = a.getFloat(attr, 0);
-//                break;
-//
-//            case android.R.styleable.TextView_shadowRadius:
-//                r = a.getFloat(attr, 0);
-//                break;
-//
-//            case android.R.styleable.TextView_enabled:
-//                setEnabled(a.getBoolean(attr, isEnabled()));
         setEnabled(isEnabled());
-//                break;
-//
-//            case android.R.styleable.TextView_textColorHighlight:
-//                textColorHighlight = a.getColor(attr, textColorHighlight);
-//                break;
-//
-//            case android.R.styleable.TextView_textColor:
-//                textColor = a.getColorStateList(attr);
-//                break;
-//
-//            case android.R.styleable.TextView_textColorHint:
-//                textColorHint = a.getColorStateList(attr);
-//                break;
-//
-//            case android.R.styleable.TextView_textColorLink:
-//                textColorLink = a.getColorStateList(attr);
-//                break;
-//
-//            case android.R.styleable.TextView_textSize:
-//                textSize = a.getDimensionPixelSize(attr, textSize);
-//                break;
-//
-//            case android.R.styleable.TextView_typeface:
-//                typefaceIndex = a.getInt(attr, typefaceIndex);
-//                break;
-//
-//            case android.R.styleable.TextView_textStyle:
-//                styleIndex = a.getInt(attr, styleIndex);
-//                break;
-//
-//            case android.R.styleable.TextView_fontFamily:
-//                fontFamily = a.getString(attr);
-//                break;
-//
-//            case android.R.styleable.TextView_password:
-//                password = a.getBoolean(attr, password);
-//                break;
-//
-//            case android.R.styleable.TextView_lineSpacingExtra:
-//                mSpacingAdd = a.getDimensionPixelSize(attr, (int) mSpacingAdd);
-//                break;
-//
-//            case android.R.styleable.TextView_lineSpacingMultiplier:
-//                mSpacingMult = a.getFloat(attr, mSpacingMult);
-//                break;
-//
-//            case android.R.styleable.TextView_inputType:
-//                inputType = a.getInt(attr, EditorInfo.TYPE_NULL);
-//                break;
-//
-//            case android.R.styleable.TextView_imeOptions:
         createEditorIfNeeded();
         mEditor.createInputContentTypeIfNeeded();
-//                mEditor.mInputContentType.imeOptions = a.getInt(attr,
-//                        mEditor.mInputContentType.imeOptions);
-//                break;
-//
-//            case android.R.styleable.TextView_imeActionLabel:
-//                createEditorIfNeeded();
-//                mEditor.createInputContentTypeIfNeeded();
-//                mEditor.mInputContentType.imeActionLabel = a.getText(attr);
-//                break;
-//
-//            case android.R.styleable.TextView_imeActionId:
-//                createEditorIfNeeded();
-//                mEditor.createInputContentTypeIfNeeded();
-//                mEditor.mInputContentType.imeActionId = a.getInt(attr,
-//                        mEditor.mInputContentType.imeActionId);
-//                break;
-//
-//            case android.R.styleable.TextView_privateImeOptions:
-//                setPrivateImeOptions(a.getString(attr));
-//                break;
-//
-//            case android.R.styleable.TextView_editorExtras:
-//                try {
-//                    setInputExtras(a.getResourceId(attr, 0));
-//                } catch (XmlPullParserException e) {
-//                    Log.w(LOG_TAG, "Failure reading input extras", e);
-//                } catch (IOException e) {
-//                    Log.w(LOG_TAG, "Failure reading input extras", e);
-//                }
-//                break;
-//
-//            case android.R.styleable.TextView_textCursorDrawable:
-//                mCursorDrawableRes = a.getResourceId(attr, 0);
-//                break;
-//
-//            case android.R.styleable.TextView_textSelectHandleLeft:
-//                mTextSelectHandleLeftRes = a.getResourceId(attr, 0);
         mTextSelectHandleLeftRes = R.drawable.text_select_handle_left_mtrl_alpha;
-//                break;
-//
-//            case android.R.styleable.TextView_textSelectHandleRight:
-//                mTextSelectHandleRightRes = a.getResourceId(attr, 0);
         mTextSelectHandleRightRes = R.drawable.text_select_handle_right_mtrl_alpha;
-//                break;
-//
-//            case android.R.styleable.TextView_textSelectHandle:
-//                mTextSelectHandleRes = a.getResourceId(attr, 0);
         mTextSelectHandleRes = R.drawable.text_select_handle_middle_mtrl_alpha;
-//                break;
-//
-//            case android.R.styleable.TextView_textEditSuggestionItemLayout:
-//                mTextEditSuggestionItemLayout = a.getResourceId(attr, 0);
         mTextEditSuggestionItemLayout = R.layout.text_edit_suggestion_item;
-//                break;
-//
-//            case android.R.styleable.TextView_textIsSelectable:
-//                setTextIsSelectable(a.getBoolean(attr, false));
-//                break;
-//
-//            case android.R.styleable.TextView_textAllCaps:
-//                allCaps = a.getBoolean(attr, false);
-//                break;
-//
-//            case android.R.styleable.TextView_elegantTextHeight:
-//                elegant = a.getBoolean(attr, false);
-//                break;
-//
-//            case android.R.styleable.TextView_letterSpacing:
-//                letterSpacing = a.getFloat(attr, 0);
-//                break;
-//
-//            case android.R.styleable.TextView_fontFeatureSettings:
-//                fontFeatureSettings = a.getString(attr);
-//                break;
-//            }
-//        }
-//        a.recycle();
 
         BufferType bufferType = BufferType.EDITABLE;
 
@@ -2012,466 +1413,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         return getExtendedPaddingBottom() + getBottomVerticalOffset(true);
     }
 
-    /**
-     * Sets the Drawables (if any) to appear to the left of, above, to the
-     * right of, and below the text. Use {@code null} if you do not want a
-     * Drawable there. The Drawables must already have had
-     * {@link android.graphics.drawable.Drawable#setBounds} called.
-     * <p>
-     * Calling this method will overwrite any Drawables previously set using
-     * {@link #setCompoundDrawablesRelative} or related methods.
-     *
-     * @attr ref android.R.styleable#TextView_drawableLeft
-     * @attr ref android.R.styleable#TextView_drawableTop
-     * @attr ref android.R.styleable#TextView_drawableRight
-     * @attr ref android.R.styleable#TextView_drawableBottom
-     */
-//    public void setCompoundDrawables(@Nullable Drawable left, @Nullable Drawable top,
-//            @Nullable Drawable right, @Nullable Drawable bottom) {
-//        Drawables dr = mDrawables;
-//
-//        // We're switching to absolute, discard relative.
-//        if (dr != null) {
-//            if (dr.mDrawableStart != null) dr.mDrawableStart.setCallback(null);
-//            dr.mDrawableStart = null;
-//            if (dr.mDrawableEnd != null) dr.mDrawableEnd.setCallback(null);
-//            dr.mDrawableEnd = null;
-//            dr.mDrawableSizeStart = dr.mDrawableHeightStart = 0;
-//            dr.mDrawableSizeEnd = dr.mDrawableHeightEnd = 0;
-//        }
-//
-//        final boolean drawables = left != null || top != null || right != null || bottom != null;
-//        if (!drawables) {
-//            // Clearing drawables...  can we free the data structure?
-//            if (dr != null) {
-//                if (dr.mDrawablePadding == 0) {
-//                    mDrawables = null;
-//                } else {
-//                    // We need to retain the last set padding, so just clear
-//                    // out all of the fields in the existing structure.
-//                    if (dr.mDrawableLeft != null) dr.mDrawableLeft.setCallback(null);
-//                    dr.mDrawableLeft = null;
-//                    if (dr.mDrawableTop != null) dr.mDrawableTop.setCallback(null);
-//                    dr.mDrawableTop = null;
-//                    if (dr.mDrawableRight != null) dr.mDrawableRight.setCallback(null);
-//                    dr.mDrawableRight = null;
-//                    if (dr.mDrawableBottom != null) dr.mDrawableBottom.setCallback(null);
-//                    dr.mDrawableBottom = null;
-//                    dr.mDrawableSizeLeft = dr.mDrawableHeightLeft = 0;
-//                    dr.mDrawableSizeRight = dr.mDrawableHeightRight = 0;
-//                    dr.mDrawableSizeTop = dr.mDrawableWidthTop = 0;
-//                    dr.mDrawableSizeBottom = dr.mDrawableWidthBottom = 0;
-//                }
-//            }
-//        } else {
-//            if (dr == null) {
-//                mDrawables = dr = new Drawables(getContext());
-//            }
-//
-//            mDrawables.mOverride = false;
-//
-//            if (dr.mDrawableLeft != left && dr.mDrawableLeft != null) {
-//                dr.mDrawableLeft.setCallback(null);
-//            }
-//            dr.mDrawableLeft = left;
-//
-//            if (dr.mDrawableTop != top && dr.mDrawableTop != null) {
-//                dr.mDrawableTop.setCallback(null);
-//            }
-//            dr.mDrawableTop = top;
-//
-//            if (dr.mDrawableRight != right && dr.mDrawableRight != null) {
-//                dr.mDrawableRight.setCallback(null);
-//            }
-//            dr.mDrawableRight = right;
-//
-//            if (dr.mDrawableBottom != bottom && dr.mDrawableBottom != null) {
-//                dr.mDrawableBottom.setCallback(null);
-//            }
-//            dr.mDrawableBottom = bottom;
-//
-//            final Rect compoundRect = dr.mCompoundRect;
-//            int[] state;
-//
-//            state = getDrawableState();
-//
-//            if (left != null) {
-//                left.setState(state);
-//                left.copyBounds(compoundRect);
-//                left.setCallback(this);
-//                dr.mDrawableSizeLeft = compoundRect.width();
-//                dr.mDrawableHeightLeft = compoundRect.height();
-//            } else {
-//                dr.mDrawableSizeLeft = dr.mDrawableHeightLeft = 0;
-//            }
-//
-//            if (right != null) {
-//                right.setState(state);
-//                right.copyBounds(compoundRect);
-//                right.setCallback(this);
-//                dr.mDrawableSizeRight = compoundRect.width();
-//                dr.mDrawableHeightRight = compoundRect.height();
-//            } else {
-//                dr.mDrawableSizeRight = dr.mDrawableHeightRight = 0;
-//            }
-//
-//            if (top != null) {
-//                top.setState(state);
-//                top.copyBounds(compoundRect);
-//                top.setCallback(this);
-//                dr.mDrawableSizeTop = compoundRect.height();
-//                dr.mDrawableWidthTop = compoundRect.width();
-//            } else {
-//                dr.mDrawableSizeTop = dr.mDrawableWidthTop = 0;
-//            }
-//
-//            if (bottom != null) {
-//                bottom.setState(state);
-//                bottom.copyBounds(compoundRect);
-//                bottom.setCallback(this);
-//                dr.mDrawableSizeBottom = compoundRect.height();
-//                dr.mDrawableWidthBottom = compoundRect.width();
-//            } else {
-//                dr.mDrawableSizeBottom = dr.mDrawableWidthBottom = 0;
-//            }
-//        }
-//
-//        // Save initial left/right drawables
-//        if (dr != null) {
-//            dr.mDrawableLeftInitial = left;
-//            dr.mDrawableRightInitial = right;
-//        }
-//
-//        resetResolvedDrawables();
-//        resolveDrawables();
-//        invalidate();
-//        requestLayout();
-//    }
-
-    /**
-     * Sets the Drawables (if any) to appear to the left of, above, to the
-     * right of, and below the text. Use 0 if you do not want a Drawable there.
-     * The Drawables' bounds will be set to their intrinsic bounds.
-     * <p>
-     * Calling this method will overwrite any Drawables previously set using
-     * {@link #setCompoundDrawablesRelative} or related methods.
-     *
-     * @param left Resource identifier of the left Drawable.
-     * @param top Resource identifier of the top Drawable.
-     * @param right Resource identifier of the right Drawable.
-     * @param bottom Resource identifier of the bottom Drawable.
-     *
-     * @attr ref android.R.styleable#TextView_drawableLeft
-     * @attr ref android.R.styleable#TextView_drawableTop
-     * @attr ref android.R.styleable#TextView_drawableRight
-     * @attr ref android.R.styleable#TextView_drawableBottom
-     */
-////    @android.view.RemotableViewMethod
-//    public void setCompoundDrawablesWithIntrinsicBounds(int left, int top, int right, int bottom) {
-//        final Context context = getContext();
-//        setCompoundDrawablesWithIntrinsicBounds(left != 0 ? context.getDrawable(left) : null,
-//                top != 0 ? context.getDrawable(top) : null,
-//                right != 0 ? context.getDrawable(right) : null,
-//                bottom != 0 ? context.getDrawable(bottom) : null);
-//    }
-
-    /**
-     * Sets the Drawables (if any) to appear to the left of, above, to the
-     * right of, and below the text. Use {@code null} if you do not want a
-     * Drawable there. The Drawables' bounds will be set to their intrinsic
-     * bounds.
-     * <p>
-     * Calling this method will overwrite any Drawables previously set using
-     * {@link #setCompoundDrawablesRelative} or related methods.
-     *
-     * @attr ref android.R.styleable#TextView_drawableLeft
-     * @attr ref android.R.styleable#TextView_drawableTop
-     * @attr ref android.R.styleable#TextView_drawableRight
-     * @attr ref android.R.styleable#TextView_drawableBottom
-     */
-//    public void setCompoundDrawablesWithIntrinsicBounds(@Nullable Drawable left,
-//            @Nullable Drawable top, @Nullable Drawable right, @Nullable Drawable bottom) {
-//
-//        if (left != null) {
-//            left.setBounds(0, 0, left.getIntrinsicWidth(), left.getIntrinsicHeight());
-//        }
-//        if (right != null) {
-//            right.setBounds(0, 0, right.getIntrinsicWidth(), right.getIntrinsicHeight());
-//        }
-//        if (top != null) {
-//            top.setBounds(0, 0, top.getIntrinsicWidth(), top.getIntrinsicHeight());
-//        }
-//        if (bottom != null) {
-//            bottom.setBounds(0, 0, bottom.getIntrinsicWidth(), bottom.getIntrinsicHeight());
-//        }
-//        setCompoundDrawables(left, top, right, bottom);
-//    }
-
-    /**
-     * Sets the Drawables (if any) to appear to the start of, above, to the end
-     * of, and below the text. Use {@code null} if you do not want a Drawable
-     * there. The Drawables must already have had {@link android.graphics.drawable.Drawable#setBounds}
-     * called.
-     * <p>
-     * Calling this method will overwrite any Drawables previously set using
-     * {@link #setCompoundDrawables} or related methods.
-     *
-     * @attr ref android.R.styleable#TextView_drawableStart
-     * @attr ref android.R.styleable#TextView_drawableTop
-     * @attr ref android.R.styleable#TextView_drawableEnd
-     * @attr ref android.R.styleable#TextView_drawableBottom
-     */
-//    public void setCompoundDrawablesRelative(@Nullable Drawable start, @Nullable Drawable top,
-//            @Nullable Drawable end, @Nullable Drawable bottom) {
-//        Drawables dr = mDrawables;
-//
-//        // We're switching to relative, discard absolute.
-//        if (dr != null) {
-//            if (dr.mDrawableLeft != null) dr.mDrawableLeft.setCallback(null);
-//            dr.mDrawableLeft = dr.mDrawableLeftInitial = null;
-//            if (dr.mDrawableRight != null) dr.mDrawableRight.setCallback(null);
-//            dr.mDrawableRight = dr.mDrawableRightInitial = null;
-//            dr.mDrawableSizeLeft = dr.mDrawableHeightLeft = 0;
-//            dr.mDrawableSizeRight = dr.mDrawableHeightRight = 0;
-//        }
-//
-//        final boolean drawables = start != null || top != null
-//                || end != null || bottom != null;
-//
-//        if (!drawables) {
-//            // Clearing drawables...  can we free the data structure?
-//            if (dr != null) {
-//                if (dr.mDrawablePadding == 0) {
-//                    mDrawables = null;
-//                } else {
-//                    // We need to retain the last set padding, so just clear
-//                    // out all of the fields in the existing structure.
-//                    if (dr.mDrawableStart != null) dr.mDrawableStart.setCallback(null);
-//                    dr.mDrawableStart = null;
-//                    if (dr.mDrawableTop != null) dr.mDrawableTop.setCallback(null);
-//                    dr.mDrawableTop = null;
-//                    if (dr.mDrawableEnd != null) dr.mDrawableEnd.setCallback(null);
-//                    dr.mDrawableEnd = null;
-//                    if (dr.mDrawableBottom != null) dr.mDrawableBottom.setCallback(null);
-//                    dr.mDrawableBottom = null;
-//                    dr.mDrawableSizeStart = dr.mDrawableHeightStart = 0;
-//                    dr.mDrawableSizeEnd = dr.mDrawableHeightEnd = 0;
-//                    dr.mDrawableSizeTop = dr.mDrawableWidthTop = 0;
-//                    dr.mDrawableSizeBottom = dr.mDrawableWidthBottom = 0;
-//                }
-//            }
-//        } else {
-//            if (dr == null) {
-//                mDrawables = dr = new Drawables(getContext());
-//            }
-//
-//            mDrawables.mOverride = true;
-//
-//            if (dr.mDrawableStart != start && dr.mDrawableStart != null) {
-//                dr.mDrawableStart.setCallback(null);
-//            }
-//            dr.mDrawableStart = start;
-//
-//            if (dr.mDrawableTop != top && dr.mDrawableTop != null) {
-//                dr.mDrawableTop.setCallback(null);
-//            }
-//            dr.mDrawableTop = top;
-//
-//            if (dr.mDrawableEnd != end && dr.mDrawableEnd != null) {
-//                dr.mDrawableEnd.setCallback(null);
-//            }
-//            dr.mDrawableEnd = end;
-//
-//            if (dr.mDrawableBottom != bottom && dr.mDrawableBottom != null) {
-//                dr.mDrawableBottom.setCallback(null);
-//            }
-//            dr.mDrawableBottom = bottom;
-//
-//            final Rect compoundRect = dr.mCompoundRect;
-//            int[] state;
-//
-//            state = getDrawableState();
-//
-//            if (start != null) {
-//                start.setState(state);
-//                start.copyBounds(compoundRect);
-//                start.setCallback(this);
-//                dr.mDrawableSizeStart = compoundRect.width();
-//                dr.mDrawableHeightStart = compoundRect.height();
-//            } else {
-//                dr.mDrawableSizeStart = dr.mDrawableHeightStart = 0;
-//            }
-//
-//            if (end != null) {
-//                end.setState(state);
-//                end.copyBounds(compoundRect);
-//                end.setCallback(this);
-//                dr.mDrawableSizeEnd = compoundRect.width();
-//                dr.mDrawableHeightEnd = compoundRect.height();
-//            } else {
-//                dr.mDrawableSizeEnd = dr.mDrawableHeightEnd = 0;
-//            }
-//
-//            if (top != null) {
-//                top.setState(state);
-//                top.copyBounds(compoundRect);
-//                top.setCallback(this);
-//                dr.mDrawableSizeTop = compoundRect.height();
-//                dr.mDrawableWidthTop = compoundRect.width();
-//            } else {
-//                dr.mDrawableSizeTop = dr.mDrawableWidthTop = 0;
-//            }
-//
-//            if (bottom != null) {
-//                bottom.setState(state);
-//                bottom.copyBounds(compoundRect);
-//                bottom.setCallback(this);
-//                dr.mDrawableSizeBottom = compoundRect.height();
-//                dr.mDrawableWidthBottom = compoundRect.width();
-//            } else {
-//                dr.mDrawableSizeBottom = dr.mDrawableWidthBottom = 0;
-//            }
-//        }
-//
-//        resetResolvedDrawables();
-//        resolveDrawables();
-//        invalidate();
-//        requestLayout();
-//    }
-
-    /**
-     * Sets the Drawables (if any) to appear to the start of, above, to the end
-     * of, and below the text. Use 0 if you do not want a Drawable there. The
-     * Drawables' bounds will be set to their intrinsic bounds.
-     * <p>
-     * Calling this method will overwrite any Drawables previously set using
-     * {@link #setCompoundDrawables} or related methods.
-     *
-     * @param start Resource identifier of the start Drawable.
-     * @param top Resource identifier of the top Drawable.
-     * @param end Resource identifier of the end Drawable.
-     * @param bottom Resource identifier of the bottom Drawable.
-     *
-     * @attr ref android.R.styleable#TextView_drawableStart
-     * @attr ref android.R.styleable#TextView_drawableTop
-     * @attr ref android.R.styleable#TextView_drawableEnd
-     * @attr ref android.R.styleable#TextView_drawableBottom
-     */
-////    @android.view.RemotableViewMethod
-//    public void setCompoundDrawablesRelativeWithIntrinsicBounds(int start, int top, int end,
-//            int bottom) {
-//        final Context context = getContext();
-//        setCompoundDrawablesRelativeWithIntrinsicBounds(
-//                start != 0 ? context.getDrawable(start) : null,
-//                top != 0 ? context.getDrawable(top) : null,
-//                end != 0 ? context.getDrawable(end) : null,
-//                bottom != 0 ? context.getDrawable(bottom) : null);
-//    }
-
-    /**
-     * Sets the Drawables (if any) to appear to the start of, above, to the end
-     * of, and below the text. Use {@code null} if you do not want a Drawable
-     * there. The Drawables' bounds will be set to their intrinsic bounds.
-     * <p>
-     * Calling this method will overwrite any Drawables previously set using
-     * {@link #setCompoundDrawables} or related methods.
-     *
-     * @attr ref android.R.styleable#TextView_drawableStart
-     * @attr ref android.R.styleable#TextView_drawableTop
-     * @attr ref android.R.styleable#TextView_drawableEnd
-     * @attr ref android.R.styleable#TextView_drawableBottom
-     */
-//    public void setCompoundDrawablesRelativeWithIntrinsicBounds(@Nullable Drawable start,
-//            @Nullable Drawable top, @Nullable Drawable end, @Nullable Drawable bottom) {
-//
-//        if (start != null) {
-//            start.setBounds(0, 0, start.getIntrinsicWidth(), start.getIntrinsicHeight());
-//        }
-//        if (end != null) {
-//            end.setBounds(0, 0, end.getIntrinsicWidth(), end.getIntrinsicHeight());
-//        }
-//        if (top != null) {
-//            top.setBounds(0, 0, top.getIntrinsicWidth(), top.getIntrinsicHeight());
-//        }
-//        if (bottom != null) {
-//            bottom.setBounds(0, 0, bottom.getIntrinsicWidth(), bottom.getIntrinsicHeight());
-//        }
-//        setCompoundDrawablesRelative(start, top, end, bottom);
-//    }
-
-    /**
-     * Returns drawables for the left, top, right, and bottom borders.
-     *
-     * @attr ref android.R.styleable#TextView_drawableLeft
-     * @attr ref android.R.styleable#TextView_drawableTop
-     * @attr ref android.R.styleable#TextView_drawableRight
-     * @attr ref android.R.styleable#TextView_drawableBottom
-     */
-//    @NonNull
-//    public Drawable[] getCompoundDrawables() {
-//        final Drawables dr = mDrawables;
-//        if (dr != null) {
-//            return new Drawable[] {
-//                dr.mDrawableLeft, dr.mDrawableTop, dr.mDrawableRight, dr.mDrawableBottom
-//            };
-//        } else {
-//            return new Drawable[] { null, null, null, null };
-//        }
-//    }
-
-    /**
-     * Returns drawables for the start, top, end, and bottom borders.
-     *
-     * @attr ref android.R.styleable#TextView_drawableStart
-     * @attr ref android.R.styleable#TextView_drawableTop
-     * @attr ref android.R.styleable#TextView_drawableEnd
-     * @attr ref android.R.styleable#TextView_drawableBottom
-     */
-//    @NonNull
-//    public Drawable[] getCompoundDrawablesRelative() {
-//        final Drawables dr = mDrawables;
-//        if (dr != null) {
-//            return new Drawable[] {
-//                dr.mDrawableStart, dr.mDrawableTop, dr.mDrawableEnd, dr.mDrawableBottom
-//            };
-//        } else {
-//            return new Drawable[] { null, null, null, null };
-//        }
-//    }
-
-    /**
-     * Sets the size of the padding between the compound drawables and
-     * the text.
-     *
-     * @attr ref android.R.styleable#TextView_drawablePadding
-     */
-////    @android.view.RemotableViewMethod
-//    public void setCompoundDrawablePadding(int pad) {
-//        Drawables dr = mDrawables;
-//        if (pad == 0) {
-//            if (dr != null) {
-//                dr.mDrawablePadding = pad;
-//            }
-//        } else {
-//            if (dr == null) {
-//                mDrawables = dr = new Drawables(getContext());
-//            }
-//            dr.mDrawablePadding = pad;
-//        }
-//
-//        invalidate();
-//        requestLayout();
-//    }
-
-    /**
-     * Returns the padding between the compound drawables and the text.
-     *
-     * @attr ref android.R.styleable#TextView_drawablePadding
-     */
-//    public int getCompoundDrawablePadding() {
-//        final Drawables dr = mDrawables;
-//        return dr != null ? dr.mDrawablePadding : 0;
-//    }
 
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
@@ -2527,90 +1468,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      * from the specified TextAppearance resource.
      */
     public void setTextAppearance(Context context, int resid) {
-//        TypedArray appearance =
-//            context.obtainStyledAttributes(resid,
-//                                           android.R.styleable.TextAppearance);
-//
-//        int color;
-//        ColorStateList colors;
-//        int ts;
-//
-//        color = appearance.getColor(
-//                android.R.styleable.TextAppearance_textColorHighlight, 0);
-//        if (color != 0) {
-//            setHighlightColor(color);
-//        }
-//
-//        colors = appearance.getColorStateList(android.R.styleable.
-//                                              TextAppearance_textColor);
-//        if (colors != null) {
-//            setTextColor(colors);
-//        }
-//
-//        ts = appearance.getDimensionPixelSize(android.R.styleable.
-//                                              TextAppearance_textSize, 0);
-//        if (ts != 0) {
-//            setRawTextSize(ts);
-//        }
-//
-//        colors = appearance.getColorStateList(android.R.styleable.
-//                                              TextAppearance_textColorHint);
-//        if (colors != null) {
-//            setHintTextColor(colors);
-//        }
-//
-//        colors = appearance.getColorStateList(android.R.styleable.
-//                                              TextAppearance_textColorLink);
-//        if (colors != null) {
-//            setLinkTextColor(colors);
-//        }
-//
-//        String familyName;
-//        int typefaceIndex, styleIndex;
-//
-//        familyName = appearance.getString(android.R.styleable.
-//                                          TextAppearance_fontFamily);
-//        typefaceIndex = appearance.getInt(android.R.styleable.
-//                                          TextAppearance_typeface, -1);
-//        styleIndex = appearance.getInt(android.R.styleable.
-//                                       TextAppearance_textStyle, -1);
-//
-//        setTypefaceFromAttrs(familyName, typefaceIndex, styleIndex);
-
-//        final int shadowcolor = appearance.getInt(
-//                android.R.styleable.TextAppearance_shadowColor, 0);
-//        if (shadowcolor != 0) {
-//            final float dx = appearance.getFloat(
-//                    android.R.styleable.TextAppearance_shadowDx, 0);
-//            final float dy = appearance.getFloat(
-//                    android.R.styleable.TextAppearance_shadowDy, 0);
-//            final float r = appearance.getFloat(
-//                    android.R.styleable.TextAppearance_shadowRadius, 0);
-//
-//            setShadowLayer(r, dx, dy, shadowcolor);
-//        }
-
-//        if (appearance.getBoolean(android.R.styleable.TextAppearance_textAllCaps,
-//                false)) {
-//            setTransformationMethod(new AllCapsTransformationMethod(getContext()));
-//        }
-
-//        if (appearance.hasValue(android.R.styleable.TextAppearance_elegantTextHeight)) {
-//            setElegantTextHeight(appearance.getBoolean(
-//                android.R.styleable.TextAppearance_elegantTextHeight, false));
-//        }
-//
-//        if (appearance.hasValue(android.R.styleable.TextAppearance_letterSpacing)) {
-//            setLetterSpacing(appearance.getFloat(
-//                android.R.styleable.TextAppearance_letterSpacing, 0));
-//        }
-//
-//        if (appearance.hasValue(android.R.styleable.TextAppearance_fontFeatureSettings)) {
-//            setFontFeatureSettings(appearance.getString(
-//                android.R.styleable.TextAppearance_fontFeatureSettings));
-//        }
-
-//        appearance.recycle();
     }
 
     /**
@@ -2776,87 +1633,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         return mTextPaint.getTypeface();
     }
 
-    /**
-     * Set the TextView's elegant height metrics flag. This setting selects font
-     * variants that have not been compacted to fit Latin-based vertical
-     * metrics, and also increases top and bottom bounds to provide more space.
-     *
-     * @param elegant set the paint's elegant metrics flag.
-     *
-     * @attr ref android.R.styleable#TextView_elegantTextHeight
-     */
-//    public void setElegantTextHeight(boolean elegant) {
-//        mTextPaint.setElegantTextHeight(elegant);
-//    }
-
-    /**
-     * @return the extent by which text is currently being letter-spaced.
-     * This will normally be 0.
-     *
-     * @see #setLetterSpacing(float)
-     * @see android.graphics.Paint#setLetterSpacing
-     */
-//    public float getLetterSpacing() {
-//        return mTextPaint.getLetterSpacing();
-//    }
-
-    /**
-     * Sets text letter-spacing.  The value is in 'EM' units.  Typical values
-     * for slight expansion will be around 0.05.  Negative values tighten text.
-     *
-     * @see #getLetterSpacing()
-     * @see android.graphics.Paint#getLetterSpacing
-     *
-     * @attr ref android.R.styleable#TextView_letterSpacing
-     */
-////    @android.view.RemotableViewMethod
-//    public void setLetterSpacing(float letterSpacing) {
-//        if (letterSpacing != mTextPaint.getLetterSpacing()) {
-//            mTextPaint.setLetterSpacing(letterSpacing);
-//
-//            if (mLayout != null) {
-//                nullLayouts();
-//                requestLayout();
-//                invalidate();
-//            }
-//        }
-//    }
-
-    /**
-     * @return the currently set font feature settings.  Default is null.
-     *
-     * @see #setFontFeatureSettings(String)
-     * @see android.graphics.Paint#setFontFeatureSettings
-     */
-//    @Nullable
-//    public String getFontFeatureSettings() {
-//        return mTextPaint.getFontFeatureSettings();
-//    }
-
-    /**
-     * Sets font feature settings.  The format is the same as the CSS
-     * font-feature-settings attribute:
-     * http://dev.w3.org/csswg/css-fonts/#propdef-font-feature-settings
-     *
-     * @param fontFeatureSettings font feature settings represented as CSS compatible string
-     * @see #getFontFeatureSettings()
-     * @see android.graphics.Paint#getFontFeatureSettings
-     *
-     * @attr ref android.R.styleable#TextView_fontFeatureSettings
-     */
-////    @android.view.RemotableViewMethod
-//    public void setFontFeatureSettings(String fontFeatureSettings) {
-//        if (fontFeatureSettings != mTextPaint.getFontFeatureSettings()) {
-//            mTextPaint.setFontFeatureSettings(fontFeatureSettings);
-//
-//            if (mLayout != null) {
-//                nullLayouts();
-//                requestLayout();
-//                invalidate();
-//            }
-//        }
-//    }
-
 
     /**
      * Sets the text color for all the states (normal, selected,
@@ -2867,7 +1643,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *
      * @attr ref android.R.styleable#TextView_textColor
      */
-////    @android.view.RemotableViewMethod
     public void setTextColor(int color) {
         mTextColor = ColorStateList.valueOf(color);
         updateTextColors();
@@ -4120,40 +2895,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         }
     }
 
-    /**
-     * Sets the TextView to display the specified slice of the specified
-     * char array.  You must promise that you will not change the contents
-     * of the array except for right before another call to setText(),
-     * since the TextView has no way to know that the text
-     * has changed and that it needs to invalidate and re-layout.
-     */
-//    public final void setText(char[] text, int start, int len) {
-//        int oldlen = 0;
-//
-//        if (start < 0 || len < 0 || start + len > text.length) {
-//            throw new IndexOutOfBoundsException(start + ", " + len);
-//        }
-//
-//        /*
-//         * We must do the before-notification here ourselves because if
-//         * the old text is a CharWrapper we destroy it before calling
-//         * into the normal path.
-//         */
-//        if (mText != null) {
-//            oldlen = mText.length();
-//            sendBeforeTextChanged(mText, 0, oldlen, len);
-//        } else {
-//            sendBeforeTextChanged("", 0, 0, len);
-//        }
-//
-//        if (mCharWrapper == null) {
-//            mCharWrapper = new CharWrapper(text, start, len);
-//        } else {
-//            mCharWrapper.set(text, start, len);
-//        }
-//
-//        setText(mCharWrapper, mBufferType, false, oldlen);
-//    }
 
     /**
      * Like {@link #setText(CharSequence, TextView.BufferType)},
@@ -4533,56 +3274,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
                 }
             }
 
-            // This is the handling for some default action.
-            // Note that for backwards compatibility we don't do this
-            // default handling if explicit ime options have not been given,
-            // instead turning this into the normal enter key codes that an
-            // app may be expecting.
-//            if (actionCode == EditorInfo.IME_ACTION_NEXT) {
-//                View v = focusSearch(FOCUS_FORWARD);
-//                if (v != null) {
-//                    if (!v.requestFocus(FOCUS_FORWARD)) {
-//                        throw new IllegalStateException("focus search returned a view " +
-//                                "that wasn't able to take focus!");
-//                    }
-//                }
-//                return;
-//
-//            } else if (actionCode == EditorInfo.IME_ACTION_PREVIOUS) {
-//                View v = focusSearch(FOCUS_BACKWARD);
-//                if (v != null) {
-//                    if (!v.requestFocus(FOCUS_BACKWARD)) {
-//                        throw new IllegalStateException("focus search returned a view " +
-//                                "that wasn't able to take focus!");
-//                    }
-//                }
-//                return;
-//
-//            } else if (actionCode == EditorInfo.IME_ACTION_DONE) {
-//                InputMethodManager imm = InputMethodManagerCompat.peekInstance();
-//                if (imm != null && imm.isActive(this)) {
-//                    imm.hideSoftInputFromWindow(getWindowToken(), 0);
-//                }
-//                return;
-//            }
         }
-
-//        ViewRootImpl viewRootImpl = getViewRootImpl();
-//        if (viewRootImpl != null) {
-//            long eventTime = SystemClock.uptimeMillis();
-//            viewRootImpl.dispatchKeyFromIme(
-//                    new KeyEvent(eventTime, eventTime,
-//                    KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER, 0, 0,
-//                    KeyCharacterMap.VIRTUAL_KEYBOARD, 0,
-//                    KeyEvent.FLAG_SOFT_KEYBOARD | KeyEvent.FLAG_KEEP_TOUCH_MODE
-//                    | KeyEvent.FLAG_EDITOR_ACTION));
-//            viewRootImpl.dispatchKeyFromIme(
-//                    new KeyEvent(SystemClock.uptimeMillis(), eventTime,
-//                    KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER, 0, 0,
-//                    KeyCharacterMap.VIRTUAL_KEYBOARD, 0,
-//                    KeyEvent.FLAG_SOFT_KEYBOARD | KeyEvent.FLAG_KEEP_TOUCH_MODE
-//                    | KeyEvent.FLAG_EDITOR_ACTION));
-//        }
     }
 
     /**
@@ -5083,101 +3775,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
                 (int) Math.max(0, mShadowDx + mShadowRadius);
     }
 
-//    @Override
-//    protected boolean verifyDrawable(Drawable who) {
-//        final boolean verified = super.verifyDrawable(who);
-//        if (!verified && mDrawables != null) {
-//            return who == mDrawables.mDrawableLeft || who == mDrawables.mDrawableTop ||
-//                    who == mDrawables.mDrawableRight || who == mDrawables.mDrawableBottom ||
-//                    who == mDrawables.mDrawableStart || who == mDrawables.mDrawableEnd;
-//        }
-//        return verified;
-//    }
-
-//    @Override
-//    public void jumpDrawablesToCurrentState() {
-//        super.jumpDrawablesToCurrentState();
-//        if (mDrawables != null) {
-//            if (mDrawables.mDrawableLeft != null) {
-//                mDrawables.mDrawableLeft.jumpToCurrentState();
-//            }
-//            if (mDrawables.mDrawableTop != null) {
-//                mDrawables.mDrawableTop.jumpToCurrentState();
-//            }
-//            if (mDrawables.mDrawableRight != null) {
-//                mDrawables.mDrawableRight.jumpToCurrentState();
-//            }
-//            if (mDrawables.mDrawableBottom != null) {
-//                mDrawables.mDrawableBottom.jumpToCurrentState();
-//            }
-//            if (mDrawables.mDrawableStart != null) {
-//                mDrawables.mDrawableStart.jumpToCurrentState();
-//            }
-//            if (mDrawables.mDrawableEnd != null) {
-//                mDrawables.mDrawableEnd.jumpToCurrentState();
-//            }
-//        }
-//    }
-
-//    @Override
-//    public void invalidateDrawable(Drawable drawable) {
-//        boolean handled = false;
-//
-//        if (verifyDrawable(drawable)) {
-//            final Rect dirty = drawable.getBounds();
-//            int scrollX = getScrollX();
-//            int scrollY = getScrollY();
-//
-//            // IMPORTANT: The coordinates below are based on the coordinates computed
-//            // for each compound drawable in onDraw(). Make sure to update each section
-//            // accordingly.
-//            final TextView.Drawables drawables = mDrawables;
-//            if (drawables != null) {
-//                if (drawable == drawables.mDrawableLeft) {
-//                    final int compoundPaddingTop = getCompoundPaddingTop();
-//                    final int compoundPaddingBottom = getCompoundPaddingBottom();
-//                    final int vspace = getBottom() - getTop() - compoundPaddingBottom - compoundPaddingTop;
-//
-//                    scrollX += mPaddingLeft;
-//                    scrollY += compoundPaddingTop + (vspace - drawables.mDrawableHeightLeft) / 2;
-//                    handled = true;
-//                } else if (drawable == drawables.mDrawableRight) {
-//                    final int compoundPaddingTop = getCompoundPaddingTop();
-//                    final int compoundPaddingBottom = getCompoundPaddingBottom();
-//                    final int vspace = getBottom() - getTop() - compoundPaddingBottom - compoundPaddingTop;
-//
-//                    scrollX += (getRight() - getLeft() - mPaddingRight - drawables.mDrawableSizeRight);
-//                    scrollY += compoundPaddingTop + (vspace - drawables.mDrawableHeightRight) / 2;
-//                    handled = true;
-//                } else if (drawable == drawables.mDrawableTop) {
-//                    final int compoundPaddingLeft = getCompoundPaddingLeft();
-//                    final int compoundPaddingRight = getCompoundPaddingRight();
-//                    final int hspace = getRight() - getLeft() - compoundPaddingRight - compoundPaddingLeft;
-//
-//                    scrollX += compoundPaddingLeft + (hspace - drawables.mDrawableWidthTop) / 2;
-//                    scrollY += mPaddingTop;
-//                    handled = true;
-//                } else if (drawable == drawables.mDrawableBottom) {
-//                    final int compoundPaddingLeft = getCompoundPaddingLeft();
-//                    final int compoundPaddingRight = getCompoundPaddingRight();
-//                    final int hspace = getRight() - getLeft() - compoundPaddingRight - compoundPaddingLeft;
-//
-//                    scrollX += compoundPaddingLeft + (hspace - drawables.mDrawableWidthBottom) / 2;
-//                    scrollY += (getBottom() - getTop() - mPaddingBottom - drawables.mDrawableSizeBottom);
-//                    handled = true;
-//                }
-//            }
-//
-//            if (handled) {
-//                invalidate(dirty.left + scrollX, dirty.top + scrollY,
-//                        dirty.right + scrollX, dirty.bottom + scrollY);
-//            }
-//        }
-//
-//        if (!handled) {
-//            super.invalidateDrawable(drawable);
-//        }
-//    }
 
     @Override
     public boolean hasOverlappingRendering() {
@@ -5259,22 +3856,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
 //            mergeDrawableStates(drawableState, MULTILINE_STATE_SET);
         }
 
-//        if (isTextSelectable()) {
-//            // Disable pressed state, which was introduced when TextView was made clickable.
-//            // Prevents text color change.
-//            // setClickable(false) would have a similar effect, but it also disables focus changes
-//            // and long press actions, which are both needed by text selection.
-//            final int length = drawableState.length;
-//            for (int i = 0; i < length; i++) {
-//                if (drawableState[i] == R.attr.state_pressed) {
-//                    final int[] nonPressedState = new int[length - 1];
-//                    System.arraycopy(drawableState, 0, nonPressedState, 0, i);
-//                    System.arraycopy(drawableState, i + 1, nonPressedState, i, length - i - 1);
-//                    return nonPressedState;
-//                }
-//            }
-//        }
-
         return drawableState;
     }
 
@@ -5345,64 +3926,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         final int left = getLeft();
         final int bottom = getBottom();
         final int top = getTop();
-//        final boolean isLayoutRtl = isLayoutRtl();
-//        final int offset = getHorizontalOffsetForDrawables();
-//        final int leftOffset = isLayoutRtl ? 0 : offset;
-//        final int rightOffset = isLayoutRtl ? offset : 0 ;
-
-//        final Drawables dr = mDrawables;
-//        if (dr != null) {
-//            /*
-//             * Compound, not extended, because the icon is not clipped
-//             * if the text height is smaller.
-//             */
-//
-//            int vspace = bottom - top - compoundPaddingBottom - compoundPaddingTop;
-//            int hspace = right - left - compoundPaddingRight - compoundPaddingLeft;
-//
-//            // IMPORTANT: The coordinates computed are also used in invalidateDrawable()
-//            // Make sure to update invalidateDrawable() when changing this code.
-//            if (dr.mDrawableLeft != null) {
-//                canvas.save();
-//                canvas.translate(scrollX + mPaddingLeft + leftOffset,
-//                                 scrollY + compoundPaddingTop +
-//                                 (vspace - dr.mDrawableHeightLeft) / 2);
-//                dr.mDrawableLeft.draw(canvas);
-//                canvas.restore();
-//            }
-//
-//            // IMPORTANT: The coordinates computed are also used in invalidateDrawable()
-//            // Make sure to update invalidateDrawable() when changing this code.
-//            if (dr.mDrawableRight != null) {
-//                canvas.save();
-//                canvas.translate(scrollX + right - left - mPaddingRight
-//                        - dr.mDrawableSizeRight - rightOffset,
-//                         scrollY + compoundPaddingTop + (vspace - dr.mDrawableHeightRight) / 2);
-//                dr.mDrawableRight.draw(canvas);
-//                canvas.restore();
-//            }
-//
-//            // IMPORTANT: The coordinates computed are also used in invalidateDrawable()
-//            // Make sure to update invalidateDrawable() when changing this code.
-//            if (dr.mDrawableTop != null) {
-//                canvas.save();
-//                canvas.translate(scrollX + compoundPaddingLeft +
-//                        (hspace - dr.mDrawableWidthTop) / 2, scrollY + mPaddingTop);
-//                dr.mDrawableTop.draw(canvas);
-//                canvas.restore();
-//            }
-//
-//            // IMPORTANT: The coordinates computed are also used in invalidateDrawable()
-//            // Make sure to update invalidateDrawable() when changing this code.
-//            if (dr.mDrawableBottom != null) {
-//                canvas.save();
-//                canvas.translate(scrollX + compoundPaddingLeft +
-//                        (hspace - dr.mDrawableWidthBottom) / 2,
-//                         scrollY + bottom - top - mPaddingBottom - dr.mDrawableSizeBottom);
-//                dr.mDrawableBottom.draw(canvas);
-//                canvas.restore();
-//            }
-//        }
 
         int color = mCurTextColor;
 
@@ -6099,50 +4622,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
             i--;
             spannable.removeSpan(spans[i]);
         }
-    }
-
-    /**
-     * Apply to this text view the given extracted text, as previously
-     */
-    public void setExtractedText(ExtractedText text) {
-//        Editable content = getEditableText();
-//        if (text.text != null) {
-//            if (content == null) {
-//                setText(text.text, TextView.BufferType.EDITABLE);
-//            } else if (text.partialStartOffset < 0) {
-//                removeParcelableSpans(content, 0, content.length());
-//                content.replace(0, content.length(), text.text);
-//            } else {
-//                final int N = content.length();
-//                int start = text.partialStartOffset;
-//                if (start > N) start = N;
-//                int end = text.partialEndOffset;
-//                if (end > N) end = N;
-//                removeParcelableSpans(content, start, end);
-//                content.replace(start, end, text.text);
-//            }
-//        }
-//
-//        // Now set the selection position...  make sure it is in range, to
-//        // avoid crashes.  If this is a partial update, it is possible that
-//        // the underlying text may have changed, causing us problems here.
-//        // Also we just don't want to trust clients to do the right thing.
-//        Spannable sp = (Spannable)getText();
-//        final int N = sp.length();
-//        int start = text.selectionStart;
-//        if (start < 0) start = 0;
-//        else if (start > N) start = N;
-//        int end = text.selectionEnd;
-//        if (end < 0) end = 0;
-//        else if (end > N) end = N;
-//        Selection.setSelection(sp, start, end);
-//
-//        // Finally, update the selection mode.
-//        if ((text.flags&ExtractedText.FLAG_SELECTING) != 0) {
-//            MetaKeyKeyListener.startSelecting(this, sp);
-//        } else {
-//            MetaKeyKeyListener.stopSelecting(this, sp);
-//        }
     }
 
     /**
@@ -7311,27 +5790,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         return offset;
     }
 
-//    @Override
-//    public void debug(int depth) {
-//        super.debug(depth);
-//
-//        String output = debugIndent(depth);
-//        output += "frame={" + getLeft() + ", " + getTop() + ", " + getRight()
-//                + ", " + getBottom() + "} scroll={" + getScrollX() + ", " + getScrollY()
-//                + "} ";
-//
-//        if (mText != null) {
-//
-//            output += "mText=\"" + mText + "\" ";
-//            if (mLayout != null) {
-//                output += "mLayout width=" + mLayout.getWidth()
-//                        + " height=" + mLayout.getHeight();
-//            }
-//        } else {
-//            output += "mText=NULL";
-//        }
-//        Log.d(VIEW_LOG_TAG, output);
-//    }
 
     /**
      * Convenience for {@link android.text.Selection#getSelectionStart}.
@@ -7442,32 +5900,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         }
     }
 
-    /**
-     * Causes words in the text that are longer than the view is wide
-     * to be ellipsized instead of broken in the middle.  You may also
-     * want to {@link #setSingleLine} or {@link #setHorizontallyScrolling}
-     * to constrain the text to a single line.  Use <code>null</code>
-     * to turn off ellipsizing.
-     *
-     * If {@link #setMaxLines} has been used to set two or more lines,
-     * only {@link android.text.TextUtils.TruncateAt#END} and
-     * {@link android.text.TextUtils.TruncateAt#MARQUEE} are supported
-     * (other ellipsizing types will not do anything).
-     *
-     * @attr ref android.R.styleable#TextView_ellipsize
-     */
-//    public void setEllipsize(TruncateAt where) {
-//        // TruncateAt is an enum. != comparison is ok between these singleton objects.
-//        if (mEllipsize != where) {
-//            mEllipsize = where;
-//
-//            if (mLayout != null) {
-//                nullLayouts();
-//                requestLayout();
-//                invalidate();
-//            }
-//        }
-//    }
 
     /**
      * Sets how many times to repeat the marquee animation. Only applied if the
@@ -7496,14 +5928,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         return mMarqueeRepeatLimit;
     }
 
-    /**
-     * Returns where, if anywhere, words that are longer than the view
-     * is wide should be ellipsized.
-     */
-//    @ViewDebug.ExportedProperty
-//    public TruncateAt getEllipsize() {
-//        return mEllipsize;
-//    }
 
     /**
      * Set the TextView so that when it takes focus, all the text is
@@ -7511,7 +5935,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *
      * @attr ref android.R.styleable#TextView_selectAllOnFocus
      */
-//    @android.view.RemotableViewMethod
     public void setSelectAllOnFocus(boolean selectAllOnFocus) {
         createEditorIfNeeded();
         mEditor.mSelectAllOnFocus = selectAllOnFocus;
@@ -7607,13 +6030,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
     }
 
     private void startStopMarquee(boolean start) {
-//        if (mEllipsize == TruncateAt.MARQUEE) {
-//            if (start) {
-//                startMarquee();
-//            } else {
-//                stopMarquee();
-//            }
-//        }
     }
 
     /**
@@ -7907,10 +6323,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
             }
         }
 
-//        if (mEditor != null && mEditor.mSpellChecker != null && newStart < 0 &&
-//                what instanceof SpellCheckSpan) {
-//            mEditor.mSpellChecker.onSpellCheckSpanRemoved((SpellCheckSpan) what);
-//        }
     }
 
     /**
@@ -7918,6 +6330,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      */
 //    @Override
     public void dispatchFinishTemporaryDetach() {
+        super.dispatchFinishTemporaryDetach();
         mDispatchTemporaryDetach = true;
 //        super.dispatchFinishTemporaryDetach();
         onFinishTemporaryDetach();
@@ -8005,13 +6418,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
 
         super.setSelected(selected);
 
-//        if (selected != wasSelected && mEllipsize == TruncateAt.MARQUEE) {
-//            if (selected) {
-//                startMarquee();
-//            } else {
-//                stopMarquee();
-//            }
-//        }
     }
 
     @Override
@@ -8137,75 +6543,11 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
 
     @Override
     protected float getLeftFadingEdgeStrength() {
-//        if (mEllipsize == TruncateAt.MARQUEE &&
-//                mMarqueeFadeMode != MARQUEE_FADE_SWITCH_SHOW_ELLIPSIS) {
-//            if (mMarquee != null && !mMarquee.isStopped()) {
-//                final Marquee marquee = mMarquee;
-//                if (marquee.shouldDrawLeftFade()) {
-//                    final float scroll = marquee.getScroll();
-//                    return scroll / getHorizontalFadingEdgeLength();
-//                } else {
-//                    return 0.0f;
-//                }
-//            } else if (getLineCount() == 1) {
-//                final int layoutDirection = getLayoutDirection();
-//                final int absoluteGravity = Gravity.getAbsoluteGravity(mGravity, layoutDirection);
-//                switch (absoluteGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
-//                    case Gravity.LEFT:
-//                        return 0.0f;
-//                    case Gravity.RIGHT:
-//                        return (mLayout.getLineRight(0) - (getRight() - getLeft()) -
-//                                getCompoundPaddingLeft() - getCompoundPaddingRight() -
-//                                mLayout.getLineLeft(0)) / getHorizontalFadingEdgeLength();
-//                    case Gravity.CENTER_HORIZONTAL:
-//                    case Gravity.FILL_HORIZONTAL:
-//                        final int textDirection = mLayout.getParagraphDirection(0);
-//                        if (textDirection == Layout.DIR_LEFT_TO_RIGHT) {
-//                            return 0.0f;
-//                        } else {
-//                            return (mLayout.getLineRight(0) - (getRight() - getLeft()) -
-//                                getCompoundPaddingLeft() - getCompoundPaddingRight() -
-//                                mLayout.getLineLeft(0)) / getHorizontalFadingEdgeLength();
-//                        }
-//                }
-//            }
-//        }
         return super.getLeftFadingEdgeStrength();
     }
 
     @Override
     protected float getRightFadingEdgeStrength() {
-//        if (mEllipsize == TruncateAt.MARQUEE &&
-//                mMarqueeFadeMode != MARQUEE_FADE_SWITCH_SHOW_ELLIPSIS) {
-//            if (mMarquee != null && !mMarquee.isStopped()) {
-//                final Marquee marquee = mMarquee;
-//                final float maxFadeScroll = marquee.getMaxFadeScroll();
-//                final float scroll = marquee.getScroll();
-//                return (maxFadeScroll - scroll) / getHorizontalFadingEdgeLength();
-//            } else if (getLineCount() == 1) {
-//                final int layoutDirection = getLayoutDirection();
-//                final int absoluteGravity = Gravity.getAbsoluteGravity(mGravity, layoutDirection);
-//                switch (absoluteGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
-//                    case Gravity.LEFT:
-//                        final int textWidth = (getRight() - getLeft()) - getCompoundPaddingLeft() -
-//                                getCompoundPaddingRight();
-//                        final float lineWidth = mLayout.getLineWidth(0);
-//                        return (lineWidth - textWidth) / getHorizontalFadingEdgeLength();
-//                    case Gravity.RIGHT:
-//                        return 0.0f;
-//                    case Gravity.CENTER_HORIZONTAL:
-//                    case Gravity.FILL_HORIZONTAL:
-//                        final int textDirection = mLayout.getParagraphDirection(0);
-//                        if (textDirection == Layout.DIR_RIGHT_TO_LEFT) {
-//                            return 0.0f;
-//                        } else {
-//                            return (mLayout.getLineWidth(0) - ((getRight() - getLeft()) -
-//                                getCompoundPaddingLeft() - getCompoundPaddingRight())) /
-//                                getHorizontalFadingEdgeLength();
-//                        }
-//                }
-//            }
-//        }
         return super.getRightFadingEdgeStrength();
     }
 
@@ -8528,18 +6870,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
             }
         }
 
-        // Check for known input filter types.
-//        final int numFilters = mFilters.length;
-//        for (int i = 0; i < numFilters; i++) {
-//            final InputFilter filter = mFilters[i];
-//            if (filter instanceof InputFilter.LengthFilter) {
-//                info.setMaxTextLength(((InputFilter.LengthFilter) filter).getMax());
-//            }
-//        }
-//
-//        if (!isSingleLine()) {
-//            info.setMultiLine(true);
-//        }
     }
 
     @Override
@@ -9020,30 +7350,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         }
     }
 
-//    /**
-//     * @hide
-//     */
-//    @Override
-//    public void onResolveDrawables(int layoutDirection) {
-//        // No need to resolve twice
-//        if (mLastLayoutDirection == layoutDirection) {
-//            return;
-//        }
-//        mLastLayoutDirection = layoutDirection;
-//
-//        // Resolve drawables
-//        if (mDrawables != null) {
-//            mDrawables.resolveWithLayoutDirection(layoutDirection);
-//        }
-//    }
-//
-//    /**
-//     * @hide
-//     */
-//    protected void resetResolvedDrawables() {
-//        super.resetResolvedDrawables();
-//        mLastLayoutDirection = -1;
-//    }
 
     /**
      * @hide
@@ -9115,79 +7421,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         return mText;
     }
 
-//    /**
-//     * @hide
-//     */
-//    @Override
-//    public TextSegmentIterator getIteratorForGranularity(int granularity) {
-//        switch (granularity) {
-//            case AccessibilityNodeInfo.MOVEMENT_GRANULARITY_LINE: {
-//                Spannable text = (Spannable) getIterableTextForAccessibility();
-//                if (!TextUtils.isEmpty(text) && getLayout() != null) {
-//                    AccessibilityIterators.LineTextSegmentIterator iterator =
-//                        AccessibilityIterators.LineTextSegmentIterator.getInstance();
-//                    iterator.initialize(text, getLayout());
-//                    return iterator;
-//                }
-//            } break;
-//            case AccessibilityNodeInfo.MOVEMENT_GRANULARITY_PAGE: {
-//                Spannable text = (Spannable) getIterableTextForAccessibility();
-//                if (!TextUtils.isEmpty(text) && getLayout() != null) {
-//                    AccessibilityIterators.PageTextSegmentIterator iterator =
-//                        AccessibilityIterators.PageTextSegmentIterator.getInstance();
-//                    iterator.initialize(this);
-//                    return iterator;
-//                }
-//            } break;
-//        }
-//        return super.getIteratorForGranularity(granularity);
-//    }
-
-//    /**
-//     * @hide
-//     */
-//    @Override
-//    public int getAccessibilitySelectionStart() {
-//        return getSelectionStart();
-//    }
-//
-//    /**
-//     * @hide
-//     */
-//    public boolean isAccessibilitySelectionExtendable() {
-//        return true;
-//    }
-//
-//    /**
-//     * @hide
-//     */
-//    @Override
-//    public int getAccessibilitySelectionEnd() {
-//        return getSelectionEnd();
-//    }
-//
-//    /**
-//     * @hide
-//     */
-//    @Override
-//    public void setAccessibilitySelection(int start, int end) {
-//        if (getAccessibilitySelectionStart() == start
-//                && getAccessibilitySelectionEnd() == end) {
-//            return;
-//        }
-//        // Hide all selection controllers used for adjusting selection
-//        // since we are doing so explicitlty by other means and these
-//        // controllers interact with how selection behaves.
-//        if (mEditor != null) {
-//            mEditor.hideControllers();
-//        }
-//        CharSequence text = getIterableTextForAccessibility();
-//        if (Math.min(start, end) >= 0 && Math.max(start, end) <= text.length()) {
-//            Selection.setSelection((Spannable) text, start, end);
-//        } else {
-//            Selection.removeSelection((Spannable) text);
-//        }
-//    }
 
     /**
      * User interface state that is stored by TextView for implementing
@@ -9262,89 +7495,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         }
     }
 
-//    private static class CharWrapper implements CharSequence, GetChars, GraphicsOperations {
-//        private char[] mChars;
-//        private int mStart, mLength;
-//
-//        public CharWrapper(char[] chars, int start, int len) {
-//            mChars = chars;
-//            mStart = start;
-//            mLength = len;
-//        }
-//
-//        /* package */ void set(char[] chars, int start, int len) {
-//            mChars = chars;
-//            mStart = start;
-//            mLength = len;
-//        }
-//
-//        public int length() {
-//            return mLength;
-//        }
-//
-//        public char charAt(int off) {
-//            return mChars[off + mStart];
-//        }
-//
-//        @Override
-//        public String toString() {
-//            return new String(mChars, mStart, mLength);
-//        }
-//
-//        public CharSequence subSequence(int start, int end) {
-//            if (start < 0 || end < 0 || start > mLength || end > mLength) {
-//                throw new IndexOutOfBoundsException(start + ", " + end);
-//            }
-//
-//            return new String(mChars, start + mStart, end - start);
-//        }
-//
-//        public void getChars(int start, int end, char[] buf, int off) {
-//            if (start < 0 || end < 0 || start > mLength || end > mLength) {
-//                throw new IndexOutOfBoundsException(start + ", " + end);
-//            }
-//
-//            System.arraycopy(mChars, start + mStart, buf, off, end - start);
-//        }
-//
-//        public void drawText(Canvas c, int start, int end,
-//                             float x, float y, Paint p) {
-//            c.drawText(mChars, start + mStart, end - start, x, y, p);
-//        }
-//
-//        public void drawTextRun(Canvas c, int start, int end,
-//                int contextStart, int contextEnd, float x, float y, boolean isRtl, Paint p) {
-//            int count = end - start;
-//            int contextCount = contextEnd - contextStart;
-//            c.drawTextRun(mChars, start + mStart, count, contextStart + mStart,
-//                    contextCount, x, y, isRtl, p);
-//        }
-//
-//        public float measureText(int start, int end, Paint p) {
-//            return p.measureText(mChars, start + mStart, end - start);
-//        }
-//
-//        public int getTextWidths(int start, int end, float[] widths, Paint p) {
-//            return p.getTextWidths(mChars, start + mStart, end - start, widths);
-//        }
-//
-//        public float getTextRunAdvances(int start, int end, int contextStart,
-//                int contextEnd, boolean isRtl, float[] advances, int advancesIndex,
-//                Paint p) {
-//            int count = end - start;
-//            int contextCount = contextEnd - contextStart;
-//            return p.getTextRunAdvances(mChars, start + mStart, count,
-//                    contextStart + mStart, contextCount, isRtl, advances,
-//                    advancesIndex);
-//        }
-//
-//        public int getTextRunCursor(int contextStart, int contextEnd, int dir,
-//                int offset, int cursorOpt, Paint p) {
-//            int contextCount = contextEnd - contextStart;
-//            return p.getTextRunCursor(mChars, contextStart + mStart,
-//                    contextCount, dir, offset + mStart, cursorOpt);
-//        }
-//    }
 
     private static final class Marquee {
         // TODO: Add an option to configure this
