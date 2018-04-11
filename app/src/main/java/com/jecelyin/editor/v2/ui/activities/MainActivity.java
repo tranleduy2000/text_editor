@@ -181,6 +181,13 @@ public class MainActivity extends BaseActivity
         mTabPager = findViewById(R.id.tab_pager);
         mMenuRecyclerView = findViewById(R.id.menuRecyclerView);
         mDrawerLayout = findViewById(R.id.drawer_layout);
+        mDrawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                hideSoftInput();
+            }
+        });
         mTabRecyclerView = findViewById(R.id.tabRecyclerView);
         mVersionTextView = findViewById(R.id.versionTextView);
 
