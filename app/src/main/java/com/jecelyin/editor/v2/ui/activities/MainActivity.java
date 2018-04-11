@@ -52,6 +52,12 @@ import com.afollestad.materialdialogs.folderselector.FolderChooserDialog;
 import com.afollestad.materialdialogs.util.DialogUtils;
 import com.azeesoft.lib.colorpicker.ColorPickerDialog;
 import com.duy.text.editor.R;
+import com.jecelyin.android.file_explorer.FileExplorerActivity;
+import com.jecelyin.common.utils.IOUtils;
+import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.SysUtils;
+import com.jecelyin.common.utils.UIUtils;
+import com.jecelyin.editor.v2.Pref;
 import com.jecelyin.editor.v2.common.Command;
 import com.jecelyin.editor.v2.common.SaveListener;
 import com.jecelyin.editor.v2.task.ClusterCommand;
@@ -72,12 +78,6 @@ import com.jecelyin.editor.v2.ui.widget.menu.MenuDef;
 import com.jecelyin.editor.v2.ui.widget.menu.MenuFactory;
 import com.jecelyin.editor.v2.ui.widget.menu.MenuItemInfo;
 import com.jecelyin.editor.v2.utils.DBHelper;
-import com.jecelyin.android.file_explorer.FileExplorerActivity;
-import com.jecelyin.common.utils.IOUtils;
-import com.jecelyin.common.utils.L;
-import com.jecelyin.common.utils.SysUtils;
-import com.jecelyin.common.utils.UIUtils;
-import com.jecelyin.editor.v2.Pref;
 
 import org.gjt.sp.jedit.Catalog;
 

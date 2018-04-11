@@ -21,12 +21,6 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <include
-                layout="@layout/loading_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -36,8 +30,7 @@
                     android:id="@+id/tab_pager"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:visibility="gone" />
+                    android:layout_weight="1" />
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"
@@ -54,6 +47,11 @@
                 </HorizontalScrollView>
             </LinearLayout>
 
+            <include
+                layout="@layout/loading_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
 
         </FrameLayout>
 
