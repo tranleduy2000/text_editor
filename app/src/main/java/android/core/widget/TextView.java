@@ -205,10 +205,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
     // display attributes
     private final TextPaint mTextPaint;
     private final Paint mHighlightPaint;
-    protected int mPaddingStart = 0;
-    protected int mPaddingEnd = 0;
-    protected int mPaddingTop = 0;
-    protected int mPaddingBottom = 0;
+
     /**
      * EditText specific data, created on demand when one of the Editor fields is used.
      * See {@link #createEditorIfNeeded()}.
@@ -807,7 +804,21 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         return mText;
     }
 
-    //    @android.view.RemotableViewMethod
+    /**
+     * Sets the string value of the TextView. TextView <em>does not</em> accept
+     * HTML-like formatting, which you can do with text strings in XML resource files.
+     * To style your strings, attach android.text.style.* objects to a
+     * {@link android.text.SpannableString SpannableString}, or see the
+     * <a href="{@docRoot}guide/topics/resources/available-resources.html#stringresources">
+     * Available Resource Types</a> documentation for an example of setting
+     * formatted text in the XML resource file.
+     *
+     * @attr ref android.R.styleable#TextView_text
+     */
+    public final void setText(CharSequence text) {
+        setText(text, mBufferType);
+    }
+
     public final void setText(int resid) {
         setText(getContext().getResources().getText(resid));
     }
@@ -1071,13 +1082,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      * Drawable if any.
      */
     public int getCompoundPaddingTop() {
-//        final Drawables dr = mDrawables;
-//        if (dr == null || dr.mDrawableTop == null) {
-//            return mPaddingTop;
-//        } else {
-//            return mPaddingTop + dr.mDrawablePadding + dr.mDrawableSizeTop;
-//        }
-        return mPaddingTop;
+        return getPaddingTop();
     }
 
     /**
@@ -1085,13 +1090,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      * Drawable if any.
      */
     public int getCompoundPaddingBottom() {
-//        final Drawables dr = mDrawables;
-//        if (dr == null || dr.mDrawableBottom == null) {
-//            return mPaddingBottom;
-//        } else {
-//            return mPaddingBottom + dr.mDrawablePadding + dr.mDrawableSizeBottom;
-//        }
-        return mPaddingBottom;
+        return getPaddingBottom();
     }
 
     /**
@@ -1099,13 +1098,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      * Drawable if any.
      */
     public int getCompoundPaddingLeft() {
-//        final Drawables dr = mDrawables;
-//        if (dr == null || dr.mDrawableLeft == null) {
-//            return mPaddingLeft;
-//        } else {
-//            return mPaddingLeft + dr.mDrawablePadding + dr.mDrawableSizeLeft;
-//        }
-        return mPaddingStart;
+        return getPaddingStart();
     }
 
     /**
@@ -1113,13 +1106,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      * Drawable if any.
      */
     public int getCompoundPaddingRight() {
-//        final Drawables dr = mDrawables;
-//        if (dr == null || dr.mDrawableRight == null) {
-//            return mPaddingRight;
-//        } else {
-//            return mPaddingRight + dr.mDrawablePadding + dr.mDrawableSizeRight;
-//        }
-        return mPaddingEnd;
+        return getPaddingEnd();
     }
 
     /**
@@ -1278,11 +1265,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
 
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
-        mPaddingStart = left;
-        mPaddingTop = top;
-        mPaddingEnd = right;
-        mPaddingBottom = bottom;
-
         if (left != getPaddingLeft() ||
                 right != getPaddingRight() ||
                 top != getPaddingTop() ||
@@ -1297,11 +1279,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
 
     @Override
     public void setPaddingRelative(int start, int top, int end, int bottom) {
-        mPaddingStart = start;
-        mPaddingTop = top;
-        mPaddingEnd = end;
-        mPaddingBottom = bottom;
-
         if (start != getPaddingStart() ||
                 end != getPaddingEnd() ||
                 top != getPaddingTop() ||
@@ -1332,7 +1309,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *
      * @attr ref android.R.styleable#TextView_autoLink
      */
-////    @android.view.RemotableViewMethod
     public final void setAutoLinkMask(int mask) {
         mAutoLinkMask = mask;
     }
@@ -1381,7 +1357,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      * @param size The scaled pixel size.
      * @attr ref android.R.styleable#TextView_textSize
      */
-////    @android.view.RemotableViewMethod
     public void setTextSize(float size) {
         setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
     }
@@ -1454,7 +1429,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *
      * @attr ref android.R.styleable#TextView_textScaleX
      */
-////    @android.view.RemotableViewMethod
     public void setTextScaleX(float size) {
         if (size != mTextPaint.getTextScaleX()) {
             mUserSetTextScaleX = true;
@@ -1569,7 +1543,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *
      * @attr ref android.R.styleable#TextView_textColorHighlight
      */
-////    @android.view.RemotableViewMethod
     public void setHighlightColor(int color) {
         if (mHighlightColor != color) {
             mHighlightColor = color;
@@ -1590,7 +1563,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      * Sets whether the soft input method will be made visible when this
      * TextView gets focused. The default is true.
      */
-////    @android.view.RemotableViewMethod
     public final void setShowSoftInputOnFocus(boolean show) {
         createEditorIfNeeded();
         mEditor.mShowSoftInputOnFocus = show;
@@ -1690,7 +1662,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *
      * @attr ref android.R.styleable#TextView_linksClickable
      */
-////    @android.view.RemotableViewMethod
     public final void setLinksClickable(boolean whether) {
         mLinksClickable = whether;
     }
@@ -1719,7 +1690,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      * @see #getHintTextColors()
      * @see #setTextColor(int)
      */
-////    @android.view.RemotableViewMethod
     public final void setHintTextColor(int color) {
         mHintTextColor = ColorStateList.valueOf(color);
         updateTextColors();
@@ -1767,7 +1737,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      * @see #setLinkTextColor(android.content.res.ColorStateList)
      * @see #getLinkTextColors()
      */
-////    @android.view.RemotableViewMethod
     public final void setLinkTextColor(int color) {
         mLinkTextColor = ColorStateList.valueOf(color);
         updateTextColors();
@@ -1862,7 +1831,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *
      * @see android.graphics.Paint#setFlags
      */
-////    @android.view.RemotableViewMethod
     public void setPaintFlags(int flags) {
         if (mTextPaint.getFlags() != flags) {
             mTextPaint.setFlags(flags);
@@ -1923,7 +1891,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      * @attr ref android.R.styleable#TextView_minLines
      * @see #getMinLines()
      */
-////    @android.view.RemotableViewMethod
     public void setMinLines(int minlines) {
         mMinimum = minlines;
         mMinMode = LINES;
@@ -1949,7 +1916,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *
      * @attr ref android.R.styleable#TextView_minHeight
      */
-////    @android.view.RemotableViewMethod
     public void setMinHeight(int minHeight) {
         mMinimum = minHeight;
         mMinMode = PIXELS;
@@ -1975,7 +1941,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *
      * @attr ref android.R.styleable#TextView_maxLines
      */
-////    @android.view.RemotableViewMethod
     public void setMaxLines(int maxlines) {
         mMaximum = maxlines;
         mMaxMode = LINES;
@@ -2002,7 +1967,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *
      * @attr ref android.R.styleable#TextView_maxHeight
      */
-//    @android.view.RemotableViewMethod
     public void setMaxHeight(int maxHeight) {
         mMaximum = maxHeight;
         mMaxMode = PIXELS;
@@ -2019,7 +1983,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *
      * @attr ref android.R.styleable#TextView_lines
      */
-//    @android.view.RemotableViewMethod
     public void setLines(int lines) {
         mMaximum = mMinimum = lines;
         mMaxMode = mMinMode = LINES;
@@ -2038,7 +2001,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *
      * @attr ref android.R.styleable#TextView_height
      */
-//    @android.view.RemotableViewMethod
     public void setHeight(int pixels) {
         mMaximum = mMinimum = pixels;
         mMaxMode = mMinMode = PIXELS;
@@ -2063,24 +2025,12 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *
      * @attr ref android.R.styleable#TextView_minEms
      */
-//    @android.view.RemotableViewMethod
     public void setMinEms(int minems) {
         mMinWidth = minems;
         mMinWidthMode = EMS;
 
         requestLayout();
         invalidate();
-    }
-
-    /**
-     * @return the minimum width of the TextView, in pixels or -1 if the minimum width
-     * was set in ems instead (using {@link #setMinEms(int)} or {@link #setEms(int)}).
-     * @attr ref android.R.styleable#TextView_minWidth
-     * @see #setMinWidth(int)
-     * @see #setWidth(int)
-     */
-    public int getMinWidth() {
-        return mMinWidthMode == PIXELS ? mMinWidth : -1;
     }
 
 //    @Override
@@ -2111,11 +2061,21 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
 //    }
 
     /**
+     * @return the minimum width of the TextView, in pixels or -1 if the minimum width
+     * was set in ems instead (using {@link #setMinEms(int)} or {@link #setEms(int)}).
+     * @attr ref android.R.styleable#TextView_minWidth
+     * @see #setMinWidth(int)
+     * @see #setWidth(int)
+     */
+    public int getMinWidth() {
+        return mMinWidthMode == PIXELS ? mMinWidth : -1;
+    }
+
+    /**
      * Makes the TextView at least this many pixels wide
      *
      * @attr ref android.R.styleable#TextView_minWidth
      */
-//    @android.view.RemotableViewMethod
     public void setMinWidth(int minpixels) {
         mMinWidth = minpixels;
         mMinWidthMode = PIXELS;
@@ -2140,7 +2100,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *
      * @attr ref android.R.styleable#TextView_maxEms
      */
-//    @android.view.RemotableViewMethod
     public void setMaxEms(int maxems) {
         mMaxWidth = maxems;
         mMaxWidthMode = EMS;
@@ -2160,20 +2119,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
         return mMaxWidthMode == PIXELS ? mMaxWidth : -1;
     }
 
-    /**
-     * Makes the TextView at most this many pixels wide
-     *
-     * @attr ref android.R.styleable#TextView_maxWidth
-     */
-//    @android.view.RemotableViewMethod
-    public void setMaxWidth(int maxpixels) {
-        mMaxWidth = maxpixels;
-        mMaxWidthMode = PIXELS;
-
-        requestLayout();
-        invalidate();
-    }
-
     ///////////////////////////////////////////////////////////////////////////
 
 //    /**
@@ -2185,6 +2130,19 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
 //    }
 
     /**
+     * Makes the TextView at most this many pixels wide
+     *
+     * @attr ref android.R.styleable#TextView_maxWidth
+     */
+    public void setMaxWidth(int maxpixels) {
+        mMaxWidth = maxpixels;
+        mMaxWidthMode = PIXELS;
+
+        requestLayout();
+        invalidate();
+    }
+
+    /**
      * Makes the TextView exactly this many ems wide
      *
      * @attr ref android.R.styleable#TextView_ems
@@ -2193,7 +2151,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      * @see #getMinEms()
      * @see #getMaxEms()
      */
-//    @android.view.RemotableViewMethod
     public void setEms(int ems) {
         mMaxWidth = mMinWidth = ems;
         mMaxWidthMode = mMinWidthMode = EMS;
@@ -2213,7 +2170,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      * @see #getMinWidth()
      * @see #getMaxWidth()
      */
-//    @android.view.RemotableViewMethod
     public void setWidth(int pixels) {
         mMaxWidth = mMinWidth = pixels;
         mMaxWidthMode = mMinWidthMode = PIXELS;
@@ -2492,7 +2448,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *                    entire text data: true to include it, false to not.
      * @attr ref android.R.styleable#TextView_freezesText
      */
-//    @android.view.RemotableViewMethod
     public void setFreezesText(boolean freezesText) {
         mFreezesText = freezesText;
     }
@@ -2506,29 +2461,12 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
     }
 
     /**
-     * Sets the string value of the TextView. TextView <em>does not</em> accept
-     * HTML-like formatting, which you can do with text strings in XML resource files.
-     * To style your strings, attach android.text.style.* objects to a
-     * {@link android.text.SpannableString SpannableString}, or see the
-     * <a href="{@docRoot}guide/topics/resources/available-resources.html#stringresources">
-     * Available Resource Types</a> documentation for an example of setting
-     * formatted text in the XML resource file.
-     *
-     * @attr ref android.R.styleable#TextView_text
-     */
-//    @android.view.RemotableViewMethod
-    public final void setText(CharSequence text) {
-        setText(text, mBufferType);
-    }
-
-    /**
      * Like {@link #setText(CharSequence)},
      * except that the cursor position (if any) is retained in the new text.
      *
      * @param text The new text to place in the text view.
      * @see #setText(CharSequence)
      */
-//    @android.view.RemotableViewMethod
     public final void setTextKeepState(CharSequence text) {
         setTextKeepState(text, mBufferType);
     }
@@ -2739,7 +2677,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *
      * @attr ref android.R.styleable#TextView_hint
      */
-//    @android.view.RemotableViewMethod
     public final void setHint(CharSequence hint) {
         mHint = TextUtils.stringOrSpannedString(hint);
 
@@ -2774,7 +2711,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *
      * @attr ref android.R.styleable#TextView_hint
      */
-//    @android.view.RemotableViewMethod
     public final void setHint(int resid) {
         setHint(getContext().getResources().getText(resid));
     }
@@ -2793,7 +2729,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *
      * @attr ref android.R.styleable#TextView_singleLine
      */
-//    @android.view.RemotableViewMethod
     public void setSingleLine(boolean singleLine) {
         // Could be used, but may break backward compatibility.
         // if (mSingleLine == singleLine) return;
@@ -3178,7 +3113,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      * <code>error</code> is <code>null</code>, the error message and icon
      * will be cleared.
      */
-//    @android.view.RemotableViewMethod
     public void setError(CharSequence error) {
 //        if (error == null) {
 //            setError(null, null);
@@ -5704,7 +5638,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      * @attr ref android.R.styleable#TextView_cursorVisible
      * @see #isCursorVisible()
      */
-//    @android.view.RemotableViewMethod
     public void setCursorVisible(boolean visible) {
         if (visible && mEditor == null) return; // visible is the default value with no edit data
         createEditorIfNeeded();
@@ -7110,6 +7043,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
     }
 
     private void init() {
+        setSaveEnabled(false);
         // 横屏的时候关闭完成按钮和编辑状态不使用系统的全屏编辑框
         setImeOptions(EditorInfo.IME_ACTION_DONE | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 
