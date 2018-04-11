@@ -18,6 +18,8 @@ package android.core.text;
 
 //import android.emoji.EmojiFactory;
 
+import android.core.util.ArrayUtils;
+import android.core.util.GrowingArrayUtils;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -32,9 +34,6 @@ import android.text.style.LineBackgroundSpan;
 import android.text.style.ParagraphStyle;
 import android.text.style.ReplacementSpan;
 import android.text.style.TabStopSpan;
-
-import android.core.util.ArrayUtils;
-import android.core.util.GrowingArrayUtils;
 
 import java.util.Arrays;
 
@@ -56,7 +55,7 @@ public abstract class Layout {
 //    /* package */ static final EmojiFactory EMOJI_FACTORY = EmojiFactory.newAvailableInstance();
 //    /* package */ static final int MIN_EMOJI, MAX_EMOJI;
 
-//    static {
+    //    static {
 //        if (EMOJI_FACTORY != null) {
 //            MIN_EMOJI = EMOJI_FACTORY.getMinimumAndroidPua();
 //            MAX_EMOJI = EMOJI_FACTORY.getMaximumAndroidPua();
@@ -1836,6 +1835,7 @@ public abstract class Layout {
      * no ellipsis is to take place.
      */
     public abstract int getEllipsisCount(int line);
+
     public enum Alignment {
         ALIGN_NORMAL,
         ALIGN_OPPOSITE,

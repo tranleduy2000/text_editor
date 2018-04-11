@@ -40,7 +40,7 @@ import android.text.style.ParagraphStyle;
 public class BoringLayout extends Layout implements TextUtils.EllipsizeCallback {
     private static final char FIRST_RIGHT_TO_LEFT = '\u0590';
 
-//    public static BoringLayout make(CharSequence source,
+    //    public static BoringLayout make(CharSequence source,
 //                        TextPaint paint, int outerwidth,
 //                        Alignment align,
 //                        float spacingmult, float spacingadd,
@@ -54,7 +54,7 @@ public class BoringLayout extends Layout implements TextUtils.EllipsizeCallback 
             new TextPaint();
     /* package */ int mBottom, mDesc;   // for Direct
 
-//    public BoringLayout(CharSequence source,
+    //    public BoringLayout(CharSequence source,
 //                        TextPaint paint, int outerwidth,
 //                        Alignment align,
 //                        float spacingmult, float spacingadd,

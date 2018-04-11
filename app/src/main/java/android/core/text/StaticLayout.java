@@ -16,6 +16,8 @@
 
 package android.core.text;
 
+import android.core.util.ArrayUtils;
+import android.core.util.GrowingArrayUtils;
 import android.graphics.Paint;
 import android.os.Build;
 import android.text.Spanned;
@@ -26,9 +28,6 @@ import android.text.style.LineHeightSpan;
 import android.text.style.MetricAffectingSpan;
 import android.text.style.TabStopSpan;
 import android.util.Log;
-
-import android.core.util.ArrayUtils;
-import android.core.util.GrowingArrayUtils;
 
 import java.text.BreakIterator;
 import java.util.Arrays;
@@ -54,7 +53,7 @@ public class StaticLayout extends Layout {
     private static final int COLUMNS_NORMAL = 4; //jec+ linebreak
     private static final int COLUMNS_ELLIPSIZE = 5;
 
-//    public StaticLayout(CharSequence source, int bufstart, int bufend,
+    //    public StaticLayout(CharSequence source, int bufstart, int bufend,
 //                        TextPaint paint, int outerwidth,
 //                        Alignment align,
 //                        float spacingmult, float spacingadd,
@@ -93,6 +92,7 @@ public class StaticLayout extends Layout {
      */
     private MeasuredText mMeasured;
     private Paint.FontMetricsInt mFontMetricsInt = new Paint.FontMetricsInt();
+
     public StaticLayout(LayoutContext layoutContext, CharSequence source, TextPaint paint,
                         int width,
                         Alignment align, float spacingmult, float spacingadd,
@@ -100,6 +100,7 @@ public class StaticLayout extends Layout {
         this(layoutContext, source, 0, source.length(), paint, width, align,
                 spacingmult, spacingadd, includepad);
     }
+
     /**
      * @hide
      */
@@ -110,6 +111,7 @@ public class StaticLayout extends Layout {
         this(layoutContext, source, 0, source.length(), paint, width, align, textDir,
                 spacingmult, spacingadd, includepad);
     }
+
     /**
      * @hide
      */
@@ -132,6 +134,7 @@ public class StaticLayout extends Layout {
                 TextDirectionHeuristics.FIRSTSTRONG_LTR,
                 spacingmult, spacingadd, includepad, /*ellipsize, ellipsizedWidth,*/ Integer.MAX_VALUE);
     }
+
     /**
      * @hide
      */
@@ -183,6 +186,7 @@ public class StaticLayout extends Layout {
         mMeasured = MeasuredText.recycle(mMeasured);
         mFontMetricsInt = null;
     }
+
     /* package */ StaticLayout(LayoutContext layoutContext, CharSequence text) {
         super(layoutContext, text, null, 0, null, 0, 0);
 

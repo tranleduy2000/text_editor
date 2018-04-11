@@ -1,9 +1,8 @@
 package android.core.content;
 
+import android.core.text.TextUtils;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import android.core.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

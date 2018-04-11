@@ -38,22 +38,85 @@ import android.view.ViewConfiguration;
 import android.view.ViewParent;
 import android.view.inputmethod.InputMethodManager;
 
-import com.jecelyin.editor.v2.Pref;
 import com.jecelyin.common.utils.LimitedQueue;
+import com.jecelyin.editor.v2.Pref;
 import com.jecelyin.editor.v2.ui.widget.editor.FastScroller;
 
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>
  */
 public class EditorView extends TextView {
+    /**
+     * Indicates that we are not in the middle of a touch gesture
+     */
+    static final int TOUCH_MODE_REST = -1;
+    /**
+     * Indicates we just received the touch event and we are waiting to see if the it is a tap or a
+     * scroll gesture.
+     */
+    static final int TOUCH_MODE_DOWN = 0;
+    /**
+     * Indicates the touch has been recognized as a tap and we are now waiting to see if the touch
+     * is a longpress
+     */
+    static final int TOUCH_MODE_TAP = 1;
+    /**
+     * Indicates we have waited for everything we can wait for, but the user's finger is still down
+     */
+    static final int TOUCH_MODE_DONE_WAITING = 2;
+    /**
+     * Indicates the touch gesture is a scroll
+     */
+    static final int TOUCH_MODE_SCROLL = 3;
+    /**
+     * Indicates the view is in the process of being flung
+     */
+    static final int TOUCH_MODE_FLING = 4;
+    /**
+     * Indicates the touch gesture is an overscroll - a scroll beyond the beginning or end.
+     */
+    static final int TOUCH_MODE_OVERSCROLL = 5;
+    /**
+     * Indicates the view is being flung outside of normal content bounds
+     * and will spring back.
+     */
+    static final int TOUCH_MODE_OVERFLING = 6;
+    /**
+     * Sentinel value for no current active pointer.
+     * Used by {@link #mActivePointerId}.
+     */
+    private static final int INVALID_POINTER = -1;
+    /**
+     * Maximum distance to overfling during edge effects
+     */
+    int mOverflingDistance;
+    /**
+     * Maximum distance to overscroll by during edge effects
+     */
+    int mOverscrollDistance;
+    /**
+     * The Y value associated with the the down motion event
+     */
+    int mMotionY;
+    /**
+     * One of TOUCH_MODE_REST, TOUCH_MODE_DOWN, TOUCH_MODE_TAP, TOUCH_MODE_SCROLL, or
+     * TOUCH_MODE_DONE_WAITING
+     */
+    int mTouchMode = TOUCH_MODE_REST;
+    /**
+     * Y value from on the previous motion event (if any)
+     */
+    int mLastY;
+    /**
+     * How far the finger moved before we started scrolling
+     */
+    int mMotionCorrection;
     private OnEditorSizeChangedListener onEditorSizeChangedListener;
     private UndoManager undoManager;
     private EditorHelper editorHelper;
-
     private ScaleGestureDetector mScaleDetector;
     private LimitedQueue<Integer> mPositionHistoryList = new LimitedQueue<>(30);
     private int currentLocation = -1;
-
     /**
      * Helper object that renders and controls the fast scroll thumb.
      */
@@ -62,85 +125,10 @@ public class EditorView extends TextView {
     private int mMaximumVelocity;
     private int mTouchSlop;
     /**
-     * Maximum distance to overfling during edge effects
-     */
-    int mOverflingDistance;
-    /**
      * ID of the active pointer. This is used to retain consistency during
      * drags/flings if multiple pointers are used.
      */
     private int mActivePointerId = INVALID_POINTER;
-    /**
-     * Sentinel value for no current active pointer.
-     * Used by {@link #mActivePointerId}.
-     */
-    private static final int INVALID_POINTER = -1;
-    /**
-     * Maximum distance to overscroll by during edge effects
-     */
-    int mOverscrollDistance;
-    /**
-     * Indicates that we are not in the middle of a touch gesture
-     */
-    static final int TOUCH_MODE_REST = -1;
-
-    /**
-     * Indicates we just received the touch event and we are waiting to see if the it is a tap or a
-     * scroll gesture.
-     */
-    static final int TOUCH_MODE_DOWN = 0;
-
-    /**
-     * Indicates the touch has been recognized as a tap and we are now waiting to see if the touch
-     * is a longpress
-     */
-    static final int TOUCH_MODE_TAP = 1;
-
-    /**
-     * Indicates we have waited for everything we can wait for, but the user's finger is still down
-     */
-    static final int TOUCH_MODE_DONE_WAITING = 2;
-
-    /**
-     * Indicates the touch gesture is a scroll
-     */
-    static final int TOUCH_MODE_SCROLL = 3;
-
-    /**
-     * Indicates the view is in the process of being flung
-     */
-    static final int TOUCH_MODE_FLING = 4;
-
-    /**
-     * Indicates the touch gesture is an overscroll - a scroll beyond the beginning or end.
-     */
-    static final int TOUCH_MODE_OVERSCROLL = 5;
-
-    /**
-     * Indicates the view is being flung outside of normal content bounds
-     * and will spring back.
-     */
-    static final int TOUCH_MODE_OVERFLING = 6;
-    /**
-     * The Y value associated with the the down motion event
-     */
-    int mMotionY;
-
-    /**
-     * One of TOUCH_MODE_REST, TOUCH_MODE_DOWN, TOUCH_MODE_TAP, TOUCH_MODE_SCROLL, or
-     * TOUCH_MODE_DONE_WAITING
-     */
-    int mTouchMode = TOUCH_MODE_REST;
-
-    /**
-     * Y value from on the previous motion event (if any)
-     */
-    int mLastY;
-
-    /**
-     * How far the finger moved before we started scrolling
-     */
-    int mMotionCorrection;
     /**
      * Determines speed during touch scrolling
      */
@@ -151,10 +139,6 @@ public class EditorView extends TextView {
      */
     private FlingRunnable mFlingRunnable;
     private KeyListener keyListener;
-
-    public static interface OnEditorSizeChangedListener {
-        void onEditorSizeChanged(int w, int h, int oldw, int oldh);
-    }
 
     public EditorView(Context context) {
         this(context, null);
@@ -216,6 +200,18 @@ public class EditorView extends TextView {
         Selection.extendSelection(getText(), index);
     }
 
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        if (onEditorSizeChangedListener != null)
+            onEditorSizeChangedListener.onEditorSizeChanged(w, h, oldw, oldh);
+
+        if (mFastScroller != null) {
+            mFastScroller.onSizeChanged(w, h, oldw, oldh);
+        }
+    }
+
 //    @Override
 //    public void setEllipsize(TextUtils.TruncateAt ellipsis) {
 //        if (ellipsis == TextUtils.TruncateAt.MARQUEE) {
@@ -255,27 +251,14 @@ public class EditorView extends TextView {
 //        }
 //    }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-
-        if(onEditorSizeChangedListener != null)
-            onEditorSizeChangedListener.onEditorSizeChanged(w, h, oldw, oldh);
-
-        if(mFastScroller != null)
-        {
-            mFastScroller.onSizeChanged(w, h, oldw, oldh);
-        }
-    }
-
     public void setReadOnly(boolean readOnly) {
         if (readOnly) {
-            if(keyListener == null) {
+            if (keyListener == null) {
                 keyListener = getKeyListener();
             }
             setKeyListener(null);
         } else {
-            if(keyListener != null) {
+            if (keyListener != null) {
                 setKeyListener(keyListener);
                 keyListener = null;
             }
@@ -377,14 +360,14 @@ public class EditorView extends TextView {
     }
 
     public void gotoEnd() {
-        setSelection(getLayout().getLineStart(getLineCount()-1));
+        setSelection(getLayout().getLineStart(getLineCount() - 1));
     }
 
     public void gotoLine(int line) {
-        if(line <= 0 || line > getLineCount())
+        if (line <= 0 || line > getLineCount())
             return;
         int vLine = getLayout().realLineToVirtualLine(line);
-        if(vLine == -1)
+        if (vLine == -1)
             return;
         int offset = getLayout().getLineStart(vLine);
         setSelection(offset);
@@ -425,7 +408,7 @@ public class EditorView extends TextView {
                         final int y = (int) ev.getY();
                         int motionPosition = getScrollY();//pointToPosition(x, y);
 //                        if (!mDataChanged) {
-                        if ((mTouchMode != TOUCH_MODE_FLING) && (motionPosition >= 0) ) {
+                        if ((mTouchMode != TOUCH_MODE_FLING) && (motionPosition >= 0)) {
                             // User clicked on an actual view (and was not stopping a fling).
                             // It might be a click or a scroll. Assume it is a click until
                             // proven otherwise
@@ -591,25 +574,6 @@ public class EditorView extends TextView {
         currentLocation = mPositionHistoryList.size() - 1;
     }
 
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-        private final float minSize;
-        private final float maxSize;
-
-        public ScaleListener() {
-            DisplayMetrics metrics = getResources().getDisplayMetrics();
-            minSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, Pref.DEF_MIN_FONT_SIZE, metrics);
-            maxSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, Pref.DEF_MAX_FONT_SIZE, metrics);
-        }
-
-        @Override
-        public boolean onScale(ScaleGestureDetector detector) {
-            float size = getTextSize() * detector.getScaleFactor();
-            size = Math.max(minSize, Math.min(size, maxSize * 2));
-            setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
-            return true;
-        }
-    }
-
     private boolean startScrollIfNeeded(int y) {
         // Check if we have moved far enough that it looks more like a
         // scroll than a tap
@@ -714,8 +678,7 @@ public class EditorView extends TextView {
     protected void onScrollChanged(int horiz, int vert, int oldHoriz, int oldVert) {
         super.onScrollChanged(horiz, vert, oldHoriz, oldVert);
 
-        if(mFastScroller != null && getLayout() != null)
-        {
+        if (mFastScroller != null && getLayout() != null) {
             int h = getBottom() - getTop() - getExtendedPaddingBottom() - getExtendedPaddingTop();
             int h2 = getLayout().getHeight();
             mFastScroller.onScroll(this, vert, h, h2);
@@ -759,7 +722,7 @@ public class EditorView extends TextView {
         int offset = mPositionHistoryList.get(currentLocation);
 
         if (offset >= length() || offset < 0) {
-            for (;currentLocation >= 0; currentLocation--) {
+            for (; currentLocation >= 0; currentLocation--) {
                 mPositionHistoryList.remove(currentLocation);
             }
             return false;
@@ -794,5 +757,28 @@ public class EditorView extends TextView {
         setSelection(offset);
 
         return true;
+    }
+
+    public static interface OnEditorSizeChangedListener {
+        void onEditorSizeChanged(int w, int h, int oldw, int oldh);
+    }
+
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        private final float minSize;
+        private final float maxSize;
+
+        public ScaleListener() {
+            DisplayMetrics metrics = getResources().getDisplayMetrics();
+            minSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, Pref.DEF_MIN_FONT_SIZE, metrics);
+            maxSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, Pref.DEF_MAX_FONT_SIZE, metrics);
+        }
+
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            float size = getTextSize() * detector.getScaleFactor();
+            size = Math.max(minSize, Math.min(size, maxSize * 2));
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+            return true;
+        }
     }
 }

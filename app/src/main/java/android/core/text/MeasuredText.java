@@ -17,14 +17,13 @@
 
 package android.core.text;
 
+import android.core.util.ArrayUtils;
 import android.graphics.Paint;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.style.MetricAffectingSpan;
 import android.text.style.ReplacementSpan;
 import android.util.Log;
-
-import android.core.util.ArrayUtils;
 
 //import Layout;
 
@@ -47,6 +46,7 @@ class MeasuredText {
     int mLen;
     private int mPos;
     private TextPaint mWorkPaint;
+
     private MeasuredText() {
         mWorkPaint = new TextPaint();
     }

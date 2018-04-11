@@ -18,6 +18,10 @@
 
 package android.core.text.method;
 
+import android.core.text.Layout;
+import android.core.text.MetaKeyKeyListenerCompat;
+import android.core.text.Selection;
+import android.core.widget.TextView;
 import android.graphics.Rect;
 import android.os.Build;
 import android.text.Spannable;
@@ -26,11 +30,6 @@ import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-
-import android.core.text.Layout;
-import android.core.text.MetaKeyKeyListenerCompat;
-import android.core.text.Selection;
-import android.core.widget.TextView;
 
 /**
  * A movement method that provides cursor movement and selection.

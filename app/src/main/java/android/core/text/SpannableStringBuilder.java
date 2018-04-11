@@ -17,6 +17,12 @@
 package android.core.text;
 
 
+import android.core.graphics.CanvasCompat;
+import android.core.text.method.Touch;
+import android.core.util.ArrayUtils;
+import android.core.util.EmptyArray;
+import android.core.util.GrowingArrayUtils;
+import android.core.widget.TextView;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.text.Editable;
@@ -37,13 +43,6 @@ import android.text.style.ReplacementSpan;
 import android.text.style.SuggestionSpan;
 import android.text.style.URLSpan;
 import android.util.Log;
-
-import android.core.graphics.CanvasCompat;
-import android.core.text.method.Touch;
-import android.core.util.ArrayUtils;
-import android.core.util.EmptyArray;
-import android.core.util.GrowingArrayUtils;
-import android.core.widget.TextView;
 
 import java.lang.reflect.Array;
 

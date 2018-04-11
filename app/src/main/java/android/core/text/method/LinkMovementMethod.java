@@ -18,16 +18,15 @@
 
 package android.core.text.method;
 
+import android.core.text.Layout;
+import android.core.text.Selection;
+import android.core.widget.TextView;
 import android.text.NoCopySpan;
 import android.text.Spannable;
 import android.text.style.ClickableSpan;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-
-import android.core.text.Layout;
-import android.core.text.Selection;
-import android.core.widget.TextView;
 
 /**
  * A movement method that traverses links in the text buffer and scrolls if necessary.

@@ -16,6 +16,9 @@
 
 package android.core.text;
 
+import android.core.graphics.CanvasCompat;
+import android.core.graphics.TemporaryBuffer;
+import android.core.util.ArrayUtils;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -28,10 +31,6 @@ import android.text.style.CharacterStyle;
 import android.text.style.MetricAffectingSpan;
 import android.text.style.ReplacementSpan;
 import android.util.Log;
-
-import android.core.graphics.CanvasCompat;
-import android.core.graphics.TemporaryBuffer;
-import android.core.util.ArrayUtils;
 
 //import com.android.internal.util.ArrayUtils;
 

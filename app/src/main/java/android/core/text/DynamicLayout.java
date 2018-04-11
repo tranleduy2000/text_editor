@@ -16,6 +16,8 @@
 
 package android.core.text;
 
+import android.core.util.ArrayUtils;
+import android.core.util.GrowingArrayUtils;
 import android.graphics.Paint;
 import android.text.Editable;
 import android.text.SpanWatcher;
@@ -25,9 +27,6 @@ import android.text.TextPaint;
 import android.text.TextWatcher;
 import android.text.style.UpdateLayout;
 import android.text.style.WrapTogetherSpan;
-
-import android.core.util.ArrayUtils;
-import android.core.util.GrowingArrayUtils;
 
 import java.lang.ref.WeakReference;
 
@@ -106,6 +105,7 @@ public class DynamicLayout extends Layout {
     // The first index of the blocks whose locations are changed
     private int mIndexFirstChangedBlock;
     private int mTopPadding, mBottomPadding;
+
     /**
      * Make a layout for the specified text that will be updated as
      * the text is changed.
@@ -118,6 +118,7 @@ public class DynamicLayout extends Layout {
         this(layoutContext, base, base, paint, width, align, spacingmult, spacingadd,
                 includepad);
     }
+
     /**
      * Make a layout for the transformed text (password transformation
      * being the primary example of a transformation)
@@ -133,6 +134,7 @@ public class DynamicLayout extends Layout {
         this(layoutContext, base, display, paint, width, align, TextDirectionHeuristics.FIRSTSTRONG_LTR,
                 spacingmult, spacingadd, includepad);
     }
+
     /**
      * Make a layout for the transformed text (password transformation
      * being the primary example of a transformation)

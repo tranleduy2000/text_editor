@@ -16,6 +16,8 @@
 
 package android.core.text;
 
+import android.core.text.style.SuggestionRangeSpan;
+import android.core.util.ArrayUtils;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -56,9 +58,6 @@ import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.util.Printer;
 import android.view.View;
-
-import android.core.text.style.SuggestionRangeSpan;
-import android.core.util.ArrayUtils;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;
@@ -356,6 +355,7 @@ public class TextUtils {
     private static String[] EMPTY_STRING_ARRAY = new String[]{};
     private static String ARAB_SCRIPT_SUBTAG = "Arab";
     private static String HEBR_SCRIPT_SUBTAG = "Hebr";
+
     private TextUtils() { /* cannot be instantiated */ }
 
     public static void getChars(CharSequence s, int start, int end,

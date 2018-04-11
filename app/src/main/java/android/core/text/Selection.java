@@ -474,6 +474,7 @@ public class Selection {
                 return Math.min(off1, off2);
         }
     }
+
     /**
      * {@hide}
      */

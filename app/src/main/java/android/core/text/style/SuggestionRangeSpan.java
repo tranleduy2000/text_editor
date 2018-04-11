@@ -18,12 +18,11 @@
 
 package android.core.text.style;
 
+import android.core.text.TextUtils;
 import android.os.Parcel;
 import android.text.ParcelableSpan;
 import android.text.TextPaint;
 import android.text.style.CharacterStyle;
-
-import android.core.text.TextUtils;
 
 /**
  * A SuggestionRangeSpan is used to show which part of an EditText is affected by a suggestion

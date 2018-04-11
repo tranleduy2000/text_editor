@@ -18,11 +18,10 @@
 
 package android.core.text.method;
 
+import android.core.widget.TextView;
 import android.text.Spannable;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-
-import android.core.widget.TextView;
 
 
 /**

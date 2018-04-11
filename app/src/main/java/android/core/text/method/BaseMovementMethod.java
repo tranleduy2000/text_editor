@@ -18,15 +18,14 @@
 
 package android.core.text.method;
 
+import android.core.text.Layout;
+import android.core.text.MetaKeyKeyListenerCompat;
+import android.core.widget.TextView;
 import android.text.Spannable;
 import android.text.method.MetaKeyKeyListener;
 import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-
-import android.core.text.Layout;
-import android.core.text.MetaKeyKeyListenerCompat;
-import android.core.widget.TextView;
 
 /**
  * Base classes for movement methods.
