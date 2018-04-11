@@ -1,0 +1,34 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+    }
+    dataBinding {
+        enabled = true
+    }
+
+}
+
+
+dependencies {
+    testCompile 'com.android.support.test:runner:1.0.1'
+    testCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
+    testCompile 'com.android.support.test.espresso:espresso-contrib:3.0.1'
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile "com.android.support:design:$androidSupportVersion"
+    compile 'com.rengwuxian.materialedittext:library:2.0.3'
+    compile 'com.github.afollestad.material-dialogs:commons:0.8.5.8'
+    compile 'com.google.code.gson:gson:2.8.1'
+
+    compile "com.android.support:support-annotations:$androidSupportVersion"
+    compile "com.android.support:support-v4:$androidSupportVersion"
+    compile "com.android.support:support-vector-drawable:$androidSupportVersion"
+    compile "com.android.support:cardview-v7:$androidSupportVersion"
+    compile "com.android.support:recyclerview-v7:$androidSupportVersion"
+
+}
