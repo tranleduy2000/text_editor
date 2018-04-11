@@ -128,8 +128,8 @@ public class MainMenuAdapter extends RecyclerView.Adapter {
 
         ItemViewHolder(View view) {
             super(view);
-            mTextView = (TextView) view.findViewById(R.id.textView);
-            mCheckBox = (SwitchCompat) view.findViewById(R.id.checkbox);
+            mTextView = view.findViewById(R.id.textView);
+            mCheckBox = view.findViewById(R.id.checkbox);
         }
     }
 
@@ -144,7 +144,7 @@ public class MainMenuAdapter extends RecyclerView.Adapter {
 
         GroupViewHolder(View view) {
             super(view);
-            mNameTextView = (TextView) view.findViewById(R.id.nameTextView);
+            mNameTextView = view.findViewById(R.id.nameTextView);
         }
     }
 }
