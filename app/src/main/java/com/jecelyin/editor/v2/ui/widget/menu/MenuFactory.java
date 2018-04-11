@@ -20,7 +20,6 @@ package com.jecelyin.editor.v2.ui.widget.menu;
 
 import android.content.Context;
 
-import com.jecelyin.editor.v2.Pref;
 import com.duy.text.editor.R;
 import com.jecelyin.editor.v2.common.Command;
 

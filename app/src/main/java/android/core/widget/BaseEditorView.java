@@ -117,7 +117,6 @@ import android.widget.Scroller;
 
 import com.duy.text.editor.R;
 import com.jecelyin.common.utils.SysUtils;
-import com.jecelyin.editor.v2.Pref;
 
 import org.xmlpull.v1.XmlPullParserException;
 

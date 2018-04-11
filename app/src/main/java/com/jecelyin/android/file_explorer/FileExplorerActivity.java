@@ -40,7 +40,6 @@ import com.jecelyin.android.file_explorer.util.FileListSorter;
 import com.jecelyin.common.utils.IOUtils;
 import com.jecelyin.common.utils.UIUtils;
 import com.jecelyin.editor.v2.FullScreenActivity;
-import com.jecelyin.editor.v2.Pref;
 
 import java.io.File;
 import java.nio.charset.Charset;

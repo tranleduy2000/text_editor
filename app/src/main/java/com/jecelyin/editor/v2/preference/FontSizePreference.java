@@ -23,7 +23,6 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.TextView;
 
-import com.jecelyin.editor.v2.Pref;
 import com.jecelyin.editor.v2.adapter.RangeAdapter;
 
 

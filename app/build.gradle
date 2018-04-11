@@ -13,7 +13,12 @@ android {
 
         vectorDrawables.useSupportLibrary = true
     }
-
+    sourceSets {
+        main {
+            res.srcDirs += "src/main/file-expoler-res"
+            res.srcDirs += "src/main/style-res"
+        }
+    }
     buildTypes {
         release {
             debuggable false
@@ -31,6 +36,8 @@ android {
     dataBinding {
         enabled = true
     }
+
+
 }
 
 configurations {
@@ -41,8 +48,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':common')
-    compile project(':file_explorer')
-    compile project(':styles')
+
     compile "com.android.support:design:$androidSupportVersion"
     compile 'com.github.afollestad.material-dialogs:commons:0.8.5.8'
     compile 'com.rengwuxian.materialedittext:library:2.0.3'
@@ -50,6 +56,7 @@ dependencies {
     compile 'me.zhanghai.android.materialprogressbar:library:1.1.4'
     compile 'org.apmem.tools:layouts:1.10@aar'
     compile 'com.azeesoft.lib.colorpicker:colorpicker:1.0.8@aar'
-
     compile 'org.msgpack:msgpack-core:0.8.11'
+    compile 'com.makeramen:roundedimageview:2.2.1'
+    compile 'com.yqritc:recyclerview-flexibledivider:1.2.9'
 }

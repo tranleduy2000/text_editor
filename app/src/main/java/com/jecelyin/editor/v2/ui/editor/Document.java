@@ -37,7 +37,6 @@ import com.jecelyin.common.utils.L;
 import com.jecelyin.common.utils.StringUtils;
 import com.jecelyin.common.utils.SysUtils;
 import com.jecelyin.common.utils.UIUtils;
-import com.jecelyin.editor.v2.Pref;
 import com.stericson.RootTools.RootTools;
 
 import org.gjt.sp.jedit.Catalog;

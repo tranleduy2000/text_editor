@@ -31,7 +31,6 @@ import com.jecelyin.editor.v2.ui.activities.MainActivity;
 import com.jecelyin.editor.v2.ui.editor.EditorDelegate;
 import com.jecelyin.editor.v2.utils.DBHelper;
 import com.jecelyin.editor.v2.utils.ExtGrep;
-import com.jecelyin.editor.v2.Pref;
 import com.jecelyin.editor.v2.view.EditorViewGroup;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 

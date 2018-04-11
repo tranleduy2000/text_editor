@@ -40,7 +40,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.duy.text.editor.R;
 import com.jecelyin.common.utils.L;
 import com.jecelyin.common.utils.UIUtils;
-import com.jecelyin.editor.v2.Pref;
 import com.jecelyin.editor.v2.common.Command;
 import com.jecelyin.editor.v2.common.OnVisibilityChangedListener;
 import com.jecelyin.editor.v2.common.SaveListener;

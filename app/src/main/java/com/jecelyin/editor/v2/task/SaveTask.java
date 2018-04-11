@@ -22,7 +22,6 @@ import android.content.Context;
 
 import com.jecelyin.common.utils.L;
 import com.jecelyin.common.utils.UIUtils;
-import com.jecelyin.editor.v2.Pref;
 import com.duy.text.editor.R;
 import com.jecelyin.editor.v2.common.SaveListener;
 import com.jecelyin.editor.v2.io.FileWriter;

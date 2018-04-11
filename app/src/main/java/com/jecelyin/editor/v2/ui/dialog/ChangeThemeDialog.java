@@ -24,7 +24,6 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jecelyin.common.utils.UIUtils;
-import com.jecelyin.editor.v2.Pref;
 import com.duy.text.editor.R;
 import com.jecelyin.editor.v2.ui.editor.Document;
 import com.jecelyin.editor.v2.ui.activities.MainActivity;
