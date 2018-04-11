@@ -99,7 +99,6 @@ import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewDebug;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
 import android.view.accessibility.AccessibilityEvent;
@@ -230,7 +229,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
     private ColorStateList mTextColor;
     private ColorStateList mHintTextColor;
     private ColorStateList mLinkTextColor;
-    @ViewDebug.ExportedProperty(category = "text")
     private int mCurTextColor;
     private int mCurHintTextColor;
     private boolean mFreezesText;
@@ -264,7 +262,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      * the layout that should be used when the mode switches.
      */
     private Layout mSavedMarqueeModeLayout;
-    @ViewDebug.ExportedProperty(category = "text")
     private CharSequence mText;
     private CharSequence mTransformed;
     private BufferType mBufferType = BufferType.NORMAL;
@@ -799,7 +796,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *
      * @attr ref android.R.styleable#TextView_text
      */
-    @ViewDebug.CapturedViewProperty
     public CharSequence getText() {
         return mText;
     }
@@ -1344,7 +1340,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
     /**
      * @return the size (in pixels) of the default text size in this TextView.
      */
-    @ViewDebug.ExportedProperty(category = "text")
     public float getTextSize() {
         return mTextPaint.getTextSize();
     }
@@ -1365,20 +1360,11 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      * @return the size (in scaled pixels) of thee default text size in this TextView.
      * @hide
      */
-    @ViewDebug.ExportedProperty(category = "text")
     public float getScaledTextSize() {
         return mTextPaint.getTextSize() / mTextPaint.density;
     }
 
-    /**
-     * @hide
-     */
-    @ViewDebug.ExportedProperty(category = "text", mapping = {
-            @ViewDebug.IntToString(from = Typeface.NORMAL, to = "NORMAL"),
-            @ViewDebug.IntToString(from = Typeface.BOLD, to = "BOLD"),
-            @ViewDebug.IntToString(from = Typeface.ITALIC, to = "ITALIC"),
-            @ViewDebug.IntToString(from = Typeface.BOLD_ITALIC, to = "BOLD_ITALIC")
-    })
+
     public int getTypefaceStyle() {
         return mTextPaint.getTypeface().getStyle();
     }
@@ -2500,17 +2486,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
 
         if (!mUserSetTextScaleX) mTextPaint.setTextScaleX(1.0f);
 
-//        if (text instanceof Spanned &&
-//            ((Spanned) text).getSpanStart(TruncateAt.MARQUEE) >= 0) {
-//            if (ViewConfiguration.get(mContext).isFadingMarqueeEnabled()) {
-//                setHorizontalFadingEdgeEnabled(true);
-//                mMarqueeFadeMode = MARQUEE_FADE_NORMAL;
-//            } else {
-//                setHorizontalFadingEdgeEnabled(false);
-//                mMarqueeFadeMode = MARQUEE_FADE_SWITCH_SHOW_ELLIPSIS;
-//            }
-//            setEllipsize(TruncateAt.MARQUEE);
-//        }
 
         int n = mFilters.length;
         for (int i = 0; i < n; i++) {
@@ -2700,7 +2675,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
      *
      * @attr ref android.R.styleable#TextView_hint
      */
-    @ViewDebug.CapturedViewProperty
     public CharSequence getHint() {
         return mHint;
     }
@@ -5493,7 +5467,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
     /**
      * Convenience for {@link android.text.Selection#getSelectionStart}.
      */
-    @ViewDebug.ExportedProperty(category = "text")
     public int getSelectionStart() {
         return Selection.getSelectionStart(getText());
     }
@@ -5501,7 +5474,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
     /**
      * Convenience for {@link android.text.Selection#getSelectionEnd}.
      */
-    @ViewDebug.ExportedProperty(category = "text")
     public int getSelectionEnd() {
         return Selection.getSelectionEnd(getText());
     }

@@ -11,7 +11,7 @@
         android:enabled="false"
         android:gravity="start|top"
         android:inputType="textMultiLine"
-        android:padding="5dp"
+        android:padding="0dp"
         android:scrollbarAlwaysDrawVerticalTrack="false"
         android:scrollbarThumbVertical="@android:color/transparent"
         android:scrollbarTrackVertical="@null"
