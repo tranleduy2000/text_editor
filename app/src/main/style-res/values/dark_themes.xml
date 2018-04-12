@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2016 Jecelyin Peng <jecelyin@gmail.com>
   ~
   ~ This file is part of 920 Text Editor.
@@ -22,12 +21,14 @@
     <color name="darkWindowBackground">#ff424242</color>
     <color name="darkDividerColor">#30ffffff</color>
 
-    <style name="DarkTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="DarkTheme" parent="Theme.AppCompat.NoActionBar">
         <!--全局字体-->
         <item name="android:textColorPrimary">@color/editor_primary_text_material_dark</item>
         <!-- Preference Label and summary text color -->
         <item name="android:textColorSecondary">@color/editor_secondary_text_material_dark</item>
-        <item name="android:textColorPrimaryDisableOnly">@color/editor_secondary_text_material_dark</item>
+        <item name="android:textColorPrimaryDisableOnly">
+            @color/editor_secondary_text_material_dark
+        </item>
         <!-- 工具栏背景 -->
         <item name="colorPrimary">@color/primary_material_dark</item>
         <!--状态栏背景-->
@@ -111,16 +112,13 @@
         <item name="hlOperator">#D0D0FF</item>
     </style>
 
-    <style name="DarkToolbarTheme" parent="@style/Light.Toolbar">
-        <item name="android:actionMenuTextAppearance">@style/Toolbar.Item</item>
-    </style>
+    <style name="DarkToolbarTheme" parent="@style/Light.Toolbar"></style>
 
-    <style name="DarkToolbarPopupTheme" parent="@style/ThemeOverlay.AppCompat.Dark">
-        <item name="colorControlNormal">@color/darkColorControlNormal</item>
-    </style>
+    <style name="DarkToolbarPopupTheme" parent="@style/ThemeOverlay.AppCompat.Dark"></style>
 
     <color name="dark_actionmode_light_background">#666666</color>
-    <style name="DarkActionMode" parent="@style/ActionMode">
+
+    <style name="DarkActionMode" parent="@style/Light.ActionMode">
         <item name="background">@color/dark_actionmode_light_background</item>
     </style>
 </resources>

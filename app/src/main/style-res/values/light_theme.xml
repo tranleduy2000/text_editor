@@ -31,10 +31,10 @@
         <item name="actionBarPopupTheme">@style/Light.Popup.Toolbar</item>
 
         <item name="windowActionModeOverlay">true</item>
-        <item name="actionModeStyle">@style/ActionMode</item>
+        <item name="actionModeStyle">@style/Light.ActionMode</item>
+        <item name="android:actionModeStyle">@style/Light.ActionMode</item>
         <item name="actionModeFindDrawable">@drawable/ic_find_in_page_white_24dp</item>
         <item name="actionModeCloseDrawable">@drawable/ic_arrow_back_white_24dp</item>
-        <!--<item name="actionMenuTextColor">@android:color/white</item>-->
 
         <item name="dividerColor">#10000000</item>
         <item name="android:listDivider">@drawable/divider</item>

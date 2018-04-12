@@ -8,22 +8,23 @@
 
     <style name="Light.Popup.Toolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="Toolbar.Item" parent="TextAppearance.AppCompat.Widget.ActionBar.Menu">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">15sp</item>
-    </style>
-
-    <color name="editor_action_mode_light_background">#5c6bc0</color>
-
-    <style name="ActionMode" parent="Widget.AppCompat.ActionMode">
-        <item name="background">@color/editor_action_mode_light_background</item>
+    <style name="Light.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
+        <item name="background">?colorPrimaryDark</item>
         <item name="height">?attr/actionBarSize</item>
+        <item name="titleTextStyle">@style/Light.ActionMode.Title</item>
+        <item name="subtitleTextStyle">@style/Light.ActionMode.Subtitle</item>
     </style>
 
-    <style name="ActionMode.Subtitle">
+    <style name="Light.ActionMode.Title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="Light.ActionMode.Subtitle">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">#ffffff</item>
     </style>
+
 
 
     <style name="MaterialEditText">
