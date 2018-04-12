@@ -174,7 +174,7 @@ public class MainActivity extends BaseActivity
         pref = Pref.getInstance(this);
         MenuManager.init(this);
 
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.activity_main);
 
         mToolbar = findViewById(R.id.toolbar);
         mLoadingLayout = findViewById(R.id.loading_layout);

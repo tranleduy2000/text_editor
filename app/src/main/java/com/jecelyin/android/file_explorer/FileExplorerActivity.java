@@ -102,7 +102,7 @@ public class FileExplorerActivity extends FullScreenActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = DataBindingUtil.setContentView(this, R.layout.file_explorer_activity);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_file_explorer);
 
         Intent it = getIntent();
         mode = it.getIntExtra("mode", MODE_PICK_FILE);

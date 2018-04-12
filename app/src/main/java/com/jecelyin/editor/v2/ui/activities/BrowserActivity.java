@@ -55,7 +55,7 @@ public class BrowserActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final BrowserActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.browser_activity);
+        final BrowserActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_browser);
         setSupportActionBar(binding.toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

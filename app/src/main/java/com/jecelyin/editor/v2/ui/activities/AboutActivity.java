@@ -33,7 +33,7 @@ public class AboutActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AboutActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.about_activity);
+        AboutActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_about);
 
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
