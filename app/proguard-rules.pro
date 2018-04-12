@@ -1,64 +1,116 @@
-#保留
-#
-#-keep {Modifier} {class_specification} 保护指定的类文件和类的成员
-#-keepclassmembers {modifier} {class_specification} 保护指定类的成员，如果此类受到保护他们会保护的更好
-#-keepclasseswithmembers {class_specification} 保护指定的类和类的成员，但条件是所有指定的类和类成员是要存在。
-#-keepnames {class_specification} 保护指定的类和类的成员的名称（如果他们不会压缩步骤中删除）
-#-keepclassmembernames {class_specification} 保护指定的类的成员的名称（如果他们不会压缩步骤中删除）
-#-keepclasseswithmembernames {class_specification} 保护指定的类和类的成员的名称，如果所有指定的类成员出席（在压缩步骤之后）
-#-printseeds {filename} 列出类和类的成员-keep选项的清单，标准输出到给定的文件
-#压缩
-#
-#-dontshrink 不压缩输入的类文件
-#-printusage {filename}
-#-whyareyoukeeping {class_specification}
-#优化
-#
-#-dontoptimize 不优化输入的类文件
-#-assumenosideeffects {class_specification} 优化时假设指定的方法，没有任何副作用
-#-allowaccessmodification 优化时允许访问并修改有修饰符的类和类的成员
-#混淆
-#
-#-dontobfuscate 不混淆输入的类文件
-#-obfuscationdictionary {filename} 使用给定文件中的关键字作为要混淆方法的名称
-#-overloadaggressively 混淆时应用侵入式重载
-#-useuniqueclassmembernames 确定统一的混淆类的成员名称来增加混淆
-#-flattenpackagehierarchy {package_name} 重新包装所有重命名的包并放在给定的单一包中
-#-repackageclass {package_name} 重新包装所有重命名的类文件中放在给定的单一包中
-#-dontusemixedcaseclassnames 混淆时不会产生形形色色的类名
-#-keepattributes {attribute_name,…} 保护给定的可选属性，例如LineNumberTable, LocalVariableTable, SourceFile, Deprecated, Synthetic, Signature, and InnerClasses.
-#-renamesourcefileattribute {string} 设置源文件中给定的字符串常量
+# By default, the flags in this file are appended to flags specified
+# in /usr/share/android-studio/data/sdk/tools/proguard/proguard-android.txt
 
-#通配符匹配规则
-#
-#通配符	规则
-#？	匹配单个字符
-#*	匹配类名中的任何部分，但不包含额外的包名
-#**	匹配类名中的任何部分，并且可以包含额外的包名
-#%	匹配任何基础类型的类型名
-#*	匹配任意类型名 ,包含基础类型/非基础类型
-#...	匹配任意数量、任意类型的参数
-#<init>	匹配任何构造器
-#<ifield>	匹配任何字段名
-#<imethod>	匹配任何方法
-#*(当用在类内部时)	匹配任何字段和方法
-#$	指内部类
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
 
-#混淆后，会在/build/proguard/目录下输出下面的文件
-#
-#dump.txt 描述apk文件中所有类文件间的内部结构。
-#mapping.txt 列出了原始的类，方法，和字段名与混淆后代码之间的映射。
-#seeds.txt 列出了未被混淆的类和成员
-#usage.txt 列出了从apk中删除的代码
+##---------------Begin: proguard configuration common for all Android apps ----------
+-optimizationpasses 5
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-dontskipnonpubliclibraryclassmembers
+-dontpreverify
+-verbose
+-dump class_files.txt
+-printseeds seeds.txt
+-printusage unused.txt
+-printmapping mapping.txt
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 
-# keep住源文件以及行号
+-allowaccessmodification
+-keepattributes *Annotation*
+-renamesourcefileattribute SourceFile
 -keepattributes SourceFile,LineNumberTable
+-repackageclasses ''
 
--keepnames class *
--keepnames interface *
--keepnames enum *
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.app.backup.BackupAgentHelper
+-keep public class * extends android.preference.Preference
+-keep public class com.android.vending.licensing.ILicensingService
+-dontnote com.android.vending.licensing.ILicensingService
 
-# Keep names - Native method names. Keep all native class/method names.
--keepclasseswithmembers,allowshrinking class * {
+# Explicitly preserve all serialization members. The Serializable interface
+# is only a marker interface, so it wouldn't save them.
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+
+# Preserve all native method names and the names of their classes.
+-keepclasseswithmembernames class * {
     native <methods>;
 }
+
+-keepclasseswithmembernames class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+
+-keepclasseswithmembernames class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+
+# Preserve static fields of inner classes of R classes that might be accessed
+# through introspection.
+-keepclassmembers class **.R$* {
+  public static <fields>;
+}
+
+# Preserve the special static methods that are required in all enumeration classes.
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keep public class * {
+    public protected *;
+}
+
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+##---------------End: proguard configuration common for all Android apps ----------
+
+#---------------Begin: proguard configuration for support library  ----------
+-keep class android.support.v4.app.** { *; }
+-keep interface android.support.v4.app.** { *; }
+-keep class com.actionbarsherlock.** { *; }
+-keep interface com.actionbarsherlock.** { *; }
+
+# The support library contains references to newer platform versions.
+# Don't warn about those in case this app is linking against an older
+# platform version. We know about them, and they are safe.
+-dontwarn android.support.**
+-dontwarn com.google.ads.**
+##---------------End: proguard configuration for Gson  ----------
+
+##---------------Begin: proguard configuration for Gson  ----------
+# Gson uses generic type information stored in a class file when working with fields. Proguard
+# removes such information by default, so configure it to keep all of it.
+-keepattributes Signature
+
+# For using GSON @Expose annotation
+-keepattributes *Annotation*
+
+# Gson specific classes
+-keep class sun.misc.Unsafe { *; }
+#-keep class com.google.gson.stream.** { *; }
+
+# Application classes that will be serialized/deserialized over Gson
+-keep class com.example.model.** { *; }
+
+##---------------End: proguard configuration for Gson  ----------
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}

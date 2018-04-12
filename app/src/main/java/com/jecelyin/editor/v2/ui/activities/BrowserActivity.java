@@ -93,7 +93,7 @@ public class BrowserActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.browser_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_browser, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

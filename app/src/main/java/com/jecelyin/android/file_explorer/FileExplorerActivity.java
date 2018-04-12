@@ -152,7 +152,7 @@ public class FileExplorerActivity extends FullScreenActivity implements View.OnC
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.explorer_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_explorer, menu);
 
         Pref pref = Pref.getInstance(this);
         menu.findItem(R.id.show_hidden_files_menu).setChecked(pref.isShowHiddenFiles());
