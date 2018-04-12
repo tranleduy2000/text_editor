@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -59,4 +60,8 @@ dependencies {
     compile 'org.msgpack:msgpack-core:0.8.11'
     compile 'com.makeramen:roundedimageview:2.2.1'
     compile 'com.yqritc:recyclerview-flexibledivider:1.2.9'
+
+    compile 'com.google.firebase:firebase-core:12.0.1'
+    compile 'com.crashlytics.sdk.android:crashlytics:2.9.1'
 }
+apply plugin: 'com.google.gms.google-services'

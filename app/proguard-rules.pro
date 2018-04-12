@@ -114,3 +114,6 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-dontwarn org.msgpack.**
+-dontwarn com.makeramen.roundedimageview.**
