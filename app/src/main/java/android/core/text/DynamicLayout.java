@@ -30,8 +30,6 @@ import android.text.style.WrapTogetherSpan;
 
 import java.lang.ref.WeakReference;
 
-//import com.android.internal.util.ArrayUtils;
-//import com.android.internal.util.GrowingArrayUtils;
 
 /**
  * DynamicLayout is a text layout that updates itself as the text is edited.
