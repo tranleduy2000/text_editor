@@ -44,7 +44,7 @@
         <item name="android:windowBackground">@color/darkWindowBackground</item>
 
         <!--<item name="android:actionBarStyle">@style/Toolbar</item>-->
-        <item name="actionBarStyle">@style/Toolbar</item>
+        <item name="actionBarStyle">@style/Light.Toolbar</item>
         <!--使用方式 app:theme="?attr/actionBarTheme"-->
         <item name="actionBarTheme">@style/DarkToolbarTheme</item>
         <item name="actionBarPopupTheme">@style/DarkToolbarPopupTheme</item>
@@ -111,7 +111,7 @@
         <item name="hlOperator">#D0D0FF</item>
     </style>
 
-    <style name="DarkToolbarTheme" parent="@style/ToolbarTheme">
+    <style name="DarkToolbarTheme" parent="@style/Light.Toolbar">
         <item name="android:actionMenuTextAppearance">@style/Toolbar.Item</item>
     </style>
 

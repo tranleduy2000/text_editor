@@ -1,23 +1,12 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
-    <!--Toolbar主题，使用方式：app:theme="@style/ToolbarTheme"-->
-    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
-        //<item name="colorControlNormal">#fff</item>
+
+    <style name="Light.Toolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
     </style>
 
-    <!--Toolbar样式，使用方式：style="@style/Toolbar" 要改变返回按钮样式时，要配合app:theme使用-->
-    <style name="Toolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:background">?attr/colorPrimary</item>
-        <item name="android:height">?attr/actionBarSize</item>
-        <item name="elevation">3dp</item>
-
-        <!--<item name="titleTextColor">#fff</item>-->
-        <!--<item name="subtitleTextColor">#fff</item>-->
-
-        <item name="android:elevation" tools:ignore="NewApi">3dp</item>
-        <!--<item name="actionMenuTextColor">@android:color/white</item>-->
-        <!--<item name="actionMenuTextAppearance">@style/Toolbar.Item</item>-->
-    </style>
+    <style name="Light.Popup.Toolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Toolbar.Item" parent="TextAppearance.AppCompat.Widget.ActionBar.Menu">
         <item name="android:textColor">@android:color/white</item>
@@ -25,6 +14,7 @@
     </style>
 
     <color name="editor_action_mode_light_background">#5c6bc0</color>
+
     <style name="ActionMode" parent="Widget.AppCompat.ActionMode">
         <item name="background">@color/editor_action_mode_light_background</item>
         <item name="height">?attr/actionBarSize</item>

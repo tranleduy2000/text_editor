@@ -25,16 +25,16 @@
         <!--<item name="colorControlNormal">@color/defaultColorControlNormal</item>-->
         <item name="colorAccent">#F95959</item>
 
+
+        <item name="actionBarStyle">@style/Light.Toolbar</item>
+        <item name="actionBarTheme">@style/Light.Toolbar</item>
+        <item name="actionBarPopupTheme">@style/Light.Popup.Toolbar</item>
+
         <item name="windowActionModeOverlay">true</item>
-
-        <item name="actionBarStyle">@style/Toolbar</item>
-        <item name="actionBarTheme">@style/ToolbarTheme</item>
-        <item name="actionBarPopupTheme">@style/DefaultToolbarPopupTheme</item>
-        <item name="actionMenuTextColor">@android:color/white</item>
-
         <item name="actionModeStyle">@style/ActionMode</item>
         <item name="actionModeFindDrawable">@drawable/ic_find_in_page_white_24dp</item>
         <item name="actionModeCloseDrawable">@drawable/ic_arrow_back_white_24dp</item>
+        <!--<item name="actionMenuTextColor">@android:color/white</item>-->
 
         <item name="dividerColor">#10000000</item>
         <item name="android:listDivider">@drawable/divider</item>
@@ -46,11 +46,6 @@
         <item name="toolbarIconNormalColor">#ffffff</item>
         <item name="toolbarIconDisabledColor">#50ffffff</item>
         <item name="menuIconNormalColor">#000000</item>
-
-
-
-
-
 
 
         <item name="textForeground">#000000</item>
@@ -88,7 +83,4 @@
         <item name="hlOperator">#000000</item>
     </style>
 
-    <style name="DefaultToolbarPopupTheme" parent="@style/ThemeOverlay.AppCompat.Light">
-        <item name="colorControlNormal">@color/defaultColorControlNormal</item>
-    </style>
 </resources>
