@@ -32,7 +32,7 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.duy.text.editor.R;
-import com.duy.text.editor.databinding.FileExplorerActivityBinding;
+import com.duy.text.editor.databinding.ActivityFileExplorerBinding;
 import com.jecelyin.android.file_explorer.adapter.FileListPagerAdapter;
 import com.jecelyin.android.file_explorer.io.JecFile;
 import com.jecelyin.android.file_explorer.io.LocalFile;
@@ -53,7 +53,7 @@ import java.util.SortedMap;
  * @author Jecelyin Peng <jecelyin@gmail.com>
  */
 public class FileExplorerActivity extends FullScreenActivity implements View.OnClickListener, OnClipboardDataChangedListener {
-    private FileExplorerActivityBinding binding;
+    private ActivityFileExplorerBinding binding;
     private FileListPagerAdapter adapter;
     private static final int MODE_PICK_FILE = 1;
     private static final int MODE_PICK_PATH = 2;

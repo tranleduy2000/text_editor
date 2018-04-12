@@ -39,7 +39,7 @@ public class FindInFilesAdapter extends SimpleAdapter {
 
     @Override
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.find_in_files_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_find_in_files, parent, false);
 
         return new ViewHolder(view);
     }

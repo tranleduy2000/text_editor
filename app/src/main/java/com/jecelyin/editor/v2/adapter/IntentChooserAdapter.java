@@ -70,7 +70,7 @@ public class IntentChooserAdapter extends BaseAdapter {
         TextView title;
         ImageView icon;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.intent_chooser_listitem, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.list_item_intent_chooser, parent, false);
             title = (TextView) convertView.findViewById(R.id.title_text_view);
             icon = (ImageView) convertView.findViewById(R.id.iconImageView);
             convertView.setTag(R.id.title_text_view, title);

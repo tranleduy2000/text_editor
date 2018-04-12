@@ -23,7 +23,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.duy.text.editor.R;
-import com.duy.text.editor.databinding.AboutActivityBinding;
+import com.duy.text.editor.databinding.ActivityAboutBinding;
 import com.jecelyin.common.utils.SysUtils;
 
 /**
@@ -33,7 +33,7 @@ public class AboutActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AboutActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_about);
+        ActivityAboutBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_about);
 
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -71,7 +71,7 @@ public class SymbolBarLayout extends LinearLayout implements View.OnClickListene
 
         TextView tv;
         for (String str : charList) {
-            tv = (TextView) inflater.inflate(R.layout.symbol_item, this, false);
+            tv = (TextView) inflater.inflate(R.layout.list_item_symbol, this, false);
             tv.setText(str);
 
             tv.setOnClickListener(this);
