@@ -5,13 +5,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        style="@style/Light.Toolbar"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:theme="@style/Light.Toolbar"
-        app:title="@string/settings" />
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="?actionBarStyle"
+            app:popupTheme="?actionBarPopupTheme"
+            app:title="@string/settings" />
+    </android.support.design.widget.AppBarLayout>
 
     <FrameLayout
         android:id="@+id/content"

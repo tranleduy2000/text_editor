@@ -53,8 +53,7 @@
         <item name="actionMenuTextColor">@android:color/white</item>
 
         <item name="actionModeStyle">@style/DarkActionMode</item>
-        <item name="actionModeFindDrawable">@drawable/find_white</item>
-        <item name="actionModeCloseDrawable">@drawable/back_btn</item>
+        <item name="actionModeFindDrawable">@drawable/ic_find_replace_white_24dp</item>
 
         <item name="dividerColor">@color/darkDividerColor</item>
         <item name="android:listDivider">@drawable/divider_drak</item>
