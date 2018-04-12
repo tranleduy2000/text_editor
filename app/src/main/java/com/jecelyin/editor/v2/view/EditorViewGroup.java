@@ -19,7 +19,7 @@
 package com.jecelyin.editor.v2.view;
 
 import android.content.Context;
-import android.core.widget.EditorView;
+import android.core.widget.EditAreaView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -32,7 +32,7 @@ import com.jecelyin.editor.v2.common.OnVisibilityChangedListener;
  * @author Jecelyin Peng <jecelyin@gmail.com>
  */
 public class EditorViewGroup extends RelativeLayout {
-    private EditorView editText;
+    private EditAreaView editText;
     private ProgressBar progressView;
     private boolean removed = false;
     private OnVisibilityChangedListener visibilityChangedListener;
@@ -54,7 +54,7 @@ public class EditorViewGroup extends RelativeLayout {
 
     }
 
-    public EditorView getEditText() {
+    public EditAreaView getEditText() {
         return editText;
     }
 

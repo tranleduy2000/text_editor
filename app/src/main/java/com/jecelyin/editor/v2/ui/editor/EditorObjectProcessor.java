@@ -21,7 +21,7 @@ package com.jecelyin.editor.v2.ui.editor;
 import android.content.res.TypedArray;
 import android.core.text.SpannableStringBuilder;
 import android.core.text.method.LinkMovementMethod;
-import android.core.widget.EditorView;
+import android.core.widget.EditAreaView;
 import android.graphics.Color;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
@@ -52,7 +52,7 @@ public class EditorObjectProcessor {
     }
 
     private static class FindInFilesProcessor {
-        private final EditorView editText;
+        private final EditAreaView editText;
         private final EditorDelegate editorDelegate;
         private final int findResultsKeywordColor;
         private final int findResultsPathColor;

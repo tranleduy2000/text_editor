@@ -45,7 +45,7 @@ import com.jecelyin.editor.v2.ui.widget.editor.FastScroller;
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>
  */
-public class EditorView extends BaseEditorView {
+public class EditAreaView extends BaseEditorView {
     /**
      * Indicates that we are not in the middle of a touch gesture
      */
@@ -140,11 +140,11 @@ public class EditorView extends BaseEditorView {
     private FlingRunnable mFlingRunnable;
     private KeyListener keyListener;
 
-    public EditorView(Context context) {
+    public EditAreaView(Context context) {
         this(context, null);
     }
 
-    public EditorView(Context context, AttributeSet attrs) {
+    public EditAreaView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }

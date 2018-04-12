@@ -25,18 +25,18 @@ import android.text.Editable;
  * @author Jecelyin Peng <jecelyin@gmail.com>
  */
 class EditorHelper {
-    private final EditorView editorView;
+    private final EditAreaView editAreaView;
 
-    public EditorHelper(EditorView editorView) {
-        this.editorView = editorView;
+    public EditorHelper(EditAreaView editAreaView) {
+        this.editAreaView = editAreaView;
     }
 
     public void duplication() {
-        int start = editorView.getSelectionStart();
-        int end = editorView.getSelectionEnd();
+        int start = editAreaView.getSelectionStart();
+        int end = editAreaView.getSelectionEnd();
         SpannableStringBuilder text = new SpannableStringBuilder();
         int offset;
-        Editable mText = editorView.getEditableText();
+        Editable mText = editAreaView.getEditableText();
         if (end == start) {//重复行
             int s = start, e = end;
             while (--s >= 0 && mText.charAt(s) != '\n' && mText.charAt(s) != '\r') ;
@@ -59,7 +59,7 @@ class EditorHelper {
     }
 
     public void convertWrapCharTo(String chars) {
-        Editable text = editorView.getText();
+        Editable text = editAreaView.getText();
         int offset = text.length(), len = chars.length();
         while (--offset >= 0) {
             if (text.charAt(offset) == '\n') {
