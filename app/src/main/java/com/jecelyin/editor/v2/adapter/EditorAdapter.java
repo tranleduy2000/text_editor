@@ -39,7 +39,7 @@ import com.jecelyin.editor.v2.ui.editor.EditorDelegate;
 import com.jecelyin.editor.v2.ui.activities.MainActivity;
 import com.jecelyin.editor.v2.ui.dialog.SaveConfirmDialog;
 import com.jecelyin.editor.v2.utils.ExtGrep;
-import com.jecelyin.editor.v2.view.EditorViewGroup;
+import com.jecelyin.editor.v2.view.EditorView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -58,7 +58,7 @@ public class EditorAdapter extends ViewPagerAdapter {
 
     @Override
     public View getView(int position, ViewGroup pager) {
-        EditorViewGroup view = (EditorViewGroup) LayoutInflater.from(context).inflate(R.layout.editor, pager, false);
+        EditorView view = (EditorView) LayoutInflater.from(context).inflate(R.layout.editor, pager, false);
         setEditorView(position, view);
         return view;
     }
@@ -95,22 +95,22 @@ public class EditorAdapter extends ViewPagerAdapter {
      * 当View被创建或是内存不足重建时，如果不更新list的内容，就会链接到旧的View
      *
      * @param index
-     * @param editorViewGroup
+     * @param editorView
      */
-    public void setEditorView(int index, EditorViewGroup editorViewGroup) {
+    public void setEditorView(int index, EditorView editorView) {
         if (index >= getCount()) {
             return;
         }
         EditorDelegate delegate = list.get(index);
         if (delegate != null)
-            delegate.setEditorView(editorViewGroup);
+            delegate.setEditorView(editorView);
     }
 
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
         super.setPrimaryItem(container, position, object);
         currentPosition = position;
-        setEditorView(position, (EditorViewGroup) object);
+        setEditorView(position, (EditorView) object);
     }
 
     public EditorDelegate getCurrentEditorDelegate() {
@@ -189,7 +189,7 @@ public class EditorAdapter extends ViewPagerAdapter {
 
     @Override
     public int getItemPosition(Object object) {
-        return ((EditorViewGroup) object).isRemoved() ? POSITION_NONE : POSITION_UNCHANGED;
+        return ((EditorView) object).isRemoved() ? POSITION_NONE : POSITION_UNCHANGED;
     }
 
     public ClusterCommand makeClusterCommand() {

@@ -58,8 +58,6 @@
         <item name="dividerColor">@color/darkDividerColor</item>
         <item name="android:listDivider">@drawable/divider_drak</item>
 
-        <item name="android:textViewStyle">@style/DarkTextViewStyle</item>
-        <item name="android:editTextStyle">@style/EditTextStyle</item>
         <!--App自定义-->
         <item name="netLoadingDrawable">@drawable/loading_icon</item>
         <item name="tabBackground">@drawable/drawer_tab_item_dark_background</item>
@@ -119,11 +117,6 @@
 
     <style name="DarkToolbarPopupTheme" parent="@style/ThemeOverlay.AppCompat.Dark">
         <item name="colorControlNormal">@color/darkColorControlNormal</item>
-    </style>
-
-    <style name="DarkTextViewStyle" parent="TextViewStyle">
-        <!-- 注意,Toolbar Menu也会有影响 -->
-        <item name="android:textColor">@color/editor_secondary_text_material_dark</item>
     </style>
 
     <color name="dark_actionmode_light_background">#666666</color>

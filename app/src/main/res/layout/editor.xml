@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.jecelyin.editor.v2.view.EditorViewGroup xmlns:android="http://schemas.android.com/apk/res/android"
+<com.jecelyin.editor.v2.view.EditorView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -26,5 +26,5 @@
         android:indeterminate="true"
         android:visibility="gone" />
 
-</com.jecelyin.editor.v2.view.EditorViewGroup>
+</com.jecelyin.editor.v2.view.EditorView>
 

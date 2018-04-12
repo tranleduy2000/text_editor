@@ -32,7 +32,7 @@ import com.jecelyin.editor.v2.ui.activities.MainActivity;
 import com.jecelyin.editor.v2.ui.editor.EditorDelegate;
 import com.jecelyin.editor.v2.utils.DBHelper;
 import com.jecelyin.editor.v2.utils.ExtGrep;
-import com.jecelyin.editor.v2.view.EditorViewGroup;
+import com.jecelyin.editor.v2.view.EditorView;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.io.File;
@@ -212,8 +212,8 @@ public class TabManager implements ViewPager.OnPageChangeListener {
         tabAdapter.notifyDataSetChanged();
     }
 
-    public void updateEditorView(int index, EditorViewGroup editorViewGroup) {
-        editorAdapter.setEditorView(index, editorViewGroup);
+    public void updateEditorView(int index, EditorView editorView) {
+        editorAdapter.setEditorView(index, editorView);
     }
 
     public void onDocumentChanged(int index) {

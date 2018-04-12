@@ -31,17 +31,17 @@ import com.jecelyin.editor.v2.common.OnVisibilityChangedListener;
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>
  */
-public class EditorViewGroup extends RelativeLayout {
+public class EditorView extends RelativeLayout {
     private EditAreaView editText;
     private ProgressBar progressView;
     private boolean removed = false;
     private OnVisibilityChangedListener visibilityChangedListener;
 
-    public EditorViewGroup(Context context, AttributeSet attrs) {
+    public EditorView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public EditorViewGroup(Context context, AttributeSet attrs, int defStyleAttr) {
+    public EditorView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

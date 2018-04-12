@@ -48,7 +48,7 @@ import com.jecelyin.editor.v2.ui.activities.MainActivity;
 import com.jecelyin.editor.v2.ui.dialog.DocumentInfoDialog;
 import com.jecelyin.editor.v2.ui.dialog.FinderDialog;
 import com.jecelyin.editor.v2.ui.widget.menu.MenuDef;
-import com.jecelyin.editor.v2.view.EditorViewGroup;
+import com.jecelyin.editor.v2.view.EditorView;
 
 import org.gjt.sp.jedit.Catalog;
 import org.gjt.sp.jedit.Mode;
@@ -64,7 +64,7 @@ public class EditorDelegate implements OnVisibilityChangedListener, TextWatcher 
     private static boolean disableAutoSave = false;
     public EditAreaView mEditText;
     private Context context;
-    private EditorViewGroup mEditorViewGroup;
+    private EditorView mEditorView;
     private Document document;
     private SavedState savedState;
     private int orientation;
@@ -138,14 +138,14 @@ public class EditorDelegate implements OnVisibilityChangedListener, TextWatcher 
         }
     }
 
-    public void setEditorView(EditorViewGroup editorViewGroup) {
-        context = editorViewGroup.getContext();
-        this.mEditorViewGroup = editorViewGroup;
-        this.mEditText = (EditAreaView) editorViewGroup.getEditText();
+    public void setEditorView(EditorView editorView) {
+        context = editorView.getContext();
+        this.mEditorView = editorView;
+        this.mEditText = (EditAreaView) editorView.getEditText();
 
         this.orientation = context.getResources().getConfiguration().orientation;
 
-        editorViewGroup.setVisibilityChangedListener(this);
+        editorView.setVisibilityChangedListener(this);
 
         init();
     }
@@ -153,11 +153,11 @@ public class EditorDelegate implements OnVisibilityChangedListener, TextWatcher 
     public void onLoadStart() {
         loaded = false;
         mEditText.setEnabled(false);
-        mEditorViewGroup.setLoading(true);
+        mEditorView.setLoading(true);
     }
 
     public void onLoadFinish() {
-        mEditorViewGroup.setLoading(false);
+        mEditorView.setLoading(false);
         mEditText.setEnabled(true);
         mEditText.post(new Runnable() {
             @Override
@@ -399,9 +399,9 @@ public class EditorDelegate implements OnVisibilityChangedListener, TextWatcher 
     }
 
     public void setRemoved() {
-        if (mEditorViewGroup == null)
+        if (mEditorView == null)
             return;
-        mEditorViewGroup.setRemoved();
+        mEditorView.setRemoved();
     }
 
     @Override
