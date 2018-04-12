@@ -7,10 +7,10 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        style="@style/Toolbar"
+        style="@style/Light.Toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:theme="@style/ToolbarTheme"
+        app:theme="@style/Light.Toolbar"
         app:title="@string/settings" />
 
     <FrameLayout

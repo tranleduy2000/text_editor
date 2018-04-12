@@ -23,6 +23,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v7.widget.Toolbar;
+import android.text.TextPaint;
 import android.util.AttributeSet;
 
 import com.jecelyin.common.utils.SysUtils;
@@ -31,7 +32,7 @@ import com.jecelyin.common.utils.SysUtils;
  * @author Jecelyin Peng <jecelyin@gmail.com>
  */
 public class EditorToolbar extends Toolbar {
-    private Paint titlePaint;
+    private TextPaint titlePaint;
     private CharSequence title;
 
     public EditorToolbar(Context context) {
@@ -51,16 +52,12 @@ public class EditorToolbar extends Toolbar {
     }
 
     private void init() {
-        titlePaint = new Paint();
+        setWillNotDraw(false);
+        titlePaint = new TextPaint();
         titlePaint.setColor(Color.WHITE);
         titlePaint.setTextSize(SysUtils.dpAsPixels(getContext(), 10));
         titlePaint.setTextAlign(Paint.Align.LEFT);
         titlePaint.setAntiAlias(true);
-    }
-
-    @Override
-    public void setTitle(int resId) {
-        setTitle(getContext().getString(resId));
     }
 
     @Override
@@ -73,8 +70,12 @@ public class EditorToolbar extends Toolbar {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (title == null)
+        if (title == null) {
             return;
-        canvas.drawText(title, 0, title.length(), 40, getHeight() - 10, titlePaint);
+        }
+        Paint.FontMetrics fontMetrics = titlePaint.getFontMetrics();
+        int x = SysUtils.dpAsPixels(getContext(), 16);
+        int y = (int) (getHeight() - (fontMetrics.bottom)) - SysUtils.dpAsPixels(getContext(), 2);
+        canvas.drawText(title, 0, title.length(), x, y, titlePaint);
     }
 }
