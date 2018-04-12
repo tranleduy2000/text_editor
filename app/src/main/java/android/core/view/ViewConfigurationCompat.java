@@ -30,12 +30,11 @@ public class ViewConfigurationCompat {
     private static MethodReflection getScaledDoubleTapTouchSlop;
 
     public static int getScaledDoubleTapTouchSlop(ViewConfiguration viewConfiguration) {
-//        return viewConfiguration.getScaledDoubleTapTouchSlop();
         try {
             if (getScaledDoubleTapTouchSlop == null) {
                 getScaledDoubleTapTouchSlop = new MethodReflection(ViewConfiguration.class, "getScaledDoubleTapTouchSlop", new Class[]{});
             }
-            return getScaledDoubleTapTouchSlop.get(viewConfiguration, "getScaledDoubleTapTouchSlop");
+            return getScaledDoubleTapTouchSlop.get(viewConfiguration);
         } catch (Throwable e) {
             L.e(e);
             final int TOUCH_SLOP = 8;
