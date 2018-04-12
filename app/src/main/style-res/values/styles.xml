@@ -4,12 +4,13 @@
     <style name="Light.Toolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:background">?colorPrimary</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
     <style name="Light.Popup.Toolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Light.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
-        <item name="background">?colorPrimaryDark</item>
+        <item name="background">?colorPrimary</item>
         <item name="height">?attr/actionBarSize</item>
         <item name="titleTextStyle">@style/Light.ActionMode.Title</item>
         <item name="subtitleTextStyle">@style/Light.ActionMode.Subtitle</item>
@@ -24,7 +25,6 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">#ffffff</item>
     </style>
-
 
 
     <style name="MaterialEditText">

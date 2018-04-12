@@ -19,7 +19,10 @@
 <resources>
     <color name="defaultColorControlNormal">#0D7377</color>
 
-    <style name="DefaultTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="DefaultTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+
         <item name="colorPrimaryDark">#233142</item>
         <item name="colorPrimary">#455D7A</item>
         <!--<item name="colorControlNormal">@color/defaultColorControlNormal</item>-->
@@ -34,7 +37,6 @@
         <item name="actionModeStyle">@style/Light.ActionMode</item>
         <item name="android:actionModeStyle">@style/Light.ActionMode</item>
         <item name="actionModeFindDrawable">@drawable/ic_find_in_page_white_24dp</item>
-        <item name="actionModeCloseDrawable">@drawable/ic_arrow_back_white_24dp</item>
 
         <item name="dividerColor">#10000000</item>
         <item name="android:listDivider">@drawable/divider</item>

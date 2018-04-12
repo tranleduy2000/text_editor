@@ -573,8 +573,7 @@ public class EditorDelegate implements OnVisibilityChangedListener, TextWatcher 
             boolean selected = mEditText.hasSelection();
             if (selected) {
                 menu.add(0, R.id.m_find_replace, 0, R.string.find).
-                        setIcon(styledAttributes.getResourceId(
-                                R.styleable.SelectionModeDrawables_actionModeFindDrawable, 0)).
+                        setIcon(R.drawable.ic_find_replace_white_24dp).
                         setAlphabeticShortcut('f').
                         setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
