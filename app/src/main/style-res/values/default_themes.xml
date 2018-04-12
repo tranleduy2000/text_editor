@@ -33,8 +33,8 @@
         <item name="actionMenuTextColor">@android:color/white</item>
 
         <item name="actionModeStyle">@style/ActionMode</item>
-        <item name="actionModeFindDrawable">@drawable/find_white</item>
-        <item name="actionModeCloseDrawable">@drawable/back_btn</item>
+        <item name="actionModeFindDrawable">@drawable/ic_find_in_page_white_24dp</item>
+        <item name="actionModeCloseDrawable">@drawable/ic_arrow_back_white_24dp</item>
 
         <item name="dividerColor">#10000000</item>
         <item name="android:listDivider">@drawable/divider</item>
@@ -44,7 +44,7 @@
 
         <item name="netLoadingDrawable">@drawable/loading_icon</item>
         <item name="tabBackground">@drawable/drawer_tab_item_background</item>
-        <item name="listItemBackground">@drawable/white_selectable_item_background</item>
+        <item name="listItemBackground">?selectableItemBackground</item>
         <item name="highlightBackground">#ffffff</item>
         <item name="toolbarIconNormalColor">#ffffff</item>
         <item name="toolbarIconDisabledColor">#50ffffff</item>

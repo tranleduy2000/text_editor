@@ -324,7 +324,7 @@ public class MainActivity extends BaseActivity
             menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
         MenuItem menuItem = menu.add(MenuDef.GROUP_TOOLBAR, R.id.m_menu, Menu.NONE, getString(R.string.more_menu));
-        menuItem.setIcon(R.drawable.ic_right_menu);
+        menuItem.setIcon(R.drawable.ic_more_horiz_white_24dp);
         menuItem.setOnMenuItemClickListener(this);
         menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
