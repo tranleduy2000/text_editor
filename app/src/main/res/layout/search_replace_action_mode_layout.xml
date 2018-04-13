@@ -23,7 +23,7 @@
 
     <android.support.v7.widget.AppCompatEditText
         android:id="@+id/searchTextView"
-        style="@style/Light.ActionMode.Subtitle"
+        style="@style/ActionModeSubtitle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -38,7 +38,7 @@
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/replaceTextView"
-        style="@style/Light.ActionMode.Subtitle"
+        style="@style/ActionModeSubtitle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
