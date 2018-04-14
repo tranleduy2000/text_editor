@@ -46,7 +46,6 @@ configurations {
 }
 
 dependencies {
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':common')
 
@@ -57,7 +56,6 @@ dependencies {
     compile 'me.zhanghai.android.materialprogressbar:library:1.1.4'
     compile 'org.apmem.tools:layouts:1.10@aar'
     compile 'com.azeesoft.lib.colorpicker:colorpicker:1.0.8@aar'
-    compile 'org.msgpack:msgpack-core:0.8.11'
     compile 'com.makeramen:roundedimageview:2.2.1'
     compile 'com.yqritc:recyclerview-flexibledivider:1.2.9'
 
