@@ -124,8 +124,12 @@ public class XML2Bin {
 
                 handleChild(item);
 
-                mapCode.append(space(12)).append("case ").append(textString(file.getName()))
-                        .append(": return R.raw.").append(clsName).append(";\n");
+                mapCode.append(space(12))
+                        .append("case ")
+                        .append(textString(file.getName()))
+                        .append(": return R.raw.")
+                        .append(clsName)
+                        .append(";\n");
 
 
                 packer.close();
@@ -156,7 +160,6 @@ public class XML2Bin {
 
     private static void handleChild(Node node) throws IOException {
         String tag = node.getNodeName();
-
         packer.packString(tag);
 
         StringBuilder text = new StringBuilder();

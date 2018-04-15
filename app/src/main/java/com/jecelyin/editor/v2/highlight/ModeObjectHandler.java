@@ -110,7 +110,6 @@ public class ModeObjectHandler {
 
     private void handleChild(MessageUnpacker unpacker) throws IOException {
         String tagName = unpacker.unpackString();
-
         String text = unpacker.unpackString();
         int attrCount = unpacker.unpackMapHeader();
         HashMap<String, String> attrs = new HashMap<>(attrCount);
