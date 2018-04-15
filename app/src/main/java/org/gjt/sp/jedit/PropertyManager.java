@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Properties;
 
 class PropertyManager {
-    //{{{ Private members
+
     private final Properties system = new Properties();
     private final List<Properties> plugins = new LinkedList<Properties>();
     private final Properties site = new Properties();
@@ -35,7 +35,7 @@ class PropertyManager {
     private final List<Properties> pluginLocalizations = new LinkedList<Properties>();
     private final Properties user = new Properties();
 
-    //{{{ loadProps() method
+
     private static void loadProps(Properties into, InputStream in)
             throws IOException {
         try {
@@ -43,9 +43,9 @@ class PropertyManager {
         } finally {
             in.close();
         }
-    } //}}}
+    }
 
-    //{{{ loadProps() method
+
     private static void loadProps(Properties into, Reader in)
             throws IOException {
         try {
@@ -53,9 +53,9 @@ class PropertyManager {
         } finally {
             in.close();
         }
-    } //}}}
+    }
 
-    //{{{ getProperties() method
+
     Properties getProperties() {
         Properties total = new Properties();
         total.putAll(system);
@@ -67,80 +67,80 @@ class PropertyManager {
             total.putAll(pluginLocalization);
         total.putAll(user);
         return total;
-    } //}}}
+    }
 
-    //{{{ loadSystemProps() method
+
     void loadSystemProps(Reader in)
             throws IOException {
         loadProps(system, in);
-    } //}}}
+    }
 
-    //{{{ loadSiteProps() method
+
     void loadSiteProps(InputStream in)
             throws IOException {
         loadProps(site, in);
-    } //}}}
+    }
 
-    //{{{ loadLocalizationProps() method
+
     void loadLocalizationProps(Reader in)
             throws IOException {
         if (in == null)
             localization.clear();
         else
             loadProps(localization, in);
-    } //}}}
+    }
 
-    //{{{ loadUserProps() method
+
     void loadUserProps(InputStream in)
             throws IOException {
         loadProps(user, in);
-    } //}}}
+    }
 
-    //{{{ saveUserProps() method
+
     void saveUserProps(OutputStream out)
             throws IOException {
         user.store(out, "jEdit properties");
-    } //}}}
+    }
 
-    //{{{ loadPluginProps() method
+
     Properties loadPluginProps(InputStream in)
             throws IOException {
         Properties plugin = new Properties();
         loadProps(plugin, in);
         plugins.add(plugin);
         return plugin;
-    } //}}}
+    }
 
-    //{{{ addPluginProps() method
+
     void addPluginProps(Properties props) {
         plugins.add(props);
-    } //}}}
+    }
 
-    //{{{ removePluginProps() method
+
     void removePluginProps(Properties props) {
         plugins.remove(props);
-    } //}}}
+    }
 
-    //{{{ loadPluginLocalizationProps() method
+
     Properties loadPluginLocalizationProps(Reader in)
             throws IOException {
         Properties pluginLocalization = new Properties();
         loadProps(pluginLocalization, in);
         pluginLocalizations.add(pluginLocalization);
         return pluginLocalization;
-    } //}}}
+    }
 
-    //{{{ addPluginLocalizationProps() method
+
     void addPluginLocalizationProps(Properties props) {
         pluginLocalizations.add(props);
-    } //}}}
+    }
 
-    //{{{ removePluginLocalizationProps() method
+
     void removePluginLocalizationProps(Properties props) {
         pluginLocalizations.remove(props);
-    } //}}}
+    }
 
-    //{{{ getProperty() method
+
     String getProperty(String name) {
         String value = user.getProperty(name);
         if (value != null)
@@ -157,9 +157,9 @@ class PropertyManager {
             return value;
 
         return getDefaultProperty(name);
-    } //}}}
+    }
 
-    //{{{ setProperty() method
+
     void setProperty(String name, String value) {
         String prop = getDefaultProperty(name);
 
@@ -181,28 +181,28 @@ class PropertyManager {
             else
                 user.setProperty(name, value);
         }
-    } //}}}
+    }
 
-    //{{{ setTemporaryProperty() method
+
     public void setTemporaryProperty(String name, String value) {
         user.remove(name);
         system.setProperty(name, value);
-    } //}}}
+    }
 
-    //{{{ unsetProperty() method
+
     void unsetProperty(String name) {
         if (getDefaultProperty(name) != null)
             user.setProperty(name, "");
         else
             user.remove(name);
-    } //}}}
+    }
 
-    //{{{ resetProperty() method
+
     public void resetProperty(String name) {
         user.remove(name);
-    } //}}}
+    }
 
-    //{{{ getDefaultProperty() method
+
     private String getDefaultProperty(String name) {
         String value = site.getProperty(name);
         if (value != null)
@@ -215,7 +215,7 @@ class PropertyManager {
         }
 
         return system.getProperty(name);
-    } //}}}
+    }
 
-    //}}}
+
 }

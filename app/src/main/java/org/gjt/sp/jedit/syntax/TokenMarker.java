@@ -1,6 +1,5 @@
 package org.gjt.sp.jedit.syntax;
 
-//{{{ Imports
 
 import org.gjt.sp.jedit.Segment;
 import org.gjt.sp.jedit.util.SegmentCharSequence;
@@ -14,7 +13,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-//}}}
+
 
 /**
  * A token marker splits lines of text into tokens. Each token carries
@@ -25,7 +24,7 @@ import java.util.regex.Pattern;
  * @version $Id: TokenMarker.java 23381 2013-12-09 12:43:14Z kpouer $
  */
 public class TokenMarker {
-    //{{{ Instance variables
+
     private final Map<String, ParserRuleSet> ruleSets = new Hashtable<String, ParserRuleSet>(64);
     private final Segment pattern = new Segment();
     private boolean terminated;
@@ -34,28 +33,28 @@ public class TokenMarker {
     // as instance variables. Note that this is not thread-safe.
     private TokenHandler tokenHandler;
 
-    //{{{ getRuleSets() method
+
     /**
      * The line from which we will mark the tokens.
      */
     private Segment line;
 
-    //{{{ markTokens() method
+
     /**
      * The context of the current line.
      */
     private LineContext context;
     private KeywordMap keywords;
 
-    //{{{ Private members
+
     private int lastOffset;
     private int lineLength;
     private int pos;
     private int whitespaceEnd;
     private boolean seenWhitespaceEnd;
-    //{{{ TokenMarker constructor
+
     public TokenMarker() {
-    } //}}}
+    }
 
     /**
      * Perform substitution references in <code>end</code> to the matched groups in
@@ -106,32 +105,32 @@ public class TokenMarker {
         char[] returnValue = new char[buf.length()];
         buf.getChars(0, buf.length(), returnValue, 0);
         return returnValue;
-    } //}}}
+    }
 
-    //{{{ addRuleSet() method
+
     public void addRuleSet(ParserRuleSet rules) {
         ruleSets.put(rules.getSetName(), rules);
 
         if ("MAIN".equals(rules.getSetName()))
             mainRuleSet = rules;
-    } //}}}
+    }
 
-    //{{{ getMainRuleSet() method
+
     public ParserRuleSet getMainRuleSet() {
         return mainRuleSet;
-    } //}}}
+    }
 
-    //{{{ getRuleSet() method
+
     public ParserRuleSet getRuleSet(String setName) {
         return ruleSets.get(setName);
-    } //}}}
+    }
 
     /**
      * @since jEdit 4.2pre3
      */
     public ParserRuleSet[] getRuleSets() {
         return ruleSets.values().toArray(new ParserRuleSet[ruleSets.size()]);
-    } //}}}
+    }
 
     /**
      * Do not call this method directly; call Buffer.markTokens() instead.
@@ -142,7 +141,7 @@ public class TokenMarker {
      */
     public LineContext markTokens(LineContext prevContext,
                                   TokenHandler tokenHandler, Segment line) {
-        //{{{ Set up some instance variables
+
         // this is to avoid having to pass around lots and lots of
         // parameters.
         this.tokenHandler = tokenHandler;
@@ -168,14 +167,13 @@ public class TokenMarker {
 
         seenWhitespaceEnd = false;
         whitespaceEnd = line.offset;
-        //}}}
 
-        //{{{ Main parser loop
+
         int terminateChar = context.rules.getTerminateChar();
         terminated = false;
         makeTokenLoopLine(terminateChar);
 
-        //{{{ Mark all remaining characters
+
         pos = lineLength;
 
         if (context.inRule != null)
@@ -183,9 +181,8 @@ public class TokenMarker {
 
         handleNoWordBreak();
         markKeyword(true);
-        //}}}
 
-        //{{{ Unwind any NO_LINE_BREAK parent delegates
+
         while (context.parent != null) {
             ParserRule rule = context.parent.inRule;
             if ((rule != null && (rule.action
@@ -196,7 +193,7 @@ public class TokenMarker {
                 context.setInRule(null);
             } else
                 break;
-        } //}}}
+        }
 
         tokenHandler.handleToken(line, Token.END,
                 pos - line.offset, 0, context);
@@ -209,12 +206,12 @@ public class TokenMarker {
         this.line = null;
 
         return context;
-    } //}}}
-    //}}}
+    }
+
 
     private void makeTokenLoopLine(int terminateChar) {
         for (pos = line.offset; pos < lineLength; pos++) {
-            //{{{ check if we have to stop parsing (happens if the terminateChar has been exceeded)
+
             if (terminateChar >= 0 && pos - line.offset >= terminateChar
                     && !terminated) {
                 terminated = true;
@@ -222,24 +219,24 @@ public class TokenMarker {
                         .getStandardRuleSet(context.rules
                                 .getDefault()), context);
                 keywords = context.rules.keywords;
-            } //}}}
+            }
 
-            //{{{ Check for the escape rule before anything else.
+
             if (context.escapeRule != null &&
                     handleRuleStart(context.escapeRule)) {
                 continue;
-            } //}}}
+            }
 
-            //{{{ check for end of delegate
+
             if (context.parent != null
                     && context.parent.inRule != null
                     && checkDelegateEnd(context.parent.inRule)) {
                 seenWhitespaceEnd = true;
                 continue;
-            } //}}}
+            }
 
             boolean c = false;
-            //{{{ check every rule
+
             Character ch = line.array[pos];
             List<ParserRule> rules = context.rules.getRules(ch);
             for (ParserRule rule : rules) {
@@ -249,11 +246,11 @@ public class TokenMarker {
                     c = true;
                     break;
                 }
-            } //}}}
+            }
 
             if (c) continue;
 
-            //{{{ check if current character is a word separator
+
             if (Character.isWhitespace(ch)) {
                 if (!seenWhitespaceEnd)
                     whitespaceEnd = pos + 1;
@@ -299,13 +296,11 @@ public class TokenMarker {
                 }
 
                 seenWhitespaceEnd = true;
-            } //}}}
-        } //}}}
+            }
+        }
     }
 
-    //{{{ offsetMatches
 
-    //{{{ checkDelegateEnd() method
     private boolean checkDelegateEnd(ParserRule rule) {
         if (rule.end == null && rule.endRegexp == null)
             return false;
@@ -340,9 +335,8 @@ public class TokenMarker {
         }
 
         return false;
-    } //}}}
+    }
 
-    //{{{ handleRuleStart() method
 
     /**
      * Checks if the offset matches given position-match-hint of
@@ -367,9 +361,8 @@ public class TokenMarker {
         }
 
         return true;
-    } //}}}
+    }
 
-    //{{{ handleRuleEnd() method
 
     /**
      * Checks if the rule matches the line at the current position
@@ -441,7 +434,7 @@ public class TokenMarker {
                     != ParserRule.MARK_PREVIOUS);
 
             switch (checkRule.action & ParserRule.MAJOR_ACTIONS) {
-                //{{{ SEQ
+
                 case ParserRule.SEQ:
                     context.spanEndSubst = null;
                     context.spanEndSubstRegex = null;
@@ -468,8 +461,8 @@ public class TokenMarker {
                         keywords = context.rules.keywords;
                     }
                     break;
-                //}}}
-                //{{{ SPAN, EOL_SPAN
+
+
                 case ParserRule.SPAN:
                 case ParserRule.EOL_SPAN:
                     context.setInRule(checkRule);
@@ -491,7 +484,7 @@ public class TokenMarker {
 
                     char[] spanEndSubst = null;
                     Matcher spanEndSubstRegex = null;
-				/* substitute result of matching the rule start
+                /* substitute result of matching the rule start
 				 * into the end string.
 				 *
 				 * eg, in shell script mode, <<\s*(\w+) is
@@ -520,8 +513,8 @@ public class TokenMarker {
                     keywords = context.rules.keywords;
 
                     break;
-                //}}}
-                //{{{ MARK_FOLLOWING
+
+
                 case ParserRule.MARK_FOLLOWING:
                     tokenHandler.handleToken(line,
                             matchToken(checkRule, checkRule, context),
@@ -532,8 +525,8 @@ public class TokenMarker {
                     context.spanEndSubstRegex = null;
                     context.setInRule(checkRule);
                     break;
-                //}}}
-                //{{{ MARK_PREVIOUS
+
+
                 case ParserRule.MARK_PREVIOUS:
                     context.spanEndSubst = null;
                     context.spanEndSubstRegex = null;
@@ -552,7 +545,7 @@ public class TokenMarker {
                             context);
 
                     break;
-                //}}}
+
                 default:
                     throw new InternalError("Unhandled major action");
             }
@@ -565,7 +558,7 @@ public class TokenMarker {
         }
 
         return true;
-    } //}}}
+    }
 
     /**
      * Checks if the rule matches the line at the current position
@@ -629,9 +622,9 @@ public class TokenMarker {
         }
 
         return true;
-    } //}}}
+    }
 
-    //{{{ handleNoWordBreak() method
+
     private void handleNoWordBreak() {
         if (context.parent != null) {
             ParserRule rule = context.parent.inRule;
@@ -650,9 +643,9 @@ public class TokenMarker {
                 context.setInRule(null);
             }
         }
-    } //}}}
+    }
 
-    //{{{ handleTokenWithSpaces() method
+
     private void handleTokenWithSpaces(TokenHandler tokenHandler,
                                        byte tokenType, int start, int len, LineContext context) {
         int last = start;
@@ -673,17 +666,15 @@ public class TokenMarker {
             tokenHandler.handleToken(line, tokenType, last,
                     end - last, context);
         }
-    } //}}}
+    }
 
-    //{{{ substitute() method
 
-    //{{{ markKeyword() method
     private void markKeyword(boolean addRemaining) {
         int len = pos - lastOffset;
         if (len == 0)
             return;
 
-        //{{{ Do digits
+
         if (context.rules.getHighlightDigits()) {
             boolean digit = false;
             boolean mixed = false;
@@ -728,9 +719,9 @@ public class TokenMarker {
 
                 return;
             }
-        } //}}}
+        }
 
-        //{{{ Do keywords
+
         if (keywords != null) {
             byte id = keywords.lookup(line, lastOffset, len);
 
@@ -741,17 +732,17 @@ public class TokenMarker {
                 lastOffset = pos;
                 return;
             }
-        } //}}}
+        }
 
-        //{{{ Handle any remaining crud
+
         if (addRemaining) {
             tokenHandler.handleToken(line, context.rules.getDefault(),
                     lastOffset - line.offset, len, context);
             lastOffset = pos;
-        } //}}}
-    } //}}}
+        }
+    }
 
-    //{{{ matchToken() method
+
     private byte matchToken(ParserRule rule, ParserRule base, LineContext ctx) {
         switch (rule.matchType) {
             case ParserRule.MATCH_TYPE_RULE:
@@ -763,9 +754,9 @@ public class TokenMarker {
             default:
                 return rule.matchType;
         }
-    } //}}}
+    }
 
-    //{{{ checkHashString() method
+
     private boolean checkHashString(ParserRule rule) {
         for (int i = 0; i < rule.upHashChar.length; i++) {
             if (Character.toUpperCase(line.array[pos + i]) != rule.upHashChar[i]) {
@@ -773,11 +764,8 @@ public class TokenMarker {
             }
         }
         return true;
-    } //}}}
+    }
 
-    //}}}
-
-    //{{{ LineContext class
 
     /**
      * Stores persistent per-line syntax parser state.
@@ -794,7 +782,7 @@ public class TokenMarker {
         public Matcher spanEndSubstRegex;
         public ParserRule escapeRule;
 
-        //{{{ LineContext constructor
+
         public LineContext(ParserRuleSet rs, LineContext lc) {
             rules = rs;
             parent = (lc == null ? null : (LineContext) lc.clone());
@@ -807,13 +795,13 @@ public class TokenMarker {
                 escapeRule = rules.getEscapeRule();
             else
                 escapeRule = lc.escapeRule;
-        } //}}}
+        }
 
-        //{{{ LineContext constructor
+
         public LineContext() {
-        } //}}}
+        }
 
-        //{{{ charArraysEqual() method
+
         private static boolean charArraysEqual(char[] c1, char[] c2) {
             if (c1 == null)
                 return c2 == null;
@@ -831,9 +819,9 @@ public class TokenMarker {
             }
 
             return true;
-        } //}}}
+        }
 
-        //{{{ intern() method
+
         public LineContext intern() {
             WeakReference<LineContext> ref = intern.get(this);
             if (ref != null) {
@@ -844,9 +832,9 @@ public class TokenMarker {
             }
             intern.put(this, new WeakReference<LineContext>(this));
             return this;
-        } //}}}
+        }
 
-        //{{{ hashCode() method
+
         public int hashCode() {
             int code = 0;
             code += (parent != null) ? parent.hashCode() : 0;
@@ -855,9 +843,9 @@ public class TokenMarker {
             code += (spanEndSubst != null) ? spanEndSubst.hashCode() : 0;
             code += (spanEndSubstRegex != null) ? spanEndSubstRegex.hashCode() : 0;
             return code;
-        } //}}}
+        }
 
-        //{{{ equals() method
+
         public boolean equals(Object obj) {
             if (obj instanceof LineContext) {
                 LineContext lc = (LineContext) obj;
@@ -867,9 +855,9 @@ public class TokenMarker {
                         && Objects.equals(spanEndSubstRegex, lc.spanEndSubstRegex);
             } else
                 return false;
-        } //}}}
+        }
 
-        //{{{ clone() method
+
         @Override
         public Object clone() {
             LineContext lc = new LineContext();
@@ -881,9 +869,8 @@ public class TokenMarker {
             lc.escapeRule = escapeRule;
 
             return lc;
-        } //}}}
+        }
 
-        //{{{ setInRule() method
 
         /**
          * Sets the current rule being processed and adjusts the
@@ -899,7 +886,7 @@ public class TokenMarker {
                 escapeRule = parent.escapeRule;
             else
                 escapeRule = null;
-        } //}}}
+        }
 
-    } //}}}
+    }
 }

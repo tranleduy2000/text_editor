@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 
 import com.duy.text.editor.R;
+
 import org.gjt.sp.jedit.syntax.SyntaxStyle;
 import org.gjt.sp.jedit.syntax.Token;
 

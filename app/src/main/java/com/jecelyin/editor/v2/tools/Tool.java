@@ -182,6 +182,6 @@ public class Tool {
         }
 
         return buf.toString();
-    } //}}}
+    }
 
 }

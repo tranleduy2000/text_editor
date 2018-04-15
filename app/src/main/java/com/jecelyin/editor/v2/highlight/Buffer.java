@@ -77,7 +77,7 @@ public class Buffer {
             else
                 tokens = tokens.next;
         }
-    } //}}}
+    }
 
     public LineManager getLineManager() {
         return lineMgr;
@@ -148,7 +148,7 @@ public class Buffer {
             getText(start + relativeStartOffset, end - start - relativeStartOffset - 1, segment);
         }
 
-    } //}}}
+    }
 
     public void getText(int start, int length, Segment seg) {
         if (start < 0 || length < 0
@@ -157,7 +157,7 @@ public class Buffer {
 
 //        editable.getText(start, length, seg);
         getTextByContentManager(start, length, seg);
-    } //}}}
+    }
 
     //{{{ markTokens() method
 
@@ -178,7 +178,7 @@ public class Buffer {
         seg.array = dest;
         seg.offset = 0;
         seg.count = len;
-    } //}}}
+    }
 
     //{{{ getRuleSetAtOffset() method
 
@@ -242,7 +242,7 @@ public class Buffer {
             lineMgr.setFirstInvalidLineContext(Math.max(
                     firstInvalidLineContext, lineIndex + 1));
         }
-    } //}}}
+    }
 
     /**
      * Returns the syntax highlighting ruleset at the specified offset.
@@ -259,7 +259,7 @@ public class Buffer {
         markTokens(line, tokens);
         Token token = getTokenAtOffset(tokens.getTokens(), offset);
         return token.rules;
-    } //}}}
+    }
 
     //{{{ contentInserted() method
     private void contentInserted(int offset, int length,
@@ -269,7 +269,7 @@ public class Buffer {
 
         lineMgr.contentInserted(startLine, offset, numLines, length,
                 endOffsets);
-    } //}}}
+    }
 
     /**
      * Inserts a string into the buffer.
@@ -300,7 +300,7 @@ public class Buffer {
         }
 
         contentInserted(offset, len, integerArray);
-    } //}}}
+    }
 
     /**
      * Removes the specified rang efrom the buffer.
@@ -318,7 +318,7 @@ public class Buffer {
         int numLines = endLine - startLine;
 
         lineMgr.contentRemoved(startLine, offset, numLines, length);
-    } //}}}
+    }
 
     @Override
     public String toString() {

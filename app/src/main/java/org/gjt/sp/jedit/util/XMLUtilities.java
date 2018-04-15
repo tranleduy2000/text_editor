@@ -18,8 +18,6 @@
 
 package org.gjt.sp.jedit.util;
 
-//{{{ Imports
-
 
 import android.util.Log;
 
@@ -36,7 +34,7 @@ import java.io.BufferedInputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
-//}}}
+
 
 /**
  * XML utility methods that only depend on the JDK.
@@ -47,12 +45,10 @@ import java.io.InputStream;
  */
 public class XMLUtilities {
 
-    //{{{ charsToEntities() method
 
     private XMLUtilities() {
     }
 
-    //{{{ parseXML() method
 
     /**
      * Converts <, >, & in the string to their HTML entity
@@ -103,9 +99,8 @@ public class XMLUtilities {
             }
         }
         return buf.toString();
-    } //}}}
+    }
 
-    //{{{ resolveEntity() method
 
     /**
      * Convenience method for parsing an XML file. This method will
@@ -147,7 +142,7 @@ public class XMLUtilities {
             IOUtilities.closeQuietly((Closeable) in);
         }
         return false;
-    } //}}}
+    }
 
     /**
      * Tries to find the given systemId in the context of the given
@@ -173,5 +168,5 @@ public class XMLUtilities {
         }
 
         return null;
-    } //}}}
+    }
 }

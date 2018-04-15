@@ -138,7 +138,7 @@ public class Mode {
      */
     public void loadIfNecessary() {
         if (marker == null) {
-			ModeProvider.instance.loadMode(this);
+            ModeProvider.instance.loadMode(this);
             if (marker == null)
                 DLog.e("Mode not correctly loaded, token marker is still null");
         }

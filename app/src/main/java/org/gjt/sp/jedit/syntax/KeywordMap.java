@@ -14,21 +14,19 @@ import java.util.List;
  * @version $Id: KeywordMap.java 23221 2013-09-29 20:03:32Z shlomy $
  */
 public class KeywordMap {
-    //{{{ KeywordMap constructor
 
-    //{{{ Instance variables
+
     private int mapLength;
 
-    //{{{ KeywordMap constructor
+
     private Keyword[] map;
 
-    //{{{ lookup() method
+
     private boolean ignoreCase;
 
-    //{{{ add() method
+
     private StringBuilder noWordSep;
 
-    //{{{ add() method
 
     /**
      * Creates a new <code>KeywordMap</code>.
@@ -39,9 +37,8 @@ public class KeywordMap {
         this(ignoreCase, 52);
         this.ignoreCase = ignoreCase;
         noWordSep = new StringBuilder();
-    } //}}}
+    }
 
-    //{{{ getNonAlphaNumericChars() method
 
     /**
      * Creates a new <code>KeywordMap</code>.
@@ -54,9 +51,8 @@ public class KeywordMap {
         this.mapLength = mapLength;
         this.ignoreCase = ignoreCase;
         map = new Keyword[mapLength];
-    } //}}}
+    }
 
-    //{{{ getKeywords() method
 
     /**
      * Looks up a key.
@@ -80,9 +76,8 @@ public class KeywordMap {
             k = k.next;
         }
         return Token.NULL;
-    } //}}}
+    }
 
-    //{{{ getIgnoreCase() method
 
     /**
      * Adds a key-value mapping.
@@ -92,9 +87,8 @@ public class KeywordMap {
      */
     public void add(String keyword, byte id) {
         add(keyword.toCharArray(), id);
-    } //}}}
+    }
 
-    //{{{ setIgnoreCase() method
 
     /**
      * Adds a key-value mapping.
@@ -121,9 +115,8 @@ public class KeywordMap {
         }
 
         map[key] = new Keyword(keyword, id, map[key]);
-    } //}}}
+    }
 
-    //{{{ add() method
 
     /**
      * Returns all non-alphanumeric characters that appear in the
@@ -133,9 +126,8 @@ public class KeywordMap {
      */
     public String getNonAlphaNumericChars() {
         return noWordSep.toString();
-    } //}}}
+    }
 
-    //{{{ Private members
 
     /**
      * Returns an array containing all keywords in this keyword map.
@@ -154,7 +146,7 @@ public class KeywordMap {
         String[] retVal = new String[vector.size()];
         vector.toArray(retVal);
         return retVal;
-    } //}}}
+    }
 
     /**
      * Returns true if the keyword map is set to be case insensitive,
@@ -162,7 +154,7 @@ public class KeywordMap {
      */
     public boolean getIgnoreCase() {
         return ignoreCase;
-    } //}}}
+    }
 
     /**
      * Sets if the keyword map should be case insensitive.
@@ -172,7 +164,7 @@ public class KeywordMap {
      */
     public void setIgnoreCase(boolean ignoreCase) {
         this.ignoreCase = ignoreCase;
-    } //}}}
+    }
 
     /**
      * Adds the content of another keyword map to this one.
@@ -187,34 +179,32 @@ public class KeywordMap {
                 k = k.next;
             }
         }
-    } //}}}
-    //}}}
+    }
 
-    //{{{ getStringMapKey() method
+
     private int getStringMapKey(char[] s) {
         return (Character.toUpperCase(s[0]) +
                 Character.toUpperCase(s[s.length - 1]))
                 % mapLength;
-    } //}}}
+    }
 
-    //{{{ getSegmentMapKey() method
+
     protected int getSegmentMapKey(Segment s, int off, int len) {
         return (Character.toUpperCase(s.array[off]) +
                 Character.toUpperCase(s.array[off + len - 1]))
                 % mapLength;
-    } //}}}
+    }
 
-    //}}}
 
-    //{{{ Keyword class
     private static class Keyword {
         public char[] keyword;
         public byte id;
         public Keyword next;
+
         Keyword(char[] keyword, byte id, Keyword next) {
             this.keyword = keyword;
             this.id = id;
             this.next = next;
         }
-    } //}}}
+    }
 }

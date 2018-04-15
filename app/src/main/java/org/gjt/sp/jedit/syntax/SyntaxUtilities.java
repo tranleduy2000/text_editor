@@ -10,7 +10,7 @@ import org.gjt.sp.jedit.Segment;
  * @since jEdit 4.2pre1
  */
 public class SyntaxUtilities {
-    //{{{ regionMatches() method
+
 
     /**
      * Checks if a subregion of a <code>Segment</code> is equal to a
@@ -41,5 +41,5 @@ public class SyntaxUtilities {
                 return false;
         }
         return true;
-    } //}}}
+    }
 }

@@ -11,24 +11,21 @@ import org.gjt.sp.jedit.Segment;
  * @since jEdit 4.1pre1
  */
 public class DefaultTokenHandler implements TokenHandler {
-    //{{{ reset() method
 
-    //{{{ Protected members
+
     protected Token firstToken, lastToken;
 
-    //{{{ getTokens() method
+
     protected TokenMarker.LineContext lineContext;
 
-    //{{{ handleToken() method
 
     /**
      * Clears the list of tokens.
      */
     public void init() {
         lastToken = firstToken = null;
-    } //}}}
+    }
 
-    //{{{ getLineContext() method
 
     /**
      * Returns the first syntax token.
@@ -37,9 +34,8 @@ public class DefaultTokenHandler implements TokenHandler {
      */
     public Token getTokens() {
         return firstToken;
-    } //}}}
+    }
 
-    //{{{ setLineContext() method
 
     /**
      * Called by the token marker when a syntax token has been parsed.
@@ -57,7 +53,7 @@ public class DefaultTokenHandler implements TokenHandler {
         Token token = createToken(id, offset, length, context);
         if (token != null)
             addToken(token, context);
-    } //}}}
+    }
 
     /**
      * The token handler can compare this object with the object
@@ -69,7 +65,7 @@ public class DefaultTokenHandler implements TokenHandler {
      */
     public TokenMarker.LineContext getLineContext() {
         return lineContext;
-    } //}}}
+    }
 
     /**
      * The token handler can compare this object with the object
@@ -81,9 +77,9 @@ public class DefaultTokenHandler implements TokenHandler {
      */
     public void setLineContext(TokenMarker.LineContext lineContext) {
         this.lineContext = lineContext;
-    } //}}}
+    }
 
-    //{{{ getParserRuleSet() method
+
     protected ParserRuleSet getParserRuleSet(TokenMarker.LineContext context) {
         while (context != null) {
             if (!context.rules.isBuiltIn())
@@ -93,15 +89,15 @@ public class DefaultTokenHandler implements TokenHandler {
         }
 
         return null;
-    } //}}}
+    }
 
-    //{{{ createToken() method
+
     protected Token createToken(byte id, int offset, int length,
                                 TokenMarker.LineContext context) {
         return new Token(id, offset, length, getParserRuleSet(context));
-    } //}}}
+    }
 
-    //{{{ addToken() method
+
     protected void addToken(Token token, TokenMarker.LineContext context) {
         if (firstToken == null) {
             firstToken = lastToken = token;
@@ -109,7 +105,7 @@ public class DefaultTokenHandler implements TokenHandler {
             lastToken.next = token;
             lastToken = lastToken.next;
         }
-    } //}}}
+    }
 
-    //}}}
+
 }

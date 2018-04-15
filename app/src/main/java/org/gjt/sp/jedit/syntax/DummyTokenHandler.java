@@ -18,7 +18,6 @@ public class DummyTokenHandler implements TokenHandler {
      */
     public static final DummyTokenHandler INSTANCE = new DummyTokenHandler();
 
-    //{{{ handleToken() method
 
     /**
      * Called by the token marker when a syntax token has been parsed.
@@ -33,9 +32,8 @@ public class DummyTokenHandler implements TokenHandler {
      */
     public void handleToken(Segment seg, byte id, int offset, int length,
                             TokenMarker.LineContext context) {
-    } //}}}
+    }
 
-    //{{{ setLineContext() method
 
     /**
      * The token handler can compare this object with the object
@@ -46,5 +44,5 @@ public class DummyTokenHandler implements TokenHandler {
      * @since jEdit 4.2pre6
      */
     public void setLineContext(TokenMarker.LineContext lineContext) {
-    } //}}}
+    }
 }

@@ -9,9 +9,8 @@ import java.lang.reflect.Field;
  * @version $Id: Token.java 21831 2012-06-18 22:54:17Z ezust $
  */
 public class Token {
-    //{{{ stringToToken() method
 
-    //{{{ Token types
+
     public static final String[] TOKEN_TYPES = new String[]{
             "NULL",
             "COMMENT1",
@@ -34,7 +33,7 @@ public class Token {
             "OPERATOR"
     };
 
-    //{{{ tokenToString() method
+
     public static final byte NULL = 0;
     public static final byte COMMENT1 = 1;
     public static final byte COMMENT2 = 2;
@@ -57,7 +56,7 @@ public class Token {
     public static final byte ID_COUNT = 19;
     // Special:
     public static final byte END = 127;
-    //}}}
+
     /**
      * The id of this token.
      */
@@ -67,7 +66,7 @@ public class Token {
      */
     public int offset;
 
-    //{{{ Instance variables
+
     /**
      * The length of this token.
      */
@@ -94,7 +93,7 @@ public class Token {
         this.offset = offset;
         this.length = length;
         this.rules = rules;
-    } //}}}
+    }
 
     /**
      * Converts a token type string to a token type constant.
@@ -109,10 +108,8 @@ public class Token {
         } catch (Exception e) {
             return -1;
         }
-    } //}}}
-    //}}}
+    }
 
-    //{{{ Token constructor
 
     /**
      * Converts a token type constant to a token type string.
@@ -121,14 +118,13 @@ public class Token {
      */
     public static String tokenToString(byte token) {
         return (token == Token.END) ? "END" : TOKEN_TYPES[token];
-    } //}}}
+    }
 
-    //{{{ toString() method
 
     /**
      * Returns a string representation of this token.
      */
     public String toString() {
         return "[id=" + id + ",offset=" + offset + ",length=" + length + "]";
-    } //}}}
+    }
 }

@@ -1,13 +1,12 @@
 package org.gjt.sp.jedit.util;
 
-//{{{ Imports
 
 import org.gjt.sp.jedit.syntax.Token;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Stack;
-//}}}
+
 
 /**
  * Contains several text manipulation methods.
@@ -32,17 +31,15 @@ public class TextUtilities {
     public static final int SYMBOL = 2;
 
 
-    //{{{ getTokenAtOffset() method
-    //{{{ getStringCase() methods
     public static final int MIXED = 0;
 
-    //{{{ getComplementaryBracket() method
+
     public static final int LOWER_CASE = 1;
 
-    //{{{ join() method
+
     public static final int UPPER_CASE = 2;
 
-    //{{{ findWordStart() methods
+
     public static final int TITLE_CASE = 3;
 
     /**
@@ -65,7 +62,7 @@ public class TextUtilities {
             else
                 tokens = tokens.next;
         }
-    } //}}}
+    }
 
     /**
      * Given an opening bracket, return the corresponding closing bracket
@@ -104,7 +101,7 @@ public class TextUtilities {
             default:
                 return '\0';
         }
-    } //}}}
+    }
 
     /**
      * Similar to perl's join() method on lists,
@@ -127,7 +124,7 @@ public class TextUtilities {
             retval.append(itr.next());
         }
         return retval.toString();
-    } //}}}
+    }
 
     /**
      * Locates the start of the word at the specified position.
@@ -172,7 +169,6 @@ public class TextUtilities {
         return findWordStart(line, pos, noWordSep, joinNonWordChars, false);
     }
 
-    //{{{ findWordEnd() methods
 
     /**
      * Locates the start of the word at the specified position.
@@ -258,15 +254,15 @@ public class TextUtilities {
         if (noWordSep == null)
             noWordSep = "";
 
-        //{{{ the character under the cursor changes how we behave.
+
         int type = getCharType(ch, noWordSep);
-        //}}}
+
 
         for (int i = pos; i >= 0; i--) {
             char lastCh = ch;
             ch = line.charAt(i);
             switch (type) {
-                //{{{ Whitespace...
+
                 case WHITESPACE:
                     // only select other whitespace in this case, unless eating only after words
                     if (Character.isWhitespace(ch))
@@ -280,8 +276,8 @@ public class TextUtilities {
                         type = WORD_CHAR;
                     } else
                         type = SYMBOL;
-                    break; //}}}
-                //{{{ Word character...
+                    break;
+
                 case WORD_CHAR:
                     // stop at next last (in writing direction) upper case char if camel cased
                     // (don't stop at every upper case char, don't treat noWordSep as word chars)
@@ -305,8 +301,8 @@ public class TextUtilities {
                         type = WHITESPACE;
                         break;
                     } else
-                        return i + 1; //}}}
-                    //{{{ Symbol...
+                        return i + 1;
+
                 case SYMBOL:
                     if (!joinNonWordChars && pos != i)
                         return i + 1;
@@ -323,12 +319,12 @@ public class TextUtilities {
                         return i + 1;
                     } else {
                         break;
-                    } //}}}
+                    }
             }
         }
 
         return 0;
-    } //}}}
+    }
 
     /**
      * Locates the end of the word at the specified position.
@@ -357,7 +353,6 @@ public class TextUtilities {
         return findWordEnd(line, pos, noWordSep, true, false, false);
     }
 
-    //{{{ getCharType() method
 
     /**
      * Locates the end of the word at the specified position.
@@ -375,7 +370,6 @@ public class TextUtilities {
         return findWordEnd(line, pos, noWordSep, joinNonWordChars, false);
     }
 
-    //{{{ tabsToSpaces() method
 
     /**
      * Locates the end of the word at the specified position.
@@ -395,7 +389,6 @@ public class TextUtilities {
                 false, eatWhitespace);
     }
 
-    //{{{ indexIgnoringWhitespace() method
 
     /**
      * Locates the end of the word at the specified position.
@@ -418,7 +411,6 @@ public class TextUtilities {
                 eatWhitespace);
     }
 
-    //{{{ ignoringWhitespaceIndex() method
 
     /**
      * Locates the end of the word at the specified position.
@@ -447,22 +439,22 @@ public class TextUtilities {
         if (noWordSep == null)
             noWordSep = "";
 
-        //{{{ the character under the cursor changes how we behave.
+
         int type = getCharType(ch, noWordSep);
-        //}}}
+
 
         for (int i = pos; i < line.length(); i++) {
             char lastCh = ch;
             ch = line.charAt(i);
             switch (type) {
-                //{{{ Whitespace...
+
                 case WHITESPACE:
                     // only select other whitespace in this case
                     if (Character.isWhitespace(ch))
                         break;
                     else
-                        return i; //}}}
-                    //{{{ Word character...
+                        return i;
+
                 case WORD_CHAR:
                     // stop at next last upper case char if camel cased
                     // (don't stop at every upper case char, don't treat noWordSep as word chars)
@@ -483,8 +475,8 @@ public class TextUtilities {
                         type = WHITESPACE;
                         break;
                     } else
-                        return i; //}}}
-                    //{{{ Symbol...
+                        return i;
+
                 case SYMBOL:
                     if (!joinNonWordChars && i != pos)
                         return i;
@@ -501,12 +493,12 @@ public class TextUtilities {
                         return i;
                     } else {
                         break;
-                    } //}}}
+                    }
             }
         }
 
         return line.length();
-    } //}}}
+    }
 
     /**
      * Returns the type of the char.
@@ -528,7 +520,7 @@ public class TextUtilities {
         else
             type = SYMBOL;
         return type;
-    } //}}}
+    }
 
     /**
      * Converts tabs to consecutive spaces in the specified string.
@@ -558,7 +550,7 @@ public class TextUtilities {
             }
         }
         return buf.toString();
-    } //}}}
+    }
 
     /**
      * Inverse of <code>ignoringWhitespaceIndex()</code>.
@@ -573,7 +565,7 @@ public class TextUtilities {
         for (int i = 0; i < index; i++)
             if (!Character.isWhitespace(str.charAt(i))) j++;
         return j;
-    } //}}}
+    }
 
     /**
      * Inverse of <code>indexIgnoringWhitespace()</code>.
@@ -594,7 +586,7 @@ public class TextUtilities {
             if (i == str.length() - 1)
                 return i + 1;
         }
-    } //}}}
+    }
 
     /**
      * Returns if the specified string is all upper case, all lower case,
@@ -651,9 +643,8 @@ public class TextUtilities {
      */
     public static int getStringCase(String str) {
         return getStringCase((CharSequence) str);
-    } //}}}
+    }
 
-    //{{{ toTitleCase() method
 
     /**
      * Converts the specified string to title case, by capitalizing the
@@ -669,9 +660,8 @@ public class TextUtilities {
             return Character.toUpperCase(str.charAt(0))
                     + str.substring(1).toLowerCase();
         }
-    } //}}}
+    }
 
-    //{{{ escapeText() method
 
     /**
      * Escapes a given string for use in a java.util.regex pattern.
@@ -683,10 +673,8 @@ public class TextUtilities {
         // surround it with the quotation tags \Q and \E.
         String result = text.replace("\\E", "\\\\E");
         return "\\Q" + result + "\\E";
-    } //}}}
+    }
 
-
-    //{{{ globToRE() method
 
     /**
      * Converts a Unix-style glob to a regular expression.<p>
@@ -769,9 +757,8 @@ public class TextUtilities {
         }
 
         return buf.toString();
-    } //}}}
+    }
 
-    //{{{ getBoolean() method
 
     /**
      * Returns a boolean from a given object.
@@ -797,5 +784,5 @@ public class TextUtilities {
             return false;
 
         return def;
-    } //}}}
+    }
 }

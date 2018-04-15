@@ -33,7 +33,7 @@ import org.gjt.sp.jedit.util.IntegerArray;
  * @since jEdit 4.2pre3
  */
 public class LineManager {
-    //{{{ Instance variables
+
     private int[] endOffsets;
     private short[] foldLevels;
     private TokenMarker.LineContext[] lineContext;
@@ -60,21 +60,21 @@ public class LineManager {
      */
     private int getLineOfOffsetLine = -1;
 
-    //{{{ LineManager constructor
+
     public LineManager() {
         endOffsets = new int[1];
         endOffsets[0] = 1;
         foldLevels = new short[1];
         lineContext = new TokenMarker.LineContext[1];
         lineCount = 1;
-    } //}}}
+    }
 
-    //{{{ getLineCount() method
+
     public final int getLineCount() {
         return lineCount;
-    } //}}}
+    }
 
-    //{{{ getLineOfOffset() method
+
     public int getLineOfOffset(int offset) {
         /*
          * Performance optimization: assumption is that this method
@@ -122,7 +122,7 @@ public class LineManager {
                     break;
             }
         }
-    } //}}}
+    }
 
     public final int getLineStartOffset(int line) {
         int prevLine = line - 1;
@@ -131,20 +131,20 @@ public class LineManager {
         return getLineEndOffset(prevLine);
     }
 
-    //{{{ getLineEndOffset() method
+
     public final int getLineEndOffset(int line) {
         if (gapLine != -1 && line >= gapLine)
             return endOffsets[line] + gapWidth;
         else
             return endOffsets[line];
-    } //}}}
+    }
 
-    //{{{ getFoldLevel() method
+
     public final int getFoldLevel(int line) {
         return foldLevels[line];
-    } //}}}
+    }
 
-    //{{{ setFoldLevel() method
+
     // Also sets 'fold level valid' flag
     public final void setFoldLevel(int line, int level) {
         if (level > 0xffff) {
@@ -153,41 +153,39 @@ public class LineManager {
         }
 
         foldLevels[line] = (short) level;
-    } //}}}
+    }
 
-    //{{{ Private members
 
-    //{{{ getFirstInvalidFoldLevel() method
     public int getFirstInvalidFoldLevel() {
         return firstInvalidFoldLevel;
-    } //}}}
+    }
 
-    //{{{ setFirstInvalidFoldLevel() method
+
     public void setFirstInvalidFoldLevel(int firstInvalidFoldLevel) {
         this.firstInvalidFoldLevel = firstInvalidFoldLevel;
-    } //}}}
+    }
 
-    //{{{ getLineContext() method
+
     public final TokenMarker.LineContext getLineContext(int line) {
         return lineContext[line];
-    } //}}}
+    }
 
-    //{{{ setLineContext() method
+
     public final void setLineContext(int line, TokenMarker.LineContext context) {
         lineContext[line] = context;
-    } //}}}
+    }
 
-    //{{{ getFirstInvalidLineContext() method
+
     public int getFirstInvalidLineContext() {
         return firstInvalidLineContext;
-    } //}}}
+    }
 
-    //{{{ setFirstInvalidLineContext() method
+
     public void setFirstInvalidLineContext(int firstInvalidLineContext) {
         this.firstInvalidLineContext = firstInvalidLineContext;
-    } //}}}
+    }
 
-    //{{{ _contentInserted() method
+
     public void _contentInserted(IntegerArray endOffsets) {
         gapLine = -1;
         gapWidth = 0;
@@ -197,14 +195,14 @@ public class LineManager {
         foldLevels = new short[lineCount];
 
         lineContext = new TokenMarker.LineContext[lineCount];
-    } //}}}
+    }
 
-    //{{{ contentInserted() method
+
     public void contentInserted(int startLine, int offset,
                                 int numLines, int length, IntegerArray endOffsets) {
         int endLine = startLine + numLines;
 
-        //{{{ Update line info and line context arrays
+
         if (numLines > 0) {
             //moveGap(-1,0,"contentInserted");
 
@@ -251,19 +249,19 @@ public class LineManager {
                 this.endOffsets[startLine + i] = (offset + endOffsets.get(i));
                 foldLevels[startLine + i] = 0;
             }
-        } //}}}
+        }
 
         if (firstInvalidFoldLevel == -1 || firstInvalidFoldLevel > startLine)
             firstInvalidFoldLevel = startLine;
         moveGap(endLine, length, "contentInserted");
-    } //}}}
+    }
 
-    //{{{ contentRemoved() method
+
     public void contentRemoved(int startLine, int offset,
                                int numLines, int length) {
         int endLine = startLine + numLines;
 
-        //{{{ Update line info and line context arrays
+
         if (numLines > 0) {
             //moveGap(-1,0,"contentRemoved");
 
@@ -285,20 +283,19 @@ public class LineManager {
                     startLine, lineCount - startLine);
             System.arraycopy(lineContext, endLine, lineContext,
                     startLine, lineCount - startLine);
-        } //}}}
+        }
 
         if (firstInvalidFoldLevel == -1 || firstInvalidFoldLevel > startLine)
             firstInvalidFoldLevel = startLine;
         moveGap(startLine, -length, "contentRemoved");
-    } //}}}
-    //}}}
+    }
 
-    //{{{ setLineEndOffset() method
+
     private void setLineEndOffset(int line, int end) {
         endOffsets[line] = end;
-    } //}}}
+    }
 
-    //{{{ moveGap() method
+
     private void moveGap(int newGapLine, int newGapWidth, String method) {
         if (gapLine == -1)
             gapWidth = newGapWidth;
@@ -335,7 +332,7 @@ public class LineManager {
             gapLine = -1;
         else
             gapLine = newGapLine;
-    } //}}}
+    }
 
-    //}}}
+
 }

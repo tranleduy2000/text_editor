@@ -1,6 +1,5 @@
 package org.gjt.sp.jedit.syntax;
 
-//{{{ Imports
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,7 +8,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-//}}}
+
 
 /**
  * A set of parser rules.
@@ -18,9 +17,8 @@ import java.util.regex.Pattern;
  * @version $Id: ParserRuleSet.java 22883 2013-03-23 17:58:56Z thomasmey $
  */
 public class ParserRuleSet {
-    //{{{ getStandardRuleSet() method
 
-    //{{{ Private members
+
     private static final ParserRuleSet[] standard;
 
     static {
@@ -38,10 +36,10 @@ public class ParserRuleSet {
     private final List<ParserRuleSet> imports;
     KeywordMap keywords;
 
-    //{{{ resolveImports() method
+
     int ruleCount;
 
-    //{{{ addRuleSet() method
+
     boolean ignoreCase = true;
     private Hashtable<String, String> props;
     /**
@@ -51,7 +49,7 @@ public class ParserRuleSet {
     private int terminateChar = -1;
     private byte defaultToken;
 
-    //{{{ getTerminateChar() method
+
     private ParserRule escapeRule;
     private boolean highlightDigits;
     private Pattern digitRE;
@@ -59,13 +57,13 @@ public class ParserRuleSet {
     private String noWordSep;
     private boolean builtIn;
 
-    //{{{ ParserRuleSet constructor
+
     public ParserRuleSet(String modeName, String setName) {
         this.modeName = modeName;
         this.setName = setName;
         ruleMap = new HashMap<Character, List<ParserRule>>();
         imports = new ArrayList<ParserRuleSet>();
-    } //}}}
+    }
 
     /**
      * Returns a parser rule set that highlights everything with the
@@ -75,33 +73,33 @@ public class ParserRuleSet {
      */
     public static ParserRuleSet getStandardRuleSet(byte id) {
         return standard[id];
-    } //}}}
+    }
 
-    //{{{ getModeName() method
+
     public String getModeName() {
         return modeName;
-    } //}}}
+    }
 
-    //{{{ getSetName() method
+
     public String getSetName() {
         return setName;
-    } //}}}
+    }
 
-    //{{{ getName() method
+
     public String getName() {
         return modeName + "::" + setName;
-    } //}}}
+    }
 
-    //{{{ getProperties() method
+
     public Hashtable<String, String> getProperties() {
         return props;
-    } //}}}
+    }
 
-    //{{{ setProperties() method
+
     public void setProperties(Hashtable<String, String> props) {
         this.props = props;
         _noWordSep = null;
-    } //}}}
+    }
 
     /**
      * Resolves all rulesets added with {@link #addRuleSet(ParserRuleSet)}.
@@ -131,7 +129,7 @@ public class ParserRuleSet {
             }
         }
         imports.clear();
-    } //}}}
+    }
 
     /**
      * Adds all rules contained in the given ruleset.
@@ -141,9 +139,9 @@ public class ParserRuleSet {
      */
     public void addRuleSet(ParserRuleSet ruleset) {
         imports.add(ruleset);
-    } //}}}
+    }
 
-    //{{{ addRule() method
+
     public void addRule(ParserRule r) {
         ruleCount++;
         Character[] keys;
@@ -169,11 +167,9 @@ public class ParserRuleSet {
             }
             rules.add(r);
         }
-    } //}}}
+    }
 
-    //{{{ isBuiltIn() method
 
-    //{{{ getRules() method
     public List<ParserRule> getRules(Character key) {
         List<ParserRule> rulesForNull = ruleMap.get(null);
         boolean emptyForNull = rulesForNull == null || rulesForNull.isEmpty();
@@ -193,12 +189,12 @@ public class ParserRuleSet {
             mixed.addAll(rulesForNull);
             return mixed;
         }
-    } //}}}
+    }
 
-    //{{{ getRuleCount() method
+
     public int getRuleCount() {
         return ruleCount;
-    } //}}}
+    }
 
     /**
      * Returns the number of chars that can be read before the rule parsing stops.
@@ -207,75 +203,75 @@ public class ParserRuleSet {
      */
     public int getTerminateChar() {
         return terminateChar;
-    } //}}}
+    }
 
-    //{{{ setTerminateChar() method
+
     public void setTerminateChar(int atChar) {
         terminateChar = (atChar >= 0) ? atChar : -1;
-    } //}}}
+    }
 
-    //{{{ getIgnoreCase() method
+
     public boolean getIgnoreCase() {
         return ignoreCase;
-    } //}}}
+    }
 
-    //{{{ setIgnoreCase() method
+
     public void setIgnoreCase(boolean b) {
         ignoreCase = b;
-    } //}}}
+    }
 
-    //{{{ getKeywords() method
+
     public KeywordMap getKeywords() {
         return keywords;
-    } //}}}
+    }
 
-    //{{{ setKeywords() method
+
     public void setKeywords(KeywordMap km) {
         keywords = km;
         _noWordSep = null;
-    } //}}}
+    }
 
-    //{{{ getHighlightDigits() method
+
     public boolean getHighlightDigits() {
         return highlightDigits;
-    } //}}}
+    }
 
-    //{{{ setHighlightDigits() method
+
     public void setHighlightDigits(boolean highlightDigits) {
         this.highlightDigits = highlightDigits;
-    } //}}}
+    }
 
-    //{{{ getDigitRegexp() method
+
     public Pattern getDigitRegexp() {
         return digitRE;
-    } //}}}
+    }
 
-    //{{{ setDigitRegexp() method
+
     public void setDigitRegexp(Pattern digitRE) {
         this.digitRE = digitRE;
-    } //}}}
+    }
 
-    //{{{ getEscapeRule() method
+
     public ParserRule getEscapeRule() {
         return escapeRule;
-    } //}}}
+    }
 
-    //{{{ setEscapeRule() method
+
     public void setEscapeRule(ParserRule escapeRule) {
         this.escapeRule = escapeRule;
-    } //}}}
+    }
 
-    //{{{ getDefault() method
+
     public byte getDefault() {
         return defaultToken;
-    } //}}}
+    }
 
-    //{{{ setDefault() method
+
     public void setDefault(byte def) {
         defaultToken = def;
-    } //}}}
+    }
 
-    //{{{ getNoWordSep() method
+
     public String getNoWordSep() {
         if (_noWordSep == null) {
             _noWordSep = noWordSep;
@@ -285,13 +281,13 @@ public class ParserRuleSet {
                 noWordSep += keywords.getNonAlphaNumericChars();
         }
         return noWordSep;
-    } //}}}
+    }
 
-    //{{{ setNoWordSep() method
+
     public void setNoWordSep(String noWordSep) {
         this.noWordSep = noWordSep;
         _noWordSep = null;
-    } //}}}
+    }
 
     /**
      * Returns if this is a built-in ruleset.
@@ -300,12 +296,12 @@ public class ParserRuleSet {
      */
     public boolean isBuiltIn() {
         return builtIn;
-    } //}}}
+    }
 
-    //{{{ toString() method
+
     @Override
     public String toString() {
         return getClass().getName() + '[' + modeName + "::" + setName + ']';
-    } //}}}
-    //}}}
+    }
+
 }
