@@ -21,6 +21,8 @@ package com.jecelyin.common.utils;
 import android.os.Debug;
 import android.text.TextUtils;
 
+import java.util.Arrays;
+
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>
  */
@@ -142,5 +144,6 @@ public class DLog {
     }
 
     public static void log(Object... params) {
+        if (DLog.DEBUG) DLog.d(TAG, "log: " + Arrays.toString(params));
     }
 }

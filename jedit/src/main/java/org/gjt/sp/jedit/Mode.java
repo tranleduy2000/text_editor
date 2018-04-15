@@ -1,47 +1,43 @@
 /*
- * Mode.java - jEdit editing mode
- * :tabSize=4:indentSize=4:noTabs=false:
- * :folding=explicit:collapseFolds=1:
+ * Copyright (C) 2016 Jecelyin Peng <jecelyin@gmail.com>
  *
- * Copyright (C) 1998, 1999, 2000 Slava Pestov
- * Copyright (C) 1999 mike dillon
+ * This file is part of 920 Text Editor.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.gjt.sp.jedit;
 
-//{{{ Imports
+
+import org.gjt.sp.jedit.indent.DeepIndentRule;
+import org.gjt.sp.jedit.indent.IndentRule;
+import org.gjt.sp.jedit.indent.IndentRuleFactory;
+import org.gjt.sp.jedit.indent.WhitespaceRule;
+import org.gjt.sp.jedit.syntax.ModeProvider;
+import org.gjt.sp.jedit.syntax.TokenMarker;
+import org.gjt.sp.util.Log;
+import org.gjt.sp.util.StandardUtilities;
+
 import java.lang.reflect.Method;
-import java.util.Hashtable;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import org.gjt.sp.jedit.indent.DeepIndentRule;
-import org.gjt.sp.jedit.indent.IndentRule;
-import org.gjt.sp.jedit.indent.IndentRuleFactory;
-import org.gjt.sp.jedit.indent.WhitespaceRule;
-import org.gjt.sp.jedit.syntax.TokenMarker;
-import org.gjt.sp.jedit.syntax.ModeProvider;
-import org.gjt.sp.util.Log;
-import org.gjt.sp.util.StandardUtilities;
-//}}}
+
 
 /**
  * An edit mode defines specific settings for editing some type of file.
@@ -50,487 +46,428 @@ import org.gjt.sp.util.StandardUtilities;
  * @author Slava Pestov
  * @version $Id$
  */
-public class Mode
-{
-	//{{{ Mode constructor
-	/**
-	 * Creates a new edit mode.
-	 *
-	 * @param name The name used in mode listings and to query mode
-	 * properties
-	 * @see #getProperty(String)
-	 */
-	public Mode(String name)
-	{
-		this.name = name;
-		this.ignoreWhitespace = true;
-		props = new Hashtable<String, Object>();
-	} //}}}
+public class Mode {
+    protected final String name;
+    protected final Map<String, Object> props;
+    protected TokenMarker marker;
+    private Matcher firstlineMatcher;
+    private Matcher filepathMatcher;
+    private List<IndentRule> indentRules;
+    private String electricKeys;
+    private boolean ignoreWhitespace;
 
-	//{{{ init() method
-	/**
-	 * Initializes the edit mode. Should be called after all properties
-	 * are loaded and set.
-	 */
-	public void init()
-	{
-		try
-		{
-			filepathMatcher = null;
-			String filenameGlob = (String)getProperty("filenameGlob");
-			if(filenameGlob != null && !filenameGlob.isEmpty())
-			{
-				// translate glob to regex
-				String filepathRE = StandardUtilities.globToRE(filenameGlob);
-				// if glob includes a path separator (both are supported as
-				// users can supply them in the GUI and thus will copy
-				// Windows paths in there)
-				if (filepathRE.contains("/") || filepathRE.contains("\\\\"))
-				{
-					// replace path separators by both separator possibilities in the regex
-					filepathRE = filepathRE.replaceAll("/|\\\\\\\\", "[/\\\\\\\\]");
-				} else {
-					// glob is for a filename without path, prepend the regex with
-					// an optional path prefix to be able to match against full paths
-					filepathRE = String.format("(?:.*[/\\\\])?%s", filepathRE);
-				}
-				this.filepathMatcher = Pattern.compile(filepathRE, Pattern.CASE_INSENSITIVE).matcher("");
-			}
 
-			firstlineMatcher = null;
-			String firstlineGlob = (String)getProperty("firstlineGlob");
-			if(firstlineGlob != null && !firstlineGlob.isEmpty())
-			{
-				firstlineMatcher = Pattern.compile(StandardUtilities.globToRE(firstlineGlob),
-								Pattern.CASE_INSENSITIVE).matcher("");
-			}
-		}
-		catch(PatternSyntaxException re)
-		{
-			Log.log(Log.ERROR,this,"Invalid filename/firstline"
-				+ " globs in mode " + name);
-			Log.log(Log.ERROR,this,re);
-		}
+    /**
+     * Creates a new edit mode.
+     *
+     * @param name The name used in mode listings and to query mode
+     *             properties
+     * @see #getProperty(String)
+     */
+    public Mode(String name) {
+        this.name = name;
+        this.ignoreWhitespace = true;
+        props = new Hashtable<String, Object>();
+    }
 
-		// Fix for this bug:
-		// -- Put a mode into the user dir with the same name as one
-		//    on the system dir.
-		// -- Reload edit modes.
-		// -- Old mode from system dir still used for highlighting
-		//    until jEdit restart.
-		marker = null;
-	} //}}}
 
-	//{{{ getTokenMarker() method
-	/**
-	 * Returns the token marker for this mode.
-	 */
-	public TokenMarker getTokenMarker()
-	{
-		loadIfNecessary();
-		return marker;
-	} //}}}
+    /**
+     * Initializes the edit mode. Should be called after all properties
+     * are loaded and set.
+     */
+    public void init() {
+        try {
+            filepathMatcher = null;
+            String filenameGlob = (String) getProperty("filenameGlob");
+            if (filenameGlob != null && !filenameGlob.isEmpty()) {
+                // translate glob to regex
+                String filepathRE = StandardUtilities.globToRE(filenameGlob);
+                // if glob includes a path separator (both are supported as
+                // users can supply them in the GUI and thus will copy
+                // Windows paths in there)
+                if (filepathRE.contains("/") || filepathRE.contains("\\\\")) {
+                    // replace path separators by both separator possibilities in the regex
+                    filepathRE = filepathRE.replaceAll("/|\\\\\\\\", "[/\\\\\\\\]");
+                } else {
+                    // glob is for a filename without path, prepend the regex with
+                    // an optional path prefix to be able to match against full paths
+                    filepathRE = String.format("(?:.*[/\\\\])?%s", filepathRE);
+                }
+                this.filepathMatcher = Pattern.compile(filepathRE, Pattern.CASE_INSENSITIVE).matcher("");
+            }
 
-	//{{{ setTokenMarker() method
-	/**
-	 * Sets the token marker for this mode.
-	 * @param marker The new token marker
-	 */
-	public void setTokenMarker(TokenMarker marker)
-	{
-		this.marker = marker;
-	} //}}}
+            firstlineMatcher = null;
+            String firstlineGlob = (String) getProperty("firstlineGlob");
+            if (firstlineGlob != null && !firstlineGlob.isEmpty()) {
+                firstlineMatcher = Pattern.compile(StandardUtilities.globToRE(firstlineGlob),
+                        Pattern.CASE_INSENSITIVE).matcher("");
+            }
+        } catch (PatternSyntaxException re) {
+            Log.log(Log.ERROR, this, "Invalid filename/firstline"
+                    + " globs in mode " + name);
+            Log.log(Log.ERROR, this, re);
+        }
 
-	//{{{ loadIfNecessary() method
-	/**
-	 * Loads the mode from disk if it hasn't been loaded already.
-	 * @since jEdit 2.5pre3
-	 */
-	public void loadIfNecessary()
-	{
-		if(marker == null)
-		{
-			ModeProvider.instance.loadMode(this);
-			if (marker == null)
-				Log.log(Log.ERROR, this, "Mode not correctly loaded, token marker is still null");
-		}
-	} //}}}
+        // Fix for this bug:
+        // -- Put a mode into the user dir with the same name as one
+        //    on the system dir.
+        // -- Reload edit modes.
+        // -- Old mode from system dir still used for highlighting
+        //    until jEdit restart.
+        marker = null;
+    }
 
-	//{{{ getProperty() method
-	/**
-	 * Returns a mode property.
-	 * @param key The property name
-	 *
-	 * @since jEdit 2.2pre1
-	 */
-	public Object getProperty(String key)
-	{
-		return props.get(key);
-	} //}}}
 
-	//{{{ getBooleanProperty() method
-	/**
-	 * Returns the value of a boolean property.
-	 * @param key The property name
-	 *
-	 * @since jEdit 2.5pre3
-	 */
-	public boolean getBooleanProperty(String key)
-	{
-		Object value = getProperty(key);
-		return StandardUtilities.getBoolean(value, false);
-	} //}}}
+    /**
+     * Returns the token marker for this mode.
+     */
+    public TokenMarker getTokenMarker() {
+        loadIfNecessary();
+        return marker;
+    }
 
-	//{{{ setProperty() method
-	/**
-	 * Sets a mode property.
-	 * @param key The property name
-	 * @param value The property value
-	 */
-	public void setProperty(String key, Object value)
-	{
-		props.put(key,value);
-	} //}}}
 
-	//{{{ unsetProperty() method
-	/**
-	 * Unsets a mode property.
-	 * @param key The property name
-	 * @since jEdit 3.2pre3
-	 */
-	public void unsetProperty(String key)
-	{
-		props.remove(key);
-	} //}}}
+    /**
+     * Sets the token marker for this mode.
+     *
+     * @param marker The new token marker
+     */
+    public void setTokenMarker(TokenMarker marker) {
+        this.marker = marker;
+    }
 
-	//{{{ setProperties() method
-	/**
-	 * Should only be called by <code>XModeHandler</code>.
-	 * @since jEdit 4.0pre3
-	 */
-	public void setProperties(Map props)
-	{
-		if(props == null)
-			return;
 
-		ignoreWhitespace = !"false".equalsIgnoreCase(
-					(String)props.get("ignoreWhitespace"));
+    /**
+     * Loads the mode from disk if it hasn't been loaded already.
+     *
+     * @since jEdit 2.5pre3
+     */
+    public void loadIfNecessary() {
+        if (marker == null) {
+            ModeProvider.instance.loadMode(this);
+            if (marker == null)
+                Log.log(Log.ERROR, this, "Mode not correctly loaded, token marker is still null");
+        }
+    }
 
-		this.props.putAll(props);
-	} //}}}
 
-	//{{{ accept() method
-	/**
-	 * Returns true if the edit mode is suitable for editing the specified
-	 * file. The buffer name and first line is checked against the
-	 * file name and first line globs, respectively.
-	 * @param fileName The buffer's name, can be {@code null}
-	 * @param firstLine The first line of the buffer
-	 *
-	 * @since jEdit 3.2pre3
-	 */
-	public boolean accept(String fileName, String firstLine)
-	{
-		return accept(null, fileName, firstLine);
-	} //}}}
+    /**
+     * Returns a mode property.
+     *
+     * @param key The property name
+     * @since jEdit 2.2pre1
+     */
+    public Object getProperty(String key) {
+        return props.get(key);
+    }
 
-	//{{{ accept() method
-	/**
-	 * Returns true if the edit mode is suitable for editing the specified
-	 * file. The buffer name and first line is checked against the
-	 * file name and first line globs, respectively.
-	 * @param filePath The buffer's path, can be {@code null}
-	 * @param fileName The buffer's name, can be {@code null}
-	 * @param firstLine The first line of the buffer
-	 *
-	 * @since jEdit 4.5pre1
-	 */
-	public boolean accept(String filePath, String fileName, String firstLine)
-	{
-		return acceptFile(filePath, fileName)
-				|| acceptIdentical(filePath, fileName)
-				|| acceptFirstLine(firstLine);
-	} //}}}
 
-	//{{{ acceptFilename() method
-	/**
-	 * Returns true if the buffer name matches the file name glob.
-	 * @param fileName The buffer's name, can be {@code null}
-	 * @return true if the file name matches the file name glob.
-	 * @since jEdit 4.3pre18
-	 * @deprecated use {@link #acceptFile(String, String)} instead
-	 */
-	@Deprecated
-	public boolean acceptFilename(String fileName)
-	{
-		return acceptFile(null, fileName);
-	} //}}}
+    /**
+     * Returns the value of a boolean property.
+     *
+     * @param key The property name
+     * @since jEdit 2.5pre3
+     */
+    public boolean getBooleanProperty(String key) {
+        Object value = getProperty(key);
+        return StandardUtilities.getBoolean(value, false);
+    }
 
-	//{{{ acceptFile() method
-	/**
-	 * Returns true if the buffer's name or path matches the file name glob.
-	 * @param filePath The buffer's path, can be {@code null}
-	 * @param fileName The buffer's name, can be {@code null}
-	 * @return true if the file path or name matches the file name glob.
-	 * @since jEdit 4.5pre1
-	 */
-	public boolean acceptFile(String filePath, String fileName)
-	{
-		if (filepathMatcher == null)
-			return false;
 
-		return fileName != null && filepathMatcher.reset(fileName).matches() ||
-			filePath != null && filepathMatcher.reset(filePath).matches();
-	} //}}}
+    /**
+     * Sets a mode property.
+     *
+     * @param key   The property name
+     * @param value The property value
+     */
+    public void setProperty(String key, Object value) {
+        props.put(key, value);
+    }
 
-	//{{{ acceptFilenameIdentical() method
-	/**
-	 * Returns true if the buffer name is identical to the file name glob.
-	 * This works only for regular expressions that only represent themselves,
-	 * i.e. without any meta-characters.
-	 * @param fileName The buffer's name, can be {@code null}
-	 * @return true if the file name matches the file name glob.
-	 * @since jEdit 4.4pre1
-	 */
-	public boolean acceptFilenameIdentical(String fileName)
-	{
-		return acceptIdentical(null, fileName);
-	} //}}}
 
-	//{{{ acceptIdentical() method
-	/**
-	 * Returns true if the buffer path or name is identical to the file name glob.
-	 * This works only for regular expressions that only represent themselves,
-	 * i.e. without any meta-characters.
-	 * @param filePath The buffer's path, can be {@code null}
-	 * @param fileName The buffer's name, can be {@code null}
-	 * @return true if the file name matches the file name glob.
-	 * @since jEdit 4.5pre1
-	 */
-	public boolean acceptIdentical(String filePath, String fileName)
-	{
-		String filenameGlob = (String)getProperty("filenameGlob");
-		if(filenameGlob == null)
-			return false;
+    /**
+     * Unsets a mode property.
+     *
+     * @param key The property name
+     * @since jEdit 3.2pre3
+     */
+    public void unsetProperty(String key) {
+        props.remove(key);
+    }
 
-		if(fileName != null && fileName.equalsIgnoreCase(filenameGlob))	
-			return true;
 
-		if (filePath != null) 
-		{
-			// get the filename from the path
-			// NOTE: can't use MiscUtilities.getFileName here as that breaks
-			// the stand-alone text area build.
-			int lastUnixPos = filePath.lastIndexOf('/');
-			int lastWindowsPos = filePath.lastIndexOf('\\');
-			int index = Math.max(lastUnixPos, lastWindowsPos);
-			String filename = filePath.substring(index + 1);
-			return filename != null && filename.equalsIgnoreCase(filenameGlob);
-		}
+    /**
+     * Should only be called by <code>XModeHandler</code>.
+     *
+     * @since jEdit 4.0pre3
+     */
+    public void setProperties(Map props) {
+        if (props == null)
+            return;
 
-		return false;
-	} //}}}
+        ignoreWhitespace = !"false".equalsIgnoreCase(
+                (String) props.get("ignoreWhitespace"));
 
-	//{{{ acceptFirstLine() method
-	/**
-	 * Returns true if the first line matches the first line glob.
-	 * @param firstLine The first line of the buffer
-	 * @return true if the first line matches the first line glob.
-	 * @since jEdit 4.3pre18
-	 */
-	public boolean acceptFirstLine(String firstLine)
-	{
-		if (firstlineMatcher == null)
-			return false;
+        this.props.putAll(props);
+    }
 
-		return firstLine != null && firstlineMatcher.reset(firstLine).matches();
-	} //}}}
 
-	//{{{ getName() method
-	/**
-	 * Returns the internal name of this edit mode.
-	 */
-	public String getName()
-	{
-		return name;
-	} //}}}
+    /**
+     * Returns true if the edit mode is suitable for editing the specified
+     * file. The buffer name and first line is checked against the
+     * file name and first line globs, respectively.
+     *
+     * @param fileName  The buffer's name, can be {@code null}
+     * @param firstLine The first line of the buffer
+     * @since jEdit 3.2pre3
+     */
+    public boolean accept(String fileName, String firstLine) {
+        return accept(null, fileName, firstLine);
+    }
 
-	//{{{ toString() method
-	/**
-	 * Returns a string representation of this edit mode.
-	 */
-	public String toString()
-	{
-		return name;
-	} //}}}
+    /**
+     * Returns true if the edit mode is suitable for editing the specified
+     * file. The buffer name and first line is checked against the
+     * file name and first line globs, respectively.
+     *
+     * @param filePath  The buffer's path, can be {@code null}
+     * @param fileName  The buffer's name, can be {@code null}
+     * @param firstLine The first line of the buffer
+     * @since jEdit 4.5pre1
+     */
+    public boolean accept(String filePath, String fileName, String firstLine) {
+        return acceptFile(filePath, fileName)
+                || acceptIdentical(filePath, fileName)
+                || acceptFirstLine(firstLine);
+    }
 
-	//{{{ getIgnoreWhitespace() method
-	public boolean getIgnoreWhitespace()
-	{
-		return ignoreWhitespace;
-	} //}}}
 
-	//{{{ Indent rules
+    /**
+     * Returns true if the buffer name matches the file name glob.
+     *
+     * @param fileName The buffer's name, can be {@code null}
+     * @return true if the file name matches the file name glob.
+     * @since jEdit 4.3pre18
+     * @deprecated use {@link #acceptFile(String, String)} instead
+     */
+    @Deprecated
+    public boolean acceptFilename(String fileName) {
+        return acceptFile(null, fileName);
+    }
 
-	//{{{ getIndentRules() method
-	public synchronized List<IndentRule> getIndentRules()
-	{
-		if (indentRules == null)
-		{
-			initIndentRules();
-		}
-		return indentRules;
-	} //}}}
+    /**
+     * Returns true if the buffer's name or path matches the file name glob.
+     *
+     * @param filePath The buffer's path, can be {@code null}
+     * @param fileName The buffer's name, can be {@code null}
+     * @return true if the file path or name matches the file name glob.
+     * @since jEdit 4.5pre1
+     */
+    public boolean acceptFile(String filePath, String fileName) {
+        if (filepathMatcher == null)
+            return false;
 
-	//{{{ isElectricKey() method
-	public synchronized boolean isElectricKey(char ch)
-	{
-		if (electricKeys == null)
-		{
-			String[] props = {
-				"indentOpenBrackets",
-				"indentCloseBrackets",
-				"electricKeys"
-			};
+        return fileName != null && filepathMatcher.reset(fileName).matches() ||
+                filePath != null && filepathMatcher.reset(filePath).matches();
+    }
 
-			StringBuilder buf = new StringBuilder();
-			for(int i = 0; i < props.length; i++)
-			{
-				String prop = (String) getProperty(props[i]);
-				if (prop != null)
-					buf.append(prop);
-			}
+    /**
+     * Returns true if the buffer name is identical to the file name glob.
+     * This works only for regular expressions that only represent themselves,
+     * i.e. without any meta-characters.
+     *
+     * @param fileName The buffer's name, can be {@code null}
+     * @return true if the file name matches the file name glob.
+     * @since jEdit 4.4pre1
+     */
+    public boolean acceptFilenameIdentical(String fileName) {
+        return acceptIdentical(null, fileName);
+    }
 
-			electricKeys = buf.toString();
-		}
+    /**
+     * Returns true if the buffer path or name is identical to the file name glob.
+     * This works only for regular expressions that only represent themselves,
+     * i.e. without any meta-characters.
+     *
+     * @param filePath The buffer's path, can be {@code null}
+     * @param fileName The buffer's name, can be {@code null}
+     * @return true if the file name matches the file name glob.
+     * @since jEdit 4.5pre1
+     */
+    public boolean acceptIdentical(String filePath, String fileName) {
+        String filenameGlob = (String) getProperty("filenameGlob");
+        if (filenameGlob == null)
+            return false;
 
-		return (electricKeys.indexOf(ch) >= 0);
-	} //}}}
+        if (fileName != null && fileName.equalsIgnoreCase(filenameGlob))
+            return true;
 
-	//{{{ initIndentRules() method
-	private void initIndentRules()
-	{
-		List<IndentRule> rules = new LinkedList<IndentRule>();
+        if (filePath != null) {
+            // get the filename from the path
+            // NOTE: can't use MiscUtilities.getFileName here as that breaks
+            // the stand-alone text area build.
+            int lastUnixPos = filePath.lastIndexOf('/');
+            int lastWindowsPos = filePath.lastIndexOf('\\');
+            int index = Math.max(lastUnixPos, lastWindowsPos);
+            String filename = filePath.substring(index + 1);
+            return filename != null && filename.equalsIgnoreCase(filenameGlob);
+        }
 
-		String[] regexpProps = {
-			"indentNextLine",
-			"indentNextLines"
-		};
+        return false;
+    }
 
-		for(int i = 0; i < regexpProps.length; i++)
-		{
-			IndentRule rule = createRegexpIndentRule(regexpProps[i]);
-			if(rule != null)
-				rules.add(rule);
-		}
+    /**
+     * Returns true if the first line matches the first line glob.
+     *
+     * @param firstLine The first line of the buffer
+     * @return true if the first line matches the first line glob.
+     * @since jEdit 4.3pre18
+     */
+    public boolean acceptFirstLine(String firstLine) {
+        if (firstlineMatcher == null)
+            return false;
 
-		String[] bracketProps = {
-			"indentOpenBracket",
-			"indentCloseBracket",
-			"unalignedOpenBracket",
-			"unalignedCloseBracket",
-		};
+        return firstLine != null && firstlineMatcher.reset(firstLine).matches();
+    }
 
-		for(int i = 0; i < bracketProps.length; i++)
-		{
-			createBracketIndentRules(bracketProps[i], rules);
-		}
 
-		String[] finalProps = {
-			"unindentThisLine",
-			"unindentNextLines"
-		};
+    /**
+     * Returns the internal name of this edit mode.
+     */
+    public String getName() {
+        return name;
+    }
 
-		for(int i = 0; i < finalProps.length; i++)
-		{
-			IndentRule rule = createRegexpIndentRule(finalProps[i]);
-			if(rule != null)
-				rules.add(rule);
-		}
+    /**
+     * Returns a string representation of this edit mode.
+     */
+    public String toString() {
+        return name;
+    }
 
-		if (getBooleanProperty("deepIndent"))
-		{
-			String unalignedOpenBrackets = (String) getProperty("unalignedOpenBrackets");
-			if (unalignedOpenBrackets != null)
-			{
-				for (int i = 0 ; i < unalignedOpenBrackets.length();i++)
-				{
-					char openChar = unalignedOpenBrackets.charAt(i);
-					char closeChar = TextUtilities.getComplementaryBracket(openChar, null);
-					if (closeChar != '\0')
-						rules.add(new DeepIndentRule(openChar, closeChar));
-				}
-			}
-		}
+    public boolean getIgnoreWhitespace() {
+        return ignoreWhitespace;
+    }
 
-		if (!getIgnoreWhitespace())
-			rules.add(new WhitespaceRule());
+    public synchronized List<IndentRule> getIndentRules() {
+        if (indentRules == null) {
+            initIndentRules();
+        }
+        return indentRules;
+    }
 
-		indentRules = Collections.unmodifiableList(rules);
-	} //}}}
+    public synchronized boolean isElectricKey(char ch) {
+        if (electricKeys == null) {
+            String[] props = {
+                    "indentOpenBrackets",
+                    "indentCloseBrackets",
+                    "electricKeys"
+            };
 
-	//{{{ createRegexpIndentRule() method
-	private IndentRule createRegexpIndentRule(String prop)
-	{
-		String value = (String) getProperty(prop);
+            StringBuilder buf = new StringBuilder();
+            for (int i = 0; i < props.length; i++) {
+                String prop = (String) getProperty(props[i]);
+                if (prop != null)
+                    buf.append(prop);
+            }
 
-		try
-		{
-			if(value != null)
-			{
-				Method m = IndentRuleFactory.class.getMethod(
-					prop,new Class[] { String.class });
-				return (IndentRule)m.invoke(null, value);
-			}
-		}
-		catch(Exception e)
-		{
-			Log.log(Log.ERROR,this,"Bad indent rule " + prop
-				+ '=' + value + ':');
-			Log.log(Log.ERROR,this,e);
-		}
+            electricKeys = buf.toString();
+        }
 
-		return null;
-	} //}}}
+        return (electricKeys.indexOf(ch) >= 0);
+    }
 
-	//{{{ createBracketIndentRules() method
-	private void createBracketIndentRules(String prop,
-						List<IndentRule> rules)
-	{
-		String value = (String) getProperty(prop + 's');
+    private void initIndentRules() {
+        List<IndentRule> rules = new LinkedList<IndentRule>();
 
-		try
-		{
-			if(value != null)
-			{
-				for(int i = 0; i < value.length(); i++)
-				{
-					char ch = value.charAt(i);
+        String[] regexpProps = {
+                "indentNextLine",
+                "indentNextLines"
+        };
 
-					Method m = IndentRuleFactory.class.getMethod(
-						prop,new Class[] { char.class });
-					rules.add((IndentRule) m.invoke(null, ch));
-				}
-			}
-		}
-		catch(Exception e)
-		{
-			Log.log(Log.ERROR,this,"Bad indent rule " + prop
-				+ '=' + value + ':');
-			Log.log(Log.ERROR,this,e);
-		}
-	} //}}}
+        for (int i = 0; i < regexpProps.length; i++) {
+            IndentRule rule = createRegexpIndentRule(regexpProps[i]);
+            if (rule != null)
+                rules.add(rule);
+        }
 
-	//}}}
+        String[] bracketProps = {
+                "indentOpenBracket",
+                "indentCloseBracket",
+                "unalignedOpenBracket",
+                "unalignedCloseBracket",
+        };
 
-	//{{{ Private members
-	protected final String name;
-	protected final Map<String, Object> props;
-	private Matcher firstlineMatcher;
-	private Matcher filepathMatcher;
-	protected TokenMarker marker;
-	private List<IndentRule> indentRules;
-	private String electricKeys;
-	private boolean ignoreWhitespace;
-	//}}}
+        for (int i = 0; i < bracketProps.length; i++) {
+            createBracketIndentRules(bracketProps[i], rules);
+        }
+
+        String[] finalProps = {
+                "unindentThisLine",
+                "unindentNextLines"
+        };
+
+        for (int i = 0; i < finalProps.length; i++) {
+            IndentRule rule = createRegexpIndentRule(finalProps[i]);
+            if (rule != null)
+                rules.add(rule);
+        }
+
+        if (getBooleanProperty("deepIndent")) {
+            String unalignedOpenBrackets = (String) getProperty("unalignedOpenBrackets");
+            if (unalignedOpenBrackets != null) {
+                for (int i = 0; i < unalignedOpenBrackets.length(); i++) {
+                    char openChar = unalignedOpenBrackets.charAt(i);
+                    char closeChar = TextUtilities.getComplementaryBracket(openChar, null);
+                    if (closeChar != '\0')
+                        rules.add(new DeepIndentRule(openChar, closeChar));
+                }
+            }
+        }
+
+        if (!getIgnoreWhitespace())
+            rules.add(new WhitespaceRule());
+
+        indentRules = Collections.unmodifiableList(rules);
+    }
+
+    private IndentRule createRegexpIndentRule(String prop) {
+        String value = (String) getProperty(prop);
+
+        try {
+            if (value != null) {
+                Method m = IndentRuleFactory.class.getMethod(
+                        prop, new Class[]{String.class});
+                return (IndentRule) m.invoke(null, value);
+            }
+        } catch (Exception e) {
+            Log.log(Log.ERROR, this, "Bad indent rule " + prop
+                    + '=' + value + ':');
+            Log.log(Log.ERROR, this, e);
+        }
+
+        return null;
+    }
+
+    private void createBracketIndentRules(String prop,
+                                          List<IndentRule> rules) {
+        String value = (String) getProperty(prop + 's');
+
+        try {
+            if (value != null) {
+                for (int i = 0; i < value.length(); i++) {
+                    char ch = value.charAt(i);
+
+                    Method m = IndentRuleFactory.class.getMethod(
+                            prop, new Class[]{char.class});
+                    rules.add((IndentRule) m.invoke(null, ch));
+                }
+            }
+        } catch (Exception e) {
+            Log.log(Log.ERROR, this, "Bad indent rule " + prop
+                    + '=' + value + ':');
+            Log.log(Log.ERROR, this, e);
+        }
+    }
+
 }

@@ -21,7 +21,6 @@
  */
 package org.gjt.sp.jedit.syntax;
 
-//{{{ Imports
 
 import android.util.Log;
 
@@ -34,7 +33,6 @@ import org.gjt.sp.jedit.util.IOUtilities;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 import java.io.BufferedInputStream;
 import java.io.Closeable;
@@ -46,7 +44,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
-//}}}
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 
 /**
  * This class works like a singleton, the instance is initialized by jEdit.
@@ -58,14 +60,16 @@ import java.util.List;
 public class ModeProvider {
     public static ModeProvider instance = new ModeProvider();
 
-    private final LinkedHashMap<String, Mode> modes = Catalog.modes;
+    private final LinkedHashMap<String, Mode> modes;
 
-    //{{{ removeAll() method
+    public ModeProvider() {
+        modes = Catalog.modes;
+    }
+
     public void removeAll() {
         modes.clear();
-    } //}}}
+    }
 
-    //{{{ getMode() method
 
     /**
      * Returns the edit mode with the specified name.
@@ -75,9 +79,8 @@ public class ModeProvider {
      */
     public Mode getMode(String name) {
         return modes.get(name);
-    } //}}}
+    }
 
-    //{{{ getModeForFile() method
 
     /**
      * Get the appropriate mode that must be used for the file
@@ -89,9 +92,8 @@ public class ModeProvider {
      */
     public Mode getModeForFile(String filename, String firstLine) {
         return getModeForFile(null, filename, firstLine);
-    } //}}}
+    }
 
-    //{{{ getModeForFile() method
 
     /**
      * Get the appropriate mode that must be used for the file
@@ -151,9 +153,8 @@ public class ModeProvider {
         }
         // no matching mode found for this file
         return null;
-    } //}}}
+    }
 
-    //{{{ getModes() method
 
     /**
      * Returns an array of installed edit modes.
@@ -162,9 +163,8 @@ public class ModeProvider {
      */
     public Mode[] getModes() {
         return modes.values().toArray(new Mode[modes.size()]);
-    } //}}}
+    }
 
-    //{{{ addMode() method
 
     /**
      * Do not call this method. It is only public so that classes
@@ -182,20 +182,24 @@ public class ModeProvider {
         modes.remove(name);
 
         modes.put(name, mode);
-    } //}}}
+    }
 
-    //{{{ loadMode() method
     public void loadMode(Mode mode, XModeHandler xmh) {
         String fileName = (String) mode.getFile();
 
-//        Log.log(Log.NOTICE, this, "Loading edit mode " + fileName);
+        DLog.log(Log.DEBUG, this, "Loading edit mode " + fileName);
 
-        XMLReader parser;
+        XMLReader parser = null;
         try {
-            parser = XMLReaderFactory.createXMLReader();
+            SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+            SAXParser newSAXParser = saxParserFactory.newSAXParser();
+            parser = newSAXParser.getXMLReader();
         } catch (SAXException saxe) {
+            saxe.printStackTrace();
             DLog.log(Log.ERROR, this, saxe);
             return;
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
         }
         mode.setTokenMarker(xmh.getTokenMarker());
 
@@ -205,10 +209,11 @@ public class ModeProvider {
             grammar = new BufferedInputStream(
                     new FileInputStream(fileName));
         } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
             InputStream resource = null;
 //            resource = ModeProvider.class.getResourceAsStream(fileName);
             try {
-                resource = TextEditorApplication.getContext().getAssets().open("syntax" + fileName);
+                resource = TextEditorApplication.getContext().getAssets().open("syntax/" + fileName);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -228,13 +233,13 @@ public class ModeProvider {
 
             mode.setProperties(xmh.getModeProperties());
         } catch (Throwable e) {
+            e.printStackTrace();
             error(fileName, e);
         } finally {
             IOUtilities.closeQuietly((Closeable) grammar);
         }
-    } //}}}
+    }
 
-    //{{{ loadMode() method
     public void loadMode(Mode mode) {
         XModeHandler xmh = new XModeHandler(mode.getName()) {
             @Override
@@ -252,11 +257,10 @@ public class ModeProvider {
             }
         };
         loadMode(mode, xmh);
-    } //}}}
+    }
 
-    //{{{ error() method
     protected void error(String file, Throwable e) {
         DLog.log(Log.ERROR, this, e);
-    } //}}}
+    }
 
 }

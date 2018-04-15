@@ -22,7 +22,6 @@
  */
 package org.gjt.sp.jedit.syntax;
 
-//{{{ Imports
 
 import android.util.Log;
 
@@ -30,27 +29,17 @@ import com.jecelyin.common.utils.DLog;
 import com.jecelyin.editor.v2.TextEditorApplication;
 
 import org.gjt.sp.jedit.Mode;
-import org.gjt.sp.jedit.syntax.KeywordMap;
-import org.gjt.sp.jedit.syntax.ModeProvider;
-import org.gjt.sp.jedit.syntax.ParserRule;
-import org.gjt.sp.jedit.syntax.ParserRuleSet;
-import org.gjt.sp.jedit.syntax.Token;
-import org.gjt.sp.jedit.syntax.TokenMarker;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Stack;
 import java.util.Vector;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-//}}}
+
 
 /**
  * XML handler for mode definition files.
@@ -63,7 +52,6 @@ public abstract class XModeHandler extends DefaultHandler {
      * The token marker cannot be null.
      */
     private final TokenMarker marker;
-    //{{{ Instance variables
     private String modeName;
     private KeywordMap keywords;
     /**
@@ -73,38 +61,26 @@ public abstract class XModeHandler extends DefaultHandler {
     private String propName;
     private String propValue;
     private Hashtable<String, String> props;
-    //{{{ getTokenMarker() method
     private Hashtable<String, String> modeProps;
 
     private ParserRuleSet rules;
-    //{{{ Protected members
 
-    //{{{ error() method
     /**
      * A list of modes to be reloaded at the end, loaded through DELEGATEs
      *
      * @see http://sourceforge.net/tracker/index.php?func=detail&aid=1742250&group_id=588&atid=100588
      */
     private Vector<Mode> reloadModes;
-    //}}}
 
-    //{{{ getTokenMarker() method
 
-    //{{{ XModeHandler constructor
     public XModeHandler(String modeName) {
         this.modeName = modeName;
         marker = new TokenMarker();
         marker.addRuleSet(new ParserRuleSet(modeName, "MAIN"));
         stateStack = new Stack<TagDecl>();
-    } //}}}
-    //}}}
+    }
 
 
-    //}}}
-
-    //{{{ Private members
-
-    //{{{ resolveEntity() method
     public InputSource resolveEntity(String publicId, String systemId) {
 //        return XMLUtilities.findEntity(systemId, "xmode.dtd", XModeHandler.class);
         try {
@@ -113,14 +89,12 @@ public abstract class XModeHandler extends DefaultHandler {
             e.printStackTrace();
         }
         return null;
-    } //}}}
+    }
 
-    //{{{ characters() method
     public void characters(char[] c, int off, int len) {
         peekElement().setText(c, off, len);
-    } //}}}
+    }
 
-    //{{{ startElement() method
     public void startElement(String uri, String localName,
                              String qName, Attributes attrs) {
         TagDecl tag = pushElement(qName, attrs);
@@ -155,9 +129,8 @@ public abstract class XModeHandler extends DefaultHandler {
             rules.setDefault(tag.lastDefaultID);
             rules.setNoWordSep(tag.lastNoWordSep);
         }
-    } //}}}
+    }
 
-    //{{{ endElement() method
     public void endElement(String uri, String localName, String name) {
         TagDecl tag = popElement();
         if (name.equals(tag.tagName)) {
@@ -169,38 +142,27 @@ public abstract class XModeHandler extends DefaultHandler {
                     reloadModes.add(mode);
                 }
             }
-            //{{{ PROPERTY
             if (tag.tagName.equals("PROPERTY")) {
                 props.put(propName, propValue);
-            } //}}}
-            //{{{ PROPS
-            else if (tag.tagName.equals("PROPS")) {
+            } else if (tag.tagName.equals("PROPS")) {
                 if (peekElement().tagName.equals("RULES"))
                     rules.setProperties(props);
                 else
                     modeProps = props;
 
                 props = new Hashtable<String, String>();
-            } //}}}
-            //{{{ RULES
-            else if (tag.tagName.equals("RULES")) {
+            } else if (tag.tagName.equals("RULES")) {
                 rules.setKeywords(keywords);
                 keywords = null;
                 rules = null;
-            } //}}}
-            //{{{ IMPORT
-            else if (tag.tagName.equals("IMPORT")) {
+            } else if (tag.tagName.equals("IMPORT")) {
                 // prevent lockups
                 if (!rules.equals(tag.lastDelegateSet)) {
                     rules.addRuleSet(tag.lastDelegateSet);
                 }
-            } //}}}
-            //{{{ TERMINATE
-            else if (tag.tagName.equals("TERMINATE")) {
+            } else if (tag.tagName.equals("TERMINATE")) {
                 rules.setTerminateChar(tag.termChar);
-            } //}}}
-            //{{{ SEQ
-            else if (tag.tagName.equals("SEQ")) {
+            } else if (tag.tagName.equals("SEQ")) {
                 if (tag.lastStart == null) {
                     error("empty-tag", "SEQ");
                     return;
@@ -209,9 +171,7 @@ public abstract class XModeHandler extends DefaultHandler {
                 rules.addRule(ParserRule.createSequenceRule(
                         tag.lastStartPosMatch, tag.lastStart.toString(),
                         tag.lastDelegateSet, tag.lastTokenID));
-            } //}}}
-            //{{{ SEQ_REGEXP
-            else if (tag.tagName.equals("SEQ_REGEXP")) {
+            } else if (tag.tagName.equals("SEQ_REGEXP")) {
                 if (tag.lastStart == null) {
                     error("empty-tag", "SEQ_REGEXP");
                     return;
@@ -232,9 +192,7 @@ public abstract class XModeHandler extends DefaultHandler {
                 } catch (PatternSyntaxException re) {
                     error("regexp", re);
                 }
-            } //}}}
-            //{{{ SPAN
-            else if (tag.tagName.equals("SPAN")) {
+            } else if (tag.tagName.equals("SPAN")) {
                 if (tag.lastStart == null) {
                     error("empty-tag", "BEGIN");
                     return;
@@ -254,9 +212,7 @@ public abstract class XModeHandler extends DefaultHandler {
                                 tag.lastNoLineBreak,
                                 tag.lastNoWordBreak,
                                 tag.lastEscape));
-            } //}}}
-            //{{{ SPAN_REGEXP
-            else if (tag.tagName.equals("SPAN_REGEXP")) {
+            } else if (tag.tagName.equals("SPAN_REGEXP")) {
                 if (tag.lastStart == null) {
                     error("empty-tag", "BEGIN");
                     return;
@@ -300,9 +256,7 @@ public abstract class XModeHandler extends DefaultHandler {
                 } catch (PatternSyntaxException re) {
                     error("regexp", re);
                 }
-            } //}}}
-            //{{{ EOL_SPAN
-            else if (tag.tagName.equals("EOL_SPAN")) {
+            } else if (tag.tagName.equals("EOL_SPAN")) {
                 if (tag.lastStart == null) {
                     error("empty-tag", "EOL_SPAN");
                     return;
@@ -312,9 +266,7 @@ public abstract class XModeHandler extends DefaultHandler {
                         tag.lastStartPosMatch, tag.lastStart.toString(),
                         tag.lastDelegateSet, tag.lastTokenID,
                         tag.lastMatchType));
-            } //}}}
-            //{{{ EOL_SPAN_REGEXP
-            else if (tag.tagName.equals("EOL_SPAN_REGEXP")) {
+            } else if (tag.tagName.equals("EOL_SPAN_REGEXP")) {
                 if (tag.lastStart == null) {
                     error("empty-tag", "EOL_SPAN_REGEXP");
                     return;
@@ -337,9 +289,7 @@ public abstract class XModeHandler extends DefaultHandler {
                 } catch (PatternSyntaxException re) {
                     error("regexp", re);
                 }
-            } //}}}
-            //{{{ MARK_FOLLOWING
-            else if (tag.tagName.equals("MARK_FOLLOWING")) {
+            } else if (tag.tagName.equals("MARK_FOLLOWING")) {
                 if (tag.lastStart == null) {
                     error("empty-tag", "MARK_FOLLOWING");
                     return;
@@ -349,9 +299,7 @@ public abstract class XModeHandler extends DefaultHandler {
                         .createMarkFollowingRule(
                                 tag.lastStartPosMatch, tag.lastStart.toString(),
                                 tag.lastTokenID, tag.lastMatchType));
-            } //}}}
-            //{{{ MARK_PREVIOUS
-            else if (tag.tagName.equals("MARK_PREVIOUS")) {
+            } else if (tag.tagName.equals("MARK_PREVIOUS")) {
                 if (tag.lastStart == null) {
                     error("empty-tag", "MARK_PREVIOUS");
                     return;
@@ -361,9 +309,7 @@ public abstract class XModeHandler extends DefaultHandler {
                         .createMarkPreviousRule(
                                 tag.lastStartPosMatch, tag.lastStart.toString(),
                                 tag.lastTokenID, tag.lastMatchType));
-            } //}}}
-            //{{{ Keywords
-            else if (
+            } else if (
                     !tag.tagName.equals("END")
                             && !tag.tagName.equals("BEGIN")
                             && !tag.tagName.equals("KEYWORDS")
@@ -377,21 +323,19 @@ public abstract class XModeHandler extends DefaultHandler {
                         addKeyword(tag.lastKeyword.toString(), token);
                     }
                 }
-            } //}}}
+            }
         } else {
             // can't happen
             throw new InternalError();
         }
-    } //}}}
+    }
 
-    //{{{ startDocument() method
     public void startDocument() {
         props = new Hashtable<String, String>();
         pushElement(null, null);
         reloadModes = new Vector<Mode>();
-    } //}}}
+    }
 
-    //{{{ endDocument() method
     public void endDocument() {
         ParserRuleSet[] rulesets = marker.getRuleSets();
         for (int i = 0; i < rulesets.length; i++) {
@@ -401,7 +345,7 @@ public abstract class XModeHandler extends DefaultHandler {
             mode.setTokenMarker(null);
             mode.loadIfNecessary();
         }
-    } //}}}
+    }
 
     /**
      * Returns the TokenMarker.
@@ -410,12 +354,19 @@ public abstract class XModeHandler extends DefaultHandler {
      */
     public TokenMarker getTokenMarker() {
         return marker;
-    } //}}}
+    }
 
-    //{{{ getModeProperties() method
     public Hashtable<String, String> getModeProperties() {
         return modeProps;
-    } //}}}
+    }
+
+    public Hashtable<String, String> getProps() {
+        return props;
+    }
+
+    public KeywordMap getKeywords() {
+        return keywords;
+    }
 
     /**
      * Reports an error.
@@ -438,15 +389,13 @@ public abstract class XModeHandler extends DefaultHandler {
      * @since jEdit 4.2pre1
      */
     protected abstract TokenMarker getTokenMarker(String mode);
-    //}}}
 
-    //{{{ addKeyword() method
+
     private void addKeyword(String k, byte id) {
         if (keywords == null) return;
         keywords.add(k, id);
-    } //}}}
+    }
 
-    //{{{ pushElement() method
     private TagDecl pushElement(String name, Attributes attrs) {
         if (name != null) {
             TagDecl tag = new TagDecl(name, attrs);
@@ -456,19 +405,16 @@ public abstract class XModeHandler extends DefaultHandler {
             stateStack.push(null);
             return null;
         }
-    } //}}}
+    }
 
-    //{{{ peekElement() method
     private TagDecl peekElement() {
         return stateStack.peek();
-    } //}}}
+    }
 
-    //{{{ popElement() method
     private TagDecl popElement() {
         return stateStack.pop();
-    } //}}}
+    }
 
-    //{{{ findParent() method
 
     /**
      * Finds the first element whose tag matches 'tagName',
@@ -481,9 +427,7 @@ public abstract class XModeHandler extends DefaultHandler {
                 return tag;
         }
         return null;
-    } //}}}
-
-    //}}}
+    }
 
 
     /**
@@ -542,7 +486,7 @@ public abstract class XModeHandler extends DefaultHandler {
             // warn if found.
             tmp = attrs.getValue("EXCLUDE_MATCH");
             if (tmp != null) {
-                DLog.log( this, modeName + ": EXCLUDE_MATCH is deprecated");
+                DLog.log(this, modeName + ": EXCLUDE_MATCH is deprecated");
                 if ("TRUE".equalsIgnoreCase(tmp)) {
                     lastMatchType = ParserRule.MATCH_TYPE_CONTEXT;
                 }

@@ -1,46 +1,50 @@
 /*
- * Copyright (C) 2016 Jecelyin Peng <jecelyin@gmail.com>
+ * Mode.java - jEdit editing mode
+ * :tabSize=4:indentSize=4:noTabs=false:
+ * :folding=explicit:collapseFolds=1:
  *
- * This file is part of 920 Text Editor.
+ * Copyright (C) 1998, 1999, 2000 Slava Pestov
+ * Copyright (C) 1999 mike dillon
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or any later version.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
 package org.gjt.sp.jedit;
 
-//{{{ Imports
 
 import com.jecelyin.common.utils.DLog;
 import com.jecelyin.editor.v2.highlight.SyntaxParser;
 
 import org.gjt.sp.jedit.syntax.TokenMarker;
+import org.gjt.sp.jedit.util.TextUtilities;
 
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-//}}}
+
 
 /**
  * An edit mode defines specific settings for editing some type of file.
  * One instance of this class is created for each supported edit mode.
  *
  * @author Slava Pestov
- * @version $Id: Mode.java 23224 2013-09-30 20:51:42Z shlomy $
+ * @version $Id$
  */
 public class Mode {
-    //{{{ Private members
     protected final String name;
     protected final Map<String, Object> props;
     private final String fileNameGlob;
@@ -52,9 +56,7 @@ public class Mode {
     //	private List<IndentRule> indentRules;
     private String electricKeys;
     private boolean ignoreWhitespace;
-    //}}}
 
-    //{{{ Mode constructor
 
     /**
      * Creates a new edit mode.
@@ -62,17 +64,23 @@ public class Mode {
      * @param name The name used in mode listings and to query mode
      *             properties
      */
-    public Mode(String name, String syntaxFilename, String fileNameGlob, String firstLineGlob) {
-        this.fileNameGlob = fileNameGlob;
-        this.firstLineGlob = firstLineGlob;
+    public Mode(String name, String syntaxFilename, String filenameGlob, String firstlineGlob) {
+        this.fileNameGlob = filenameGlob;
+        this.firstLineGlob = firstlineGlob;
         this.name = name;
         this.file = syntaxFilename;
         this.ignoreWhitespace = true;
-        props = new Hashtable<String, Object>();
-        init();
-    } //}}}
 
-    //{{{ init() method
+        props = new Hashtable<String, Object>();
+        if (filenameGlob != null) {
+            props.put("filenameGlob", filenameGlob);
+        }
+        if (firstlineGlob != null) {
+            props.put("firstlineGlob", firstlineGlob);
+        }
+        init();
+    }
+
 
     /**
      * Initializes the edit mode. Should be called after all properties
@@ -82,14 +90,12 @@ public class Mode {
         try {
             filepathMatcher = null;
             if (fileNameGlob != null && !fileNameGlob.isEmpty()) {
-
                 this.filepathMatcher = Pattern.compile(fileNameGlob, Pattern.CASE_INSENSITIVE).matcher("");
             }
 
             firstlineMatcher = null;
             if (firstLineGlob != null && !firstLineGlob.isEmpty()) {
-                firstlineMatcher = Pattern.compile(firstLineGlob,
-                        Pattern.CASE_INSENSITIVE).matcher("");
+                firstlineMatcher = Pattern.compile(firstLineGlob, Pattern.CASE_INSENSITIVE).matcher("");
             }
         } catch (PatternSyntaxException re) {
             DLog.e("Invalid filename/firstline"
@@ -103,9 +109,8 @@ public class Mode {
         // -- Old mode from system dir still used for highlighting
         //    until jEdit restart.
         marker = null;
-    } //}}}
+    }
 
-    //{{{ getTokenMarker() method
 
     /**
      * Returns the token marker for this mode.
@@ -113,9 +118,8 @@ public class Mode {
     public TokenMarker getTokenMarker() {
         loadIfNecessary();
         return marker;
-    } //}}}
+    }
 
-    //{{{ setTokenMarker() method
 
     /**
      * Sets the token marker for this mode.
@@ -124,9 +128,8 @@ public class Mode {
      */
     public void setTokenMarker(TokenMarker marker) {
         this.marker = marker;
-    } //}}}
+    }
 
-    //{{{ loadIfNecessary() method
 
     /**
      * Loads the mode from disk if it hasn't been loaded already.
@@ -140,7 +143,7 @@ public class Mode {
             if (marker == null)
                 DLog.e("Mode not correctly loaded, token marker is still null");
         }
-    } //}}}
+    }
 
     public String getFile() {
         return file;
@@ -149,70 +152,63 @@ public class Mode {
     public void setFile(String file) {
         this.file = file;
     }
-//	//{{{ getProperty() method
-//	/**
-//	 * Returns a mode property.
-//	 * @param key The property name
-//	 *
-//	 * @since jEdit 2.2pre1
-//	 */
-//	public Object getProperty(String key)
-//	{
-//		return props.get(key);
-//	} //}}}
-//
-//	//{{{ getBooleanProperty() method
-//	/**
-//	 * Returns the value of a boolean property.
-//	 * @param key The property name
-//	 *
-//	 * @since jEdit 2.5pre3
-//	 */
-//	public boolean getBooleanProperty(String key)
-//	{
-//		Object value = getProperty(key);
-//		return TextUtilities.getBoolean(value, false);
-//	} //}}}
-//
-//	//{{{ setProperty() method
-//	/**
-//	 * Sets a mode property.
-//	 * @param key The property name
-//	 * @param value The property value
-//	 */
-//	public void setProperty(String key, Object value)
-//	{
-//		props.put(key,value);
-//	} //}}}
-//
-//	//{{{ unsetProperty() method
-//	/**
-//	 * Unsets a mode property.
-//	 * @param key The property name
-//	 * @since jEdit 3.2pre3
-//	 */
-//	public void unsetProperty(String key)
-//	{
-//		props.remove(key);
-//	} //}}}
-//
-//	//{{{ setProperties() method
-//	/**
-//	 * Should only be called by <code>XModeHandler</code>.
-//	 * @since jEdit 4.0pre3
-//	 */
-//	public void setProperties(Map props)
-//	{
-//		if(props == null)
-//			return;
-//
-//		ignoreWhitespace = !"false".equalsIgnoreCase(
-//					(String)props.get("ignoreWhitespace"));
-//
-//		this.props.putAll(props);
-//	} //}}}
 
-    //{{{ accept() method
+    /**
+     * Returns a mode property.
+     *
+     * @param key The property name
+     * @since jEdit 2.2pre1
+     */
+    public Object getProperty(String key) {
+        return props.get(key);
+    }
+
+    /**
+     * Returns the value of a boolean property.
+     *
+     * @param key The property name
+     * @since jEdit 2.5pre3
+     */
+    public boolean getBooleanProperty(String key) {
+        Object value = getProperty(key);
+        return TextUtilities.getBoolean(value, false);
+    }
+
+    /**
+     * Sets a mode property.
+     *
+     * @param key   The property name
+     * @param value The property value
+     */
+    public void setProperty(String key, Object value) {
+        props.put(key, value);
+    }
+
+    /**
+     * Unsets a mode property.
+     *
+     * @param key The property name
+     * @since jEdit 3.2pre3
+     */
+    public void unsetProperty(String key) {
+        props.remove(key);
+    }
+
+    /**
+     * Should only be called by <code>XModeHandler</code>.
+     *
+     * @since jEdit 4.0pre3
+     */
+    public void setProperties(Map props) {
+        if (props == null)
+            return;
+
+        ignoreWhitespace = !"false".equalsIgnoreCase(
+                (String) props.get("ignoreWhitespace"));
+
+        this.props.putAll(props);
+    }
+
 
     /**
      * Returns true if the edit mode is suitable for editing the specified
@@ -225,9 +221,8 @@ public class Mode {
      */
     public boolean accept(String fileName, String firstLine) {
         return accept(null, fileName, firstLine);
-    } //}}}
+    }
 
-    //{{{ accept() method
 
     /**
      * Returns true if the edit mode is suitable for editing the specified
@@ -243,9 +238,8 @@ public class Mode {
         return acceptFile(filePath, fileName)
                 || acceptIdentical(filePath, fileName)
                 || acceptFirstLine(firstLine);
-    } //}}}
+    }
 
-    //{{{ acceptFilename() method
 
     /**
      * Returns true if the buffer name matches the file name glob.
@@ -258,9 +252,8 @@ public class Mode {
     @Deprecated
     public boolean acceptFilename(String fileName) {
         return acceptFile(null, fileName);
-    } //}}}
+    }
 
-    //{{{ acceptFile() method
 
     /**
      * Returns true if the buffer's name or path matches the file name glob.
@@ -276,9 +269,8 @@ public class Mode {
 
         return fileName != null && filepathMatcher.reset(fileName).matches() ||
                 filePath != null && filepathMatcher.reset(filePath).matches();
-    } //}}}
+    }
 
-    //{{{ acceptFilenameIdentical() method
 
     /**
      * Returns true if the buffer name is identical to the file name glob.
@@ -291,9 +283,8 @@ public class Mode {
      */
     public boolean acceptFilenameIdentical(String fileName) {
         return acceptIdentical(null, fileName);
-    } //}}}
+    }
 
-    //{{{ acceptIdentical() method
 
     /**
      * Returns true if the buffer path or name is identical to the file name glob.
@@ -324,9 +315,8 @@ public class Mode {
         }
 
         return false;
-    } //}}}
+    }
 
-    //{{{ acceptFirstLine() method
 
     /**
      * Returns true if the first line matches the first line glob.
@@ -340,34 +330,29 @@ public class Mode {
             return false;
 
         return firstLine != null && firstlineMatcher.reset(firstLine).matches();
-    } //}}}
+    }
 
-    //{{{ getName() method
 
     /**
      * Returns the internal name of this edit mode.
      */
     public String getName() {
         return name;
-    } //}}}
+    }
 
-    //{{{ toString() method
 
     /**
      * Returns a string representation of this edit mode.
      */
     public String toString() {
         return name;
-    } //}}}
+    }
 
-    //{{{ getIgnoreWhitespace() method
     public boolean getIgnoreWhitespace() {
         return ignoreWhitespace;
-    } //}}}
+    }
 
-    //{{{ Indent rules
 
-//	//{{{ getIndentRules() method
 //	public synchronized List<IndentRule> getIndentRules()
 //	{
 //		if (indentRules == null)
@@ -375,9 +360,8 @@ public class Mode {
 //			initIndentRules();
 //		}
 //		return indentRules;
-//	} //}}}
+//	}
 
-//	//{{{ isElectricKey() method
 //	public synchronized boolean isElectricKey(char ch)
 //	{
 //		if (electricKeys == null)
@@ -400,9 +384,8 @@ public class Mode {
 //		}
 //
 //		return (electricKeys.indexOf(ch) >= 0);
-//	} //}}}
+//	}
 
-    //{{{ initIndentRules() method
 //	private void initIndentRules()
 //	{
 //		List<IndentRule> rules = new LinkedList<IndentRule>();
@@ -460,9 +443,8 @@ public class Mode {
 //			rules.add(new WhitespaceRule());
 //
 //		indentRules = Collections.unmodifiableList(rules);
-//	} //}}}
+//	}
 //
-//	//{{{ createRegexpIndentRule() method
 //	private IndentRule createRegexpIndentRule(String prop)
 //	{
 //		String value = (String) getProperty(prop);
@@ -484,9 +466,8 @@ public class Mode {
 //		}
 //
 //		return null;
-//	} //}}}
+//	}
 //
-//	//{{{ createBracketIndentRules() method
 //	private void createBracketIndentRules(String prop,
 //						List<IndentRule> rules)
 //	{
@@ -512,8 +493,7 @@ public class Mode {
 //				+ '=' + value + ':');
 //			Log.log(Log.ERROR,this,e);
 //		}
-//	} //}}}
+//	}
 
-    //}}}
 
 }

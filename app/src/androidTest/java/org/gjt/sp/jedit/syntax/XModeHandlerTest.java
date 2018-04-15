@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.jecelyin.editor.v2.highlight;
+package org.gjt.sp.jedit.syntax;
 
 import android.util.Log;
 
@@ -25,21 +25,15 @@ import com.jecelyin.common.utils.DLog;
 import junit.framework.TestCase;
 
 import org.gjt.sp.jedit.Mode;
-import org.gjt.sp.jedit.syntax.ModeProvider;
-import org.gjt.sp.jedit.syntax.ParserRuleSet;
-import org.gjt.sp.jedit.syntax.TokenMarker;
-import org.gjt.sp.jedit.syntax.XModeHandler;
 
 import java.util.Arrays;
 import java.util.Hashtable;
-
-import static android.view.View.MeasureSpec.getMode;
 
 /**
  * Created by Duy on 15-Apr-18.
  */
 public class XModeHandlerTest extends TestCase {
-    public void testProcessPascal() throws Exception {
+    public void testGetProps() throws Exception {
         Mode mode = ModeProvider.instance.getMode("Pascal");
 
         XModeHandler pascal = new XModeHandler(mode.getName()) {
@@ -69,7 +63,9 @@ public class XModeHandlerTest extends TestCase {
         TokenMarker tokenMarker = pascal.getTokenMarker();
         ParserRuleSet[] ruleSets = tokenMarker.getRuleSets();
         System.out.println("ruleSets = " + Arrays.toString(ruleSets));
+    }
 
+    public void testGetKeywords() throws Exception {
     }
 
 }
