@@ -66,7 +66,7 @@ public class IOUtils {
             bufferedWriter.close();
             return true;
         } catch (IOException e) {
-            Log.e(e);
+            DLog.e(e);
             file.delete();
             return false;
         }
@@ -159,7 +159,7 @@ public class IOUtils {
         try {
             return copyFile(new FileInputStream(oldLocation), new FileOutputStream(newLocation, false));
         } catch (Exception ex) {
-            Log.e(ex);
+            DLog.e(ex);
             return false;
         }
     }
@@ -187,14 +187,14 @@ public class IOUtils {
                     reader.close();
                 }
             } catch (IOException ex) {
-                Log.d(ex);
+                DLog.d(ex);
             }
             try {
                 if (writer != null) {
                     writer.close();
                 }
             } catch (IOException ex) {
-                Log.d(ex);
+                DLog.d(ex);
             }
         }
     }

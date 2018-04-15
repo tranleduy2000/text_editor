@@ -99,7 +99,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import com.duy.text.editor.R;
-import com.jecelyin.common.utils.Log;
+import com.jecelyin.common.utils.DLog;
 import com.jecelyin.common.utils.MethodReflection;
 
 import java.lang.ref.WeakReference;
@@ -2094,7 +2094,7 @@ public class Editor {
             CharSequence curText;
             //jec fix: java.lang.IndexOutOfBoundsException: getChars (4 ... 6) ends beyond length 0
             if (mRangeStart < 0 || mRangeEnd > editable.length()) {
-                Log.e("Undo/Redo swapText: range=(%d - %d), text length=%d", mRangeStart, mRangeEnd, editable.length());
+                DLog.e("Undo/Redo swapText: range=(%d - %d), text length=%d", mRangeStart, mRangeEnd, editable.length());
                 return;
             }
             if (mRangeStart >= mRangeEnd) {

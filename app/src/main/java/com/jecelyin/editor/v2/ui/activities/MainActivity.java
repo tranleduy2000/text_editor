@@ -54,7 +54,7 @@ import com.azeesoft.lib.colorpicker.ColorPickerDialog;
 import com.duy.text.editor.R;
 import com.jecelyin.android.file_explorer.FileExplorerActivity;
 import com.jecelyin.common.utils.IOUtils;
-import com.jecelyin.common.utils.Log;
+import com.jecelyin.common.utils.DLog;
 import com.jecelyin.common.utils.SysUtils;
 import com.jecelyin.common.utils.UIUtils;
 import com.jecelyin.editor.v2.Pref;
@@ -129,7 +129,7 @@ public class MainActivity extends BaseActivity
         try {
             super.onRestoreInstanceState(savedInstanceState);
         } catch (Exception e) {
-            Log.d(e); //ignore exception: Unmarshalling unknown type code 7602281 at offset 58340
+            DLog.d(e); //ignore exception: Unmarshalling unknown type code 7602281 at offset 58340
         }
     }
 
@@ -344,14 +344,14 @@ public class MainActivity extends BaseActivity
                 UIUtils.alert(getContext(), getString(R.string.cannt_handle_intent_x, getIntent().toString()));
             }
         } catch (Throwable e) {
-            Log.e(e);
+            DLog.e(e);
             UIUtils.alert(getContext(), getString(R.string.handle_intent_x_error, getIntent().toString() + "\n" + e.getMessage()));
         }
     }
 
     private boolean processIntentImpl() throws Throwable {
         Intent intent = getIntent();
-        Log.d("intent=" + intent);
+        DLog.d("intent=" + intent);
         if (intent == null)
             return true; //pass hint
 

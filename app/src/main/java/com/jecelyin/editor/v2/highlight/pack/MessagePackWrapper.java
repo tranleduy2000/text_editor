@@ -39,8 +39,8 @@ class MessagePackWrapper implements IPacker {
     }
 
     @Override
-    public void packString(String string) throws IOException {
-        messageUnpacker.packString(string);
+    public void packString(String value) throws IOException {
+        messageUnpacker.packString(value);
     }
 
     @Override

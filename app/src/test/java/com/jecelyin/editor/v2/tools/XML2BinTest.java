@@ -20,11 +20,14 @@ package com.jecelyin.editor.v2.tools;
 
 import junit.framework.TestCase;
 
+import java.io.File;
+
 /**
  * Created by Duy on 15-Apr-18.
  */
 public class XML2BinTest extends TestCase {
     public void testMain() throws Exception {
+        XML2Bin.parseXml(new File("./app/src/main/assets/syntax/pascal.xml"), new StringBuilder());
     }
 
 }

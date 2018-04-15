@@ -19,29 +19,40 @@
 package com.jecelyin.editor.v2.highlight.pack;
 
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Created by Duy on 15-Apr-18.
  */
 
-public class MockPacker implements IPacker{
-    @Override
-    public void close() throws IOException {
+public class MockPacker implements IPacker {
+    private OutputStream in;
 
+    public MockPacker(OutputStream in) {
+
+        this.in = in;
     }
 
     @Override
-    public void packString(String string) throws IOException {
+    public void close() throws IOException {
+        System.out.println("MockPacker.close");
+    }
 
+    @Override
+    public void packString(String value) throws IOException {
+        System.out.println("MockPacker.packString");
+        System.out.println("string = " + value);
     }
 
     @Override
     public void packMapHeader(int size) throws IOException {
-
+        System.out.println("MockPacker.packMapHeader");
+        System.out.println("size = " + size);
     }
 
     @Override
-    public void packInt(int size) throws IOException {
-
+    public void packInt(int value) throws IOException {
+        System.out.println("MockPacker.packInt");
+        System.out.println("size = " + value);
     }
 }

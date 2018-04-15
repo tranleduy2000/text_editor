@@ -20,12 +20,11 @@ package com.jecelyin.common.utils;
 
 import android.os.Debug;
 import android.text.TextUtils;
-import android.util.Log;
 
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>
  */
-public class Log {
+public class DLog {
     private static final String TAG = "JecLog";
     public static boolean DEBUG = true;
 

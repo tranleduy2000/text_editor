@@ -25,7 +25,7 @@ import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.View;
 
-import com.jecelyin.common.utils.Log;
+import com.jecelyin.common.utils.DLog;
 import com.jecelyin.common.utils.MethodReflection;
 
 /**
@@ -38,7 +38,7 @@ public class MetaKeyKeyListenerCompat extends MetaKeyKeyListener {
         try {
             return (int) MethodReflection.getField(TextKeyListener.class, "META_SELECTING");
         } catch (Throwable e) {
-            Log.e(e);
+            DLog.e(e);
             return 0x800;
         }
 //        return TextKeyListener.META_SELECTING;
@@ -57,7 +57,7 @@ public class MetaKeyKeyListenerCompat extends MetaKeyKeyListener {
                     , new Object[]{view, content}
             );
         } catch (Throwable e) {
-            Log.e(e);
+            DLog.e(e);
         }
 //        MetaKeyKeyListener.stopSelecting(view, content);
     }

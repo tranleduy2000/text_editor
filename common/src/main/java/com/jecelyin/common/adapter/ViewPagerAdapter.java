@@ -22,7 +22,7 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jecelyin.common.utils.Log;
+import com.jecelyin.common.utils.DLog;
 
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>
@@ -102,7 +102,7 @@ public abstract class ViewPagerAdapter extends PagerAdapter
      */
     @Override
     public void destroyItem(ViewGroup container, int position, Object view) {
-        Log.d("remove page %d", position);
+        DLog.d("remove page %d", position);
         if (mCurrentPrimaryItem == view)
             mCurrentPrimaryItem = null;
         container.removeView((View) view);

@@ -29,12 +29,14 @@ import java.io.OutputStream;
 
 public class PackFactory {
 
-    public static IPacker create(PackMode mode, OutputStream in) {
+    public static IPacker create(PackMode mode, OutputStream in) throws Exception {
         switch (mode) {
             case JSON:
                 return new JsonPacker(in);
             case MESSAGE_PACK:
                 return new MessagePackWrapper(MessagePack.newDefaultPacker(in));
+            case TEST:
+                return new JsonPacker(in);
         }
         return null;
     }
@@ -55,6 +57,6 @@ public class PackFactory {
      */
 
     public static enum PackMode {
-        JSON, MESSAGE_PACK
+        JSON, MESSAGE_PACK, TEST
     }
 }

@@ -34,7 +34,7 @@ import android.view.View;
 
 import com.duy.text.editor.R;
 import com.jecelyin.common.task.TaskListener;
-import com.jecelyin.common.utils.Log;
+import com.jecelyin.common.utils.DLog;
 import com.jecelyin.editor.v2.utils.ExtGrep;
 
 import java.io.File;
@@ -93,7 +93,7 @@ public class EditorObjectProcessor {
                 public void onError(Exception e) {
                     editText.append(e.getMessage());
                     editText.append(editText.getContext().getString(R.string.zero_matches));
-                    Log.e(e);
+                    DLog.e(e);
                 }
             });
         }

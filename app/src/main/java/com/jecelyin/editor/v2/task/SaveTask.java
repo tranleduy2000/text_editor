@@ -21,7 +21,7 @@ package com.jecelyin.editor.v2.task;
 import android.content.Context;
 
 import com.duy.text.editor.R;
-import com.jecelyin.common.utils.Log;
+import com.jecelyin.common.utils.DLog;
 import com.jecelyin.common.utils.UIUtils;
 import com.jecelyin.editor.v2.Pref;
 import com.jecelyin.editor.v2.common.SaveListener;
@@ -114,7 +114,7 @@ public class SaveTask {
             @Override
             public void onError(Exception e) {
                 writing = false;
-                Log.e(e);
+                DLog.e(e);
                 if (contextWR.get() != null) {
                     UIUtils.alert(contextWR.get(), e.getMessage());
                 }

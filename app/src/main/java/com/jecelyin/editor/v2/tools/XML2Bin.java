@@ -56,21 +56,25 @@ public class XML2Bin {
     private static File highlightPath;
     private static File rawPath;
     private static IPacker packer;
+    private static File syntaxPath;
 
-    public static void main(String[] args) {
+    static {
         File f = new File(".");
         String path = f.getAbsolutePath();
-
         highlightPath = new File(path, "app/src/main/java/com/jecelyin/editor/v2/highlight");
-        assetsPath = new File(path, "tools/assets");
-        File syntax = new File(assetsPath, "syntax");
-
+        assetsPath = new File(path, "app/src/main/assets");
+        syntaxPath = new File(assetsPath, "syntax");
         rawPath = new File(path, "app/src/main/res/raw");
+    }
+
+    public static void main(String[] args) {
+
+
         for (File f2 : rawPath.listFiles()) {
             f2.delete();
         }
 
-        File[] files = syntax.listFiles(new FilenameFilter() {
+        File[] files = syntaxPath.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File file, String s) {
                 return s.endsWith(".xml");
@@ -93,7 +97,7 @@ public class XML2Bin {
 
     }
 
-    private static void parseXml(final File file, StringBuilder mapCode) throws Exception {
+    public static void parseXml(final File file, StringBuilder mapCode) throws Exception {
         String clsName = fileNameToResName(file.getName()) + "_lang";
 
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -121,7 +125,7 @@ public class XML2Bin {
                 if (!item.getNodeName().equals("MODE"))
                     throw new RuntimeException("!MODE: " + item.getNodeName());
                 File langFile = new File(rawPath, clsName);
-                packer = PackFactory.create(PackFactory.PackMode.JSON, new FileOutputStream(langFile));
+                packer = PackFactory.create(PackFactory.PackMode.TEST, new FileOutputStream(langFile));
 
                 handleChild(item);
 
@@ -139,7 +143,7 @@ public class XML2Bin {
     }
 
 
-    private static void handleMode(Element element) throws IOException {
+    private static void handleMode(Element element) throws Exception {
         NodeList childNodes = element.getChildNodes();
         int length = childNodes.getLength();
 
@@ -159,7 +163,7 @@ public class XML2Bin {
 
     }
 
-    private static void handleChild(Node node) throws IOException {
+    private static void handleChild(Node node) throws Exception {
         String tag = node.getNodeName();
         packer.packString(tag);
 

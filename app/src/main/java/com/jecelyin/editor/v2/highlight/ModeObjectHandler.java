@@ -20,7 +20,7 @@ package com.jecelyin.editor.v2.highlight;
 
 //{{{ Imports
 
-import com.jecelyin.common.utils.Log;
+import com.jecelyin.common.utils.DLog;
 import com.jecelyin.editor.v2.TextEditorApplication;
 import com.jecelyin.editor.v2.highlight.pack.IUnpacker;
 import com.jecelyin.editor.v2.highlight.pack.PackFactory;
@@ -440,7 +440,7 @@ public class ModeObjectHandler {
      * @since jEdit 4.2pre1
      */
     protected void error(String msg, Object subst) {
-        Log.e(getClass().getName() + " error: " + msg + " obj: " + subst);
+        DLog.e(getClass().getName() + " error: " + msg + " obj: " + subst);
     }
 
     /**
@@ -563,7 +563,7 @@ public class ModeObjectHandler {
             // warn if found.
             tmp = attrs.get("EXCLUDE_MATCH");
             if (tmp != null) {
-                Log.w(modeName + ": EXCLUDE_MATCH is deprecated");
+                DLog.w(modeName + ": EXCLUDE_MATCH is deprecated");
                 if ("TRUE".equalsIgnoreCase(tmp)) {
                     lastMatchType = ParserRule.MATCH_TYPE_CONTEXT;
                 }

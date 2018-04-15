@@ -38,7 +38,7 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.duy.text.editor.R;
-import com.jecelyin.common.utils.Log;
+import com.jecelyin.common.utils.DLog;
 import com.jecelyin.common.utils.UIUtils;
 import com.jecelyin.editor.v2.Pref;
 import com.jecelyin.editor.v2.common.Command;
@@ -475,7 +475,7 @@ public class EditorDelegate implements OnVisibilityChangedListener, TextWatcher 
         if (loaded && !disableAutoSave && document != null && document.getFile() != null && Pref.getInstance(context).isAutoSave()) {
             int newOrientation = context.getResources().getConfiguration().orientation;
             if (orientation != newOrientation) {
-                Log.d("current is screen orientation, discard auto save!");
+                DLog.d("current is screen orientation, discard auto save!");
                 orientation = newOrientation;
             } else {
                 document.save();

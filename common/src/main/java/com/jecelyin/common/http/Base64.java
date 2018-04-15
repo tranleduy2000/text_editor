@@ -1,6 +1,6 @@
 package com.jecelyin.common.http;
 
-import com.jecelyin.common.utils.Log;
+import com.jecelyin.common.utils.DLog;
 
 import java.io.UnsupportedEncodingException;
 
@@ -728,11 +728,11 @@ public class Base64 {
                 }
 
                 if (tailLen != 0) {
-                    Log.e(TAG, "Error during encoding");
+                    DLog.e(TAG, "Error during encoding");
                     //throw new AssertionError();
                 }
                 if (p != len) {
-                    Log.e(TAG, "Error during encoding");
+                    DLog.e(TAG, "Error during encoding");
                     //throw new AssertionError();
                 }
             } else {

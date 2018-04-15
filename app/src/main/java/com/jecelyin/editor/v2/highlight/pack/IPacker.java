@@ -18,17 +18,15 @@
 
 package com.jecelyin.editor.v2.highlight.pack;
 
-import java.io.IOException;
-
 /**
  * Created by Duy on 15-Apr-18.
  */
 public interface IPacker {
-    void close() throws IOException;
+    void close() throws Exception;
 
-    void packString(String string) throws IOException;
+    void packString(String value) throws Exception;
 
-    void packMapHeader(int size) throws IOException;
+    void packMapHeader(int size) throws Exception;
 
-    void packInt(int size) throws IOException;
+    void packInt(int value) throws Exception;
 }

@@ -21,7 +21,7 @@ package com.jecelyin.editor.v2.io;
 import android.core.detector.CharsetDetector;
 import android.text.TextUtils;
 
-import com.jecelyin.common.utils.Log;
+import com.jecelyin.common.utils.DLog;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -52,7 +52,7 @@ public class FileEncodingDetector {
             bufferedInputStream.close();
 
         } catch (Exception e) {
-            Log.e(e);
+            DLog.e(e);
         }
         if(TextUtils.isEmpty(encoding)) {
             encoding = DEFAULT_ENCODING;

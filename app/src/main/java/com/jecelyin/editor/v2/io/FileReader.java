@@ -22,7 +22,7 @@ import android.core.text.SpannableStringBuilder;
 import android.core.util.GrowingArrayUtils;
 import android.text.TextUtils;
 
-import com.jecelyin.common.utils.Log;
+import com.jecelyin.common.utils.DLog;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,7 +49,7 @@ public class FileReader {
             if(TextUtils.isEmpty(encoding))
                 encoding = FileEncodingDetector.detectEncoding(file);
 
-            Log.d(file.getPath()+" encoding is "+encoding);
+            DLog.d(file.getPath()+" encoding is "+encoding);
             LineNumberReader reader = new LineNumberReader(new InputStreamReader(new FileInputStream(file), encoding));
 //            String line, firstLine = null;
 //            while ((line = reader.readLine()) != null) {
@@ -76,7 +76,7 @@ public class FileReader {
 
             return true;
         } catch (Exception e) {
-            Log.e(e);
+            DLog.e(e);
             return false;
         }
     }

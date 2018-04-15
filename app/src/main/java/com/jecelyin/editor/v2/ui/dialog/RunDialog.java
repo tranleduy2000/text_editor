@@ -29,7 +29,7 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jecelyin.android.file_explorer.util.MimeTypes;
-import com.jecelyin.common.utils.Log;
+import com.jecelyin.common.utils.DLog;
 import com.jecelyin.common.utils.UIUtils;
 import com.duy.text.editor.R;
 import com.jecelyin.editor.v2.adapter.IntentChooserAdapter;
@@ -81,7 +81,7 @@ public class RunDialog extends AbstractDialog {
         try {
             path = getMainActivity().getTabManager().getEditorAdapter().getCurrentEditorDelegate().getPath();
         } catch (Exception e) {
-            Log.e(e);
+            DLog.e(e);
             UIUtils.toast(context, R.string.editor_initialing);
             return;
         }
@@ -120,7 +120,7 @@ public class RunDialog extends AbstractDialog {
                 try {
                     getMainActivity().startActivity(it);
                 } catch (Exception e) {
-                    Log.d(e);
+                    DLog.d(e);
                     UIUtils.toast(context, R.string.run_fail_message);
                 }
             }
@@ -146,7 +146,7 @@ public class RunDialog extends AbstractDialog {
                 try {
                     getMainActivity().startActivity(it);
                 } catch (Exception e) {
-                    Log.d(e);
+                    DLog.d(e);
                     UIUtils.toast(context, R.string.run_fail_message);
                 }
             }
