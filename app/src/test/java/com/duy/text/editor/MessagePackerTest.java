@@ -20,25 +20,35 @@ package com.duy.text.editor;
 
 import junit.framework.TestCase;
 
+import org.msgpack.core.MessageFormat;
 import org.msgpack.core.MessagePack;
 import org.msgpack.core.MessageUnpacker;
+import org.msgpack.value.ValueType;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * Created by Duy on 15-Apr-18.
  */
 
 public class MessagePackerTest extends TestCase {
-    public void testReadPascal() throws FileNotFoundException {
+    public void testReadPascal() throws IOException {
         File pascalLang = new File("./app/src/main/assets/syntax/pascal.xml");
         FileInputStream fileInputStream = new FileInputStream(pascalLang);
 
-        MessageUnpacker messageUnpacker = MessagePack.newDefaultUnpacker(fileInputStream);
+        MessageUnpacker unpacker = MessagePack.newDefaultUnpacker(fileInputStream);
 
-        System.out.println(messageUnpacker.toString());
+        while (unpacker.hasNext()) {
+            MessageFormat nextFormat = unpacker.getNextFormat();
+            switch (nextFormat){
+            }
+            ValueType valueType = nextFormat.getValueType();
+            unpacker.unpackString().
+        }
+
+        System.out.println(unpacker.toString());
     }
 
 }

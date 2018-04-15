@@ -20,7 +20,7 @@ package com.jecelyin.android.file_explorer.util;
 
 import android.text.TextUtils;
 
-import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.Log;
 import com.stericson.RootShell.RootShell;
 import com.stericson.RootShell.execution.Command;
 import com.stericson.RootShell.execution.Shell;
@@ -79,17 +79,17 @@ public class RootUtils {
                     Exception e = new Exception();
                     e.setStackTrace(Thread.currentThread().getStackTrace());
                     e.printStackTrace();
-                    L.d(TAG, "Waiting for a command to be executed in a shell that is not executing and not reading! \n\n Command: " + cmd.getCommand(), e);
+                    Log.d(TAG, "Waiting for a command to be executed in a shell that is not executing and not reading! \n\n Command: " + cmd.getCommand(), e);
                 } else if (shell.isExecuting && !shell.isReading) {
                     Exception e = new Exception();
                     e.setStackTrace(Thread.currentThread().getStackTrace());
                     e.printStackTrace();
-                    L.d(TAG, "Waiting for a command to be executed in a shell that is executing but not reading! \n\n Command: " + cmd.getCommand(), e);
+                    Log.d(TAG, "Waiting for a command to be executed in a shell that is executing but not reading! \n\n Command: " + cmd.getCommand(), e);
                 } else {
                     Exception e = new Exception();
                     e.setStackTrace(Thread.currentThread().getStackTrace());
                     e.printStackTrace();
-                    L.d(TAG, "Waiting for a command to be executed in a shell that is not reading! \n\n Command: " + cmd.getCommand(), e);
+                    Log.d(TAG, "Waiting for a command to be executed in a shell that is not reading! \n\n Command: " + cmd.getCommand(), e);
                 }
             }
 
@@ -149,7 +149,7 @@ public class RootUtils {
             RootUtils.commandWait(shell, command);
 
         } catch (Exception e) {
-            L.e(e);
+            Log.e(e);
             return files;
         }
 
@@ -173,7 +173,7 @@ public class RootUtils {
             try {
                 files.add(lsParser(path, line));
             } catch (Exception e) {
-                L.e("parse line error: " + line, e);
+                Log.e("parse line error: " + line, e);
             }
         }
 

@@ -26,7 +26,7 @@ import android.support.annotation.IntDef;
 import android.text.TextUtils;
 
 import com.duy.text.editor.R;
-import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.Log;
 import com.jecelyin.common.utils.StringUtils;
 import com.jecelyin.common.utils.SysUtils;
 import com.stericson.RootTools.RootTools;
@@ -186,7 +186,7 @@ public class Pref implements SharedPreferences.OnSharedPreferenceChangeListener 
                 value = str == null ? (String)value : str;
             }
         } catch (Exception e) {
-            L.e("key = " + key, e);
+            Log.e("key = " + key, e);
             return;
         }
         map.put(key, value);

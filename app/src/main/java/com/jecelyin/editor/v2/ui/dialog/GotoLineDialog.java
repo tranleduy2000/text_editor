@@ -21,7 +21,7 @@ package com.jecelyin.editor.v2.ui.dialog;
 import android.content.Context;
 import android.view.inputmethod.EditorInfo;
 
-import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.Log;
 import com.jecelyin.common.utils.StringUtils;
 import com.jecelyin.common.utils.UIUtils;
 import com.duy.text.editor.R;
@@ -46,7 +46,7 @@ public class GotoLineDialog extends AbstractDialog {
                     command.args.putInt("line", line);
                     getMainActivity().doCommand(command);
                 } catch (Exception e) {
-                    L.e(e);
+                    Log.e(e);
                 }
             }
         });

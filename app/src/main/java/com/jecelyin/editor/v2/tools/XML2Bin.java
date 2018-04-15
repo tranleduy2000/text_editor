@@ -188,7 +188,7 @@ public class XML2Bin {
         for (int i = 0; i < length; i++) {
             Node item = childNodes.item(i);
             if (item.getNodeType() == Node.TEXT_NODE) {
-                String str = item.getTextContent().toString().trim();
+                String str = item.getTextContent().trim();
                 if (str.isEmpty())
                     continue;
                 text.append(str);

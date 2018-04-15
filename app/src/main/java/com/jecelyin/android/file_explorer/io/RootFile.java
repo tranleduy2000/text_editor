@@ -24,7 +24,7 @@ import com.jecelyin.android.file_explorer.listener.BoolResultListener;
 import com.jecelyin.android.file_explorer.listener.FileListResultListener;
 import com.jecelyin.android.file_explorer.util.FileInfo;
 import com.jecelyin.android.file_explorer.util.RootUtils;
-import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.Log;
 import com.stericson.RootTools.RootTools;
 
 import java.util.List;
@@ -100,7 +100,7 @@ public class RootFile extends LocalFile {
         try {
             RootTools.getShell(true).add(command);
         }catch (Exception e) {
-            L.e(e);
+            Log.e(e);
             listener.onResult(false);
         }
     }
@@ -130,7 +130,7 @@ public class RootFile extends LocalFile {
                 }
             });
         } catch (Exception e) {
-            L.e(e);
+            Log.e(e);
         }
     }
 
@@ -144,7 +144,7 @@ public class RootFile extends LocalFile {
                 }
             });
         } catch (Exception e) {
-            L.e(e);
+            Log.e(e);
         }
     }
 

@@ -38,7 +38,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.folderselector.FolderChooserDialog;
 import com.duy.text.editor.R;
 import com.jecelyin.common.task.TaskListener;
-import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.Log;
 import com.jecelyin.common.utils.UIUtils;
 import com.jecelyin.common.widget.DrawClickableEditText;
 import com.jecelyin.editor.v2.Pref;
@@ -268,7 +268,7 @@ public class FinderDialog extends AbstractDialog implements DrawClickableEditTex
 
                     @Override
                     public void onError(Exception e) {
-                        L.e(e);
+                        Log.e(e);
                         UIUtils.toast(context, e.getMessage());
                     }
                 }
@@ -403,7 +403,7 @@ public class FinderDialog extends AbstractDialog implements DrawClickableEditTex
 
                         @Override
                         public void onError(Exception e) {
-                            L.e(e);
+                            Log.e(e);
                             UIUtils.toast(fragment.getContext(), e.getMessage());
                         }
                     });

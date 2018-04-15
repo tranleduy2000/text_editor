@@ -25,7 +25,7 @@ import android.util.Log;
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>
  */
-public class L {
+public class Log {
     private static final String TAG = "JecLog";
     public static boolean DEBUG = true;
 
@@ -39,13 +39,13 @@ public class L {
     public static int v(String tag, String msg) {
         if (!DEBUG)
             return 0;
-        return Log.v(tag, msg);
+        return android.util.Log.v(tag, msg);
     }
 
     public static int v(String tag, String msg, Throwable tr) {
         if (!DEBUG)
             return 0;
-        return Log.v(tag, msg, tr);
+        return android.util.Log.v(tag, msg, tr);
     }
 
     /**
@@ -61,13 +61,13 @@ public class L {
     public static int d(String tag, String msg) {
         if (!DEBUG)
             return 0;
-        return Log.d(tag, msg);
+        return android.util.Log.d(tag, msg);
     }
 
     public static int d(String tag, String msg, Throwable tr) {
         if (!DEBUG)
             return 0;
-        return Log.d(tag, msg, tr);
+        return android.util.Log.d(tag, msg, tr);
     }
 
     public static int d(String format, Object... args) {
@@ -81,29 +81,29 @@ public class L {
     public static int i(String tag, String msg) {
         if (!DEBUG)
             return 0;
-        return Log.i(tag, msg);
+        return android.util.Log.i(tag, msg);
     }
 
     public static int i(String tag, String msg, Throwable tr) {
         if (!DEBUG)
             return 0;
-        return Log.i(tag, msg, tr);
+        return android.util.Log.i(tag, msg, tr);
     }
 
     public static int w(String msg) {
-        return Log.w(TAG, msg);
+        return android.util.Log.w(TAG, msg);
     }
 
     public static int w(String tag, String msg) {
-        return Log.w(tag, msg);
+        return android.util.Log.w(tag, msg);
     }
 
     public static int w(String tag, String msg, Throwable tr) {
-        return Log.w(tag, msg, tr);
+        return android.util.Log.w(tag, msg, tr);
     }
 
     public static int w(String tag, Throwable tr) {
-        return Log.w(tag, tr);
+        return android.util.Log.w(tag, tr);
     }
 
     public static int e(String tag, String msg) {
@@ -139,6 +139,6 @@ public class L {
     }
 
     private static int logError(String tag, String msg, Throwable t) {
-        return Log.e(tag, msg, t);
+        return android.util.Log.e(tag, msg, t);
     }
 }

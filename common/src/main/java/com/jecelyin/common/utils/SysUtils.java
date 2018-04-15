@@ -111,7 +111,7 @@ public class SysUtils {
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             return packageInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            L.e(e);
+            Log.e(e);
             return null;
         }
     }
@@ -147,7 +147,7 @@ public class SysUtils {
         try {
             packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
         } catch (PackageManager.NameNotFoundException e) {
-            L.e(e);
+            Log.e(e);
         }
         if (packageInfo == null || packageInfo.signatures == null)
             return null;
@@ -210,7 +210,7 @@ public class SysUtils {
             }
 
         } catch (Exception ex) {
-            L.e(ex);
+            Log.e(ex);
         } finally {
             if (buf_reader != null) {
                 try {

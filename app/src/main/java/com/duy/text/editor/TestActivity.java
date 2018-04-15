@@ -31,7 +31,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 
 import com.duy.text.editor.views.EditorView;
-import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.Log;
 import com.jecelyin.editor.v2.io.CharArrayBuffer;
 
 import java.io.File;
@@ -54,8 +54,8 @@ public class TestActivity extends Activity implements TextWatcher {
         editText.setupEditor();
         editText.addTextChangedListener(this);
 
-        if (L.DEBUG)
-            L.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
+        if (Log.DEBUG)
+            Log.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
         }
@@ -68,9 +68,9 @@ public class TestActivity extends Activity implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (L.DEBUG) {
-            L.d(TAG, "onTextChanged: " + (s != null ? s.length() : "0"));
-            L.d(TAG, "onTextChanged: line count " + (editText.getLayout() != null ? editText.getLayout().getLineCount() : ""));
+        if (Log.DEBUG) {
+            Log.d(TAG, "onTextChanged: " + (s != null ? s.length() : "0"));
+            Log.d(TAG, "onTextChanged: line count " + (editText.getLayout() != null ? editText.getLayout().getLineCount() : ""));
         }
     }
 

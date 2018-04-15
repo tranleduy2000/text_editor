@@ -67,7 +67,6 @@ import android.text.style.SuggestionSpan;
 import android.text.style.TextAppearanceSpan;
 import android.text.style.URLSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.ActionMode.Callback;
 import android.view.DragEvent;
@@ -100,7 +99,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import com.duy.text.editor.R;
-import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.Log;
 import com.jecelyin.common.utils.MethodReflection;
 
 import java.lang.ref.WeakReference;
@@ -1207,7 +1206,7 @@ public class Editor {
                 if (req != null) {
                     InputMethodManager imm = InputMethodManagerCompat.peekInstance();
                     if (imm != null) {
-                        if (BaseEditorView.DEBUG_EXTRACT) Log.v(BaseEditorView.LOG_TAG,
+                        if (BaseEditorView.DEBUG_EXTRACT) android.util.Log.v(BaseEditorView.LOG_TAG,
                                 "Retrieving extracted start=" + ims.mChangedStart +
                                         " end=" + ims.mChangedEnd +
                                         " delta=" + ims.mChangedDelta);
@@ -1216,7 +1215,7 @@ public class Editor {
                         }
                         if (extractTextInternal(req, ims.mChangedStart, ims.mChangedEnd,
                                 ims.mChangedDelta, ims.mExtractedText)) {
-                            if (BaseEditorView.DEBUG_EXTRACT) Log.v(BaseEditorView.LOG_TAG,
+                            if (BaseEditorView.DEBUG_EXTRACT) android.util.Log.v(BaseEditorView.LOG_TAG,
                                     "Reporting extracted start=" +
                                             ims.mExtractedText.partialStartOffset +
                                             " end=" + ims.mExtractedText.partialEndOffset +
@@ -1514,7 +1513,7 @@ public class Editor {
         }
 
         if (!canSelectText() || !mTextView.requestFocus()) {
-            Log.w(BaseEditorView.LOG_TAG,
+            android.util.Log.w(BaseEditorView.LOG_TAG,
                     "TextView does not support text selection. Action mode cancelled.");
             return false;
         }
@@ -1967,8 +1966,8 @@ public class Editor {
         public CharSequence filter(CharSequence source, int start, int end,
                                    Spanned dest, int dstart, int dend) {
             if (DEBUG_UNDO) {
-                Log.d(TAG, "filter: source=" + source + " (" + start + "-" + end + ")");
-                Log.d(TAG, "filter: dest=" + dest + " (" + dstart + "-" + dend + ")");
+                android.util.Log.d(TAG, "filter: source=" + source + " (" + start + "-" + end + ")");
+                android.util.Log.d(TAG, "filter: dest=" + dest + " (" + dstart + "-" + dend + ")");
             }
             Editor editor = mEditor.get();
             if (editor == null)
@@ -1976,7 +1975,7 @@ public class Editor {
 
             final UndoManager um = editor.mUndoManager;
             if (um.isInUndo()) {
-                if (DEBUG_UNDO) Log.d(TAG, "*** skipping, currently performing undo/redo");
+                if (DEBUG_UNDO) android.util.Log.d(TAG, "*** skipping, currently performing undo/redo");
                 return null;
             }
 
@@ -1984,7 +1983,7 @@ public class Editor {
             TextModifyOperation op = um.getLastOperation(
                     TextModifyOperation.class, editor.mUndoOwner, UndoManager.MERGE_MODE_UNIQUE);
             if (op != null) {
-                if (DEBUG_UNDO) Log.d(TAG, "Last op: range=(" + op.mRangeStart + "-" + op.mRangeEnd
+                if (DEBUG_UNDO) android.util.Log.d(TAG, "Last op: range=(" + op.mRangeStart + "-" + op.mRangeEnd
                         + "), oldText=" + op.mOldText);
                 // See if we can continue modifying this operation.
                 if (op.mOldText == null) {
@@ -1995,7 +1994,7 @@ public class Editor {
                             || (dstart == op.mRangeEnd && dend == op.mRangeEnd))) {
                         op.mRangeEnd = dstart + (end - start);
                         um.endUpdate();
-                        if (DEBUG_UNDO) Log.d(TAG, "*** merging with last op, mRangeEnd="
+                        if (DEBUG_UNDO) android.util.Log.d(TAG, "*** merging with last op, mRangeEnd="
                                 + op.mRangeEnd);
                         return null;
                     }
@@ -2012,7 +2011,7 @@ public class Editor {
                         op.mRangeStart = dstart;
                         op.mOldText = str;
                         um.endUpdate();
-                        if (DEBUG_UNDO) Log.d(TAG, "*** merging with last op, range=("
+                        if (DEBUG_UNDO) android.util.Log.d(TAG, "*** merging with last op, range=("
                                 + op.mRangeStart + "-" + op.mRangeEnd
                                 + "), oldText=" + op.mOldText);
                         return null;
@@ -2036,7 +2035,7 @@ public class Editor {
             if (dstart < dend) {
                 op.mOldText = dest.subSequence(dstart, dend);
             }
-            if (DEBUG_UNDO) Log.d(TAG, "*** adding new op, range=(" + op.mRangeStart
+            if (DEBUG_UNDO) android.util.Log.d(TAG, "*** adding new op, range=(" + op.mRangeStart
                     + "-" + op.mRangeEnd + "), oldText=" + op.mOldText);
             um.addOperation(op, UndoManager.MERGE_MODE_NONE);
             um.endUpdate();
@@ -2095,7 +2094,7 @@ public class Editor {
             CharSequence curText;
             //jec fix: java.lang.IndexOutOfBoundsException: getChars (4 ... 6) ends beyond length 0
             if (mRangeStart < 0 || mRangeEnd > editable.length()) {
-                L.e("Undo/Redo swapText: range=(%d - %d), text length=%d", mRangeStart, mRangeEnd, editable.length());
+                Log.e("Undo/Redo swapText: range=(%d - %d), text length=%d", mRangeStart, mRangeEnd, editable.length());
                 return;
             }
             if (mRangeStart >= mRangeEnd) {
@@ -2104,9 +2103,9 @@ public class Editor {
                 curText = editable.subSequence(mRangeStart, mRangeEnd);
             }
             if (DEBUG_UNDO) {
-                Log.d(TAG, "Swap: range=(" + mRangeStart + "-" + mRangeEnd
+                android.util.Log.d(TAG, "Swap: range=(" + mRangeStart + "-" + mRangeEnd
                         + "), oldText=" + mOldText);
-                Log.d(TAG, "Swap: curText=" + curText);
+                android.util.Log.d(TAG, "Swap: curText=" + curText);
             }
             if (mOldText == null) {
                 editable.delete(mRangeStart, mRangeEnd);
@@ -2261,7 +2260,7 @@ public class Editor {
                 }
             } catch (CanceledException e) {
                 // This should not happen, as we should try to send the intent only once.
-                Log.w(TAG, "PendingIntent for notification cannot be sent", e);
+                android.util.Log.w(TAG, "PendingIntent for notification cannot be sent", e);
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }

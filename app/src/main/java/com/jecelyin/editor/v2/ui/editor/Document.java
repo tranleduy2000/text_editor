@@ -27,7 +27,7 @@ import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 
 import com.duy.text.editor.R;
-import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.Log;
 import com.jecelyin.common.utils.StringUtils;
 import com.jecelyin.common.utils.SysUtils;
 import com.jecelyin.common.utils.UIUtils;
@@ -106,7 +106,7 @@ public class Document implements ReadFileListener, TextWatcher {
             }
             return digest.digest();
         } catch (NoSuchAlgorithmException e) {
-            L.e("Can't Calculate MD5 hash!", e);
+            Log.e("Can't Calculate MD5 hash!", e);
             return charSequence.toString().getBytes();
         }
     }
@@ -356,7 +356,7 @@ public class Document implements ReadFileListener, TextWatcher {
             return;
         DefaultTokenHandler tokenHandler;
 //        L.d("hl startLine=" + startLine + " endLine=" + endLine);
-        L.startTracing(null);
+        Log.startTracing(null);
         if (styles == null)
             styles = StyleLoader.loadStyles(context);
         ArrayList<HighlightInfo> mergerArray;
@@ -388,11 +388,11 @@ public class Document implements ReadFileListener, TextWatcher {
         for (HighlightInfo hi : mergerArray) {
             if (hi.endOffset > length) {
                 // TODO: 15/12/27 不应该出现这种情况，要找到原因并解决
-                L.e("assert hi.endOffset %d > maxLength %d", hi.endOffset, length);
+                Log.e("assert hi.endOffset %d > maxLength %d", hi.endOffset, length);
                 hi.endOffset = length;
             }
             if (hi.startOffset >= hi.endOffset) {
-                L.e("hi.startOffset %d >= hi.endOffset %d", hi.startOffset, hi.endOffset);
+                Log.e("hi.startOffset %d >= hi.endOffset %d", hi.startOffset, hi.endOffset);
                 continue;
             }
             fcs = new ForegroundColorSpan(hi.color);

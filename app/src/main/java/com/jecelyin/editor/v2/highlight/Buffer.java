@@ -23,7 +23,7 @@ import android.content.Context;
 import android.core.text.SpannableStringBuilder;
 import android.text.Editable;
 
-import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.Log;
 
 import org.gjt.sp.jedit.LineManager;
 import org.gjt.sp.jedit.Mode;
@@ -201,7 +201,7 @@ public class Buffer {
         Segment seg = new Segment();
 
         if (lineIndex < 0 || lineIndex >= lineMgr.getLineCount()) {
-            L.e(new ArrayIndexOutOfBoundsException("lineCount=" + lineMgr.getLineCount() + "; index=" + lineIndex));
+            Log.e(new ArrayIndexOutOfBoundsException("lineCount=" + lineMgr.getLineCount() + "; index=" + lineIndex));
             return;
         }
 

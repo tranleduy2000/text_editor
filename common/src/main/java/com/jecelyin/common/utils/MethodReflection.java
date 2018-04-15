@@ -59,7 +59,7 @@ public class MethodReflection {
             try {
                 method = cls.getMethod(methodName, argTypes);
             } catch (Exception e1) {
-                L.e("MethodReflection", "Can't reflection method: " + methodName, e1);
+                Log.e("MethodReflection", "Can't reflection method: " + methodName, e1);
             }
         }
 

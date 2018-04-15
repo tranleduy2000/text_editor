@@ -21,7 +21,7 @@ package android.core.view;
 import android.text.style.SuggestionSpan;
 import android.view.inputmethod.InputMethodManager;
 
-import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.Log;
 import com.jecelyin.common.utils.MethodReflection;
 
 
@@ -37,7 +37,7 @@ public class InputMethodManagerCompat {
         try {
             return (InputMethodManager) MethodReflection.getStaticMethod(InputMethodManager.class, "peekInstance", null, null);
         } catch (Throwable e) {
-            L.e(e);
+            Log.e(e);
             return null;
         }
 //        return InputMethodManager.peekInstance();
@@ -47,7 +47,7 @@ public class InputMethodManagerCompat {
         try {
             return (Boolean) MethodReflection.callGet(imm, "isCursorAnchorInfoEnabled");
         } catch (Throwable e) {
-            L.e(e);
+            Log.e(e);
             return true;
         }
 //        return imm.isCursorAnchorInfoEnabled();
@@ -62,7 +62,7 @@ public class InputMethodManagerCompat {
                     new Object[]{imm, span, originalString, index}
             );
         } catch (Throwable e) {
-            L.e(e);
+            Log.e(e);
         }
 //        imm.notifySuggestionPicked(span, originalString, index);
     }
@@ -72,7 +72,7 @@ public class InputMethodManagerCompat {
         try {
             MethodReflection.callAny(imm, "registerSuggestionSpansForNotification", new Class[]{SuggestionSpan[].class}, new Object[]{spans});
         } catch (Throwable e) {
-            L.e(e);
+            Log.e(e);
         }
 //        imm.registerSuggestionSpansForNotification(spans);
     }
@@ -81,7 +81,7 @@ public class InputMethodManagerCompat {
         try {
             MethodReflection.callAny(imm, "setUpdateCursorAnchorInfoMode", new Class[]{int.class}, new Object[]{cursorUpdateMode});
         } catch (Throwable e) {
-            L.e(e);
+            Log.e(e);
         }
 //        imm.setUpdateCursorAnchorInfoMode(cursorUpdateMode);
     }

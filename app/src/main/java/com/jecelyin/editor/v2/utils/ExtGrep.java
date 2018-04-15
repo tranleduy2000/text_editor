@@ -8,7 +8,7 @@ import com.jecelyin.editor.v2.TextEditorApplication;
 import com.jecelyin.common.task.JecAsyncTask;
 import com.jecelyin.common.task.TaskListener;
 import com.jecelyin.common.task.TaskResult;
-import com.jecelyin.common.utils.L;
+import com.jecelyin.common.utils.Log;
 import com.jecelyin.common.utils.UIUtils;
 import com.duy.text.editor.R;
 import com.jecelyin.editor.v2.io.FileEncodingDetector;
@@ -183,7 +183,7 @@ public class ExtGrep implements Parcelable {
                 }
 
             } catch (IOException e) {
-                L.e(e);
+                Log.e(e);
             }
         }
 
@@ -537,7 +537,7 @@ public class ExtGrep implements Parcelable {
                 }
             }
         } catch (Exception ioe) {
-            L.e(ioe);
+            Log.e(ioe);
         } finally {
             if (bfr != null)
                 try {
