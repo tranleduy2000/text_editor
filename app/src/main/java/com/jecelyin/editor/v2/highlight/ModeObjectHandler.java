@@ -20,10 +20,10 @@ package com.jecelyin.editor.v2.highlight;
 
 //{{{ Imports
 
-import com.jecelyin.common.utils.DLog;
-import com.jecelyin.editor.v2.TextEditorApplication;
 import com.duy.text.editor.hightlight.pack.IUnpacker;
 import com.duy.text.editor.hightlight.pack.PackFactory;
+import com.jecelyin.common.utils.DLog;
+import com.jecelyin.editor.v2.TextEditorApplication;
 
 import org.gjt.sp.jedit.Mode;
 import org.gjt.sp.jedit.syntax.KeywordMap;
@@ -96,7 +96,7 @@ public class ModeObjectHandler {
     public void process(InputStream inputStream) throws Exception {
         startDocument();
 
-        IUnpacker unpacker = PackFactory.create(PackFactory.PackMode.JSON, inputStream);
+        IUnpacker unpacker = PackFactory.create(PackFactory.PackMode.TEST, inputStream);
 
         while (unpacker.hasNext()) {
             handleChild(unpacker);
@@ -507,6 +507,10 @@ public class ModeObjectHandler {
     } //}}}
 
     //}}}
+
+    public KeywordMap getKeywords() {
+        return keywords;
+    }
 
     /**
      * Hold info about what tag was read and what attributes were

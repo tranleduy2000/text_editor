@@ -48,6 +48,8 @@ public class PackFactory {
                 return new JsonUnpacker(in);
             case MESSAGE_PACK:
                 return new MessageUnpackerWrapper(MessagePack.newDefaultUnpacker(in));
+            case TEST:
+                return new JsonUnpacker(in);
         }
         return null;
     }

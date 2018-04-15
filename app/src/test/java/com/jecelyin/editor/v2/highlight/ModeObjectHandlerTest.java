@@ -20,8 +20,13 @@ package com.jecelyin.editor.v2.highlight;
 
 import junit.framework.TestCase;
 
+import org.gjt.sp.jedit.syntax.ParserRuleSet;
+import org.gjt.sp.jedit.syntax.TokenMarker;
+
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Arrays;
+import java.util.Hashtable;
 
 /**
  * Created by Duy on 15-Apr-18.
@@ -30,7 +35,18 @@ public class ModeObjectHandlerTest extends TestCase {
     public void testProcess() throws Exception {
         File in = new File("./app/src/test/res/raw/pascal_lang");
         FileInputStream inputStream = new FileInputStream(in);
-        new ModeObjectHandler("Pascal").process(inputStream);
+        ModeObjectHandler pascal = new ModeObjectHandler("Pascal");
+        pascal.process(inputStream);
+
+        Hashtable<String, String> modeProperties = pascal.getModeProperties();
+        System.out.println("modeProperties = " + modeProperties);
+
+        TokenMarker tokenMarker = pascal.getTokenMarker();
+        ParserRuleSet[] ruleSets = tokenMarker.getRuleSets();
+        System.out.println("ruleSets = " + Arrays.toString(ruleSets));
+
+        String[] keywords = pascal.getKeywords().getKeywords();
+        System.out.println("keywords = " + Arrays.toString(keywords));
     }
 
 }

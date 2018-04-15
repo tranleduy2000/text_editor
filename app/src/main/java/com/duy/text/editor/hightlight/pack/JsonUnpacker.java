@@ -48,10 +48,8 @@ class JsonUnpacker implements IUnpacker {
 
     @Override
     public boolean hasNext() throws IOException {
-        if (mStack.isEmpty()) {
-            return false;
-        }
-        return mStack.peek().hasNext();
+        checkCursorIndex();
+        return !mStack.isEmpty() && mStack.peek().hasNext();
     }
 
     @Override
@@ -61,8 +59,11 @@ class JsonUnpacker implements IUnpacker {
 
     @Override
     public String unpackString() throws IOException, JSONException {
+        System.out.println("JsonUnpacker.unpackString");
         checkCursorIndex();
-        return (String) mStack.peek().next();
+        String value = mStack.peek().nextString();
+        System.out.println("value = " + value);
+        return value;
     }
 
     private void checkCursorIndex() {
@@ -77,16 +78,29 @@ class JsonUnpacker implements IUnpacker {
 
     @Override
     public int unpackMapHeader() throws IOException, JSONException {
+        System.out.println("JsonUnpacker.unpackMapHeader");
+
         checkCursorIndex();
         JSONArray array = mStack.peek().nextArray();
-        mStack.push(new Cursor(array));
-        return array.length();
+        int length = array.length();
+        Cursor cursor = new Cursor(array);
+        mStack.push(cursor);
+
+        while (cursor.hasNext()) {
+            mStack.push(new Cursor(cursor.nextArray()));
+        }
+
+        System.out.println("length = " + length);
+        return length;
     }
 
     @Override
     public int unpackInt() throws IOException, JSONException {
+        System.out.println("JsonUnpacker.unpackInt");
         checkCursorIndex();
-        return mStack.peek().nextInt();
+        int value = mStack.peek().nextInt();
+        System.out.println("value = " + value);
+        return value;
     }
 
     private static class Cursor {
@@ -118,6 +132,10 @@ class JsonUnpacker implements IUnpacker {
 
         int nextInt() throws JSONException {
             return (int) next();
+        }
+
+        public String nextString() throws JSONException {
+            return (String) next();
         }
     }
 }
