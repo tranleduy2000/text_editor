@@ -64,14 +64,6 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-//import android.text.TextDirectionHeuristic;
-//import android.text.TextDirectionHeuristics;
-//import android.text.style.EasyEditSpan;
-
-//import android.os.SystemProperties;
-//import android.text.style.SpellCheckSpan;
-
-//import libcore.icu.ICU;
 
 public class TextUtils {
     /**

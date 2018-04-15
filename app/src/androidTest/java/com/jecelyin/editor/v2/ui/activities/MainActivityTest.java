@@ -39,6 +39,14 @@ public class MainActivityTest {
     @Rule
     public ActivityTestRule<MainActivity> mRule = new ActivityTestRule<MainActivity>(MainActivity.class);
 
+    public static String duplicateStr(String value, int count) {
+        StringBuilder stringBuilder = new StringBuilder(value.length() * count);
+        for (int i = 0; i < count; i++) {
+            stringBuilder.append(value);
+        }
+        return stringBuilder.toString();
+    }
+
     @Before
     public void setUp() throws Exception {
     }
@@ -59,14 +67,6 @@ public class MainActivityTest {
             }
         });
         onView(withContentDescription(mRule.getActivity().getString(R.string.open))).perform(click());
-    }
-
-    private String duplicateStr(String value, int count) {
-        StringBuilder stringBuilder = new StringBuilder(value.length() * count);
-        for (int i = 0; i < count; i++) {
-            stringBuilder.append(value);
-        }
-        return stringBuilder.toString();
     }
 
 }

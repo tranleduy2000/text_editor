@@ -116,6 +116,7 @@ import android.widget.RemoteViews.RemoteView;
 import android.widget.Scroller;
 
 import com.duy.text.editor.R;
+import com.jecelyin.common.utils.DLog;
 import com.jecelyin.common.utils.SysUtils;
 import com.jecelyin.editor.v2.Pref;
 
@@ -800,6 +801,10 @@ public class BaseEditorView extends View implements ViewTreeObserver.OnPreDrawLi
         return mText;
     }
 
+    public final void setText(int resid) {
+        setText(getContext().getResources().getText(resid));
+    }
+
     /**
      * Sets the string value of the TextView. TextView <em>does not</em> accept
      * HTML-like formatting, which you can do with text strings in XML resource files.
@@ -813,10 +818,6 @@ public class BaseEditorView extends View implements ViewTreeObserver.OnPreDrawLi
      */
     public final void setText(CharSequence text) {
         setText(text, mBufferType);
-    }
-
-    public final void setText(int resid) {
-        setText(getContext().getResources().getText(resid));
     }
 
     /**
@@ -2357,6 +2358,7 @@ public class BaseEditorView extends View implements ViewTreeObserver.OnPreDrawLi
         }
     }
 
+    private static final String TAG = "BaseEditorView";
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         if (!(state instanceof SavedState)) {
@@ -2369,9 +2371,8 @@ public class BaseEditorView extends View implements ViewTreeObserver.OnPreDrawLi
             super.onRestoreInstanceState(ss.getSuperState());
 
         // XXX restore buffer type too, as well as lots of other stuff
-//        if (ss.text != null) {
         if (ss.text != null) {
-//            setText(ss.text);
+            //setText(ss.text);
             setText(new SpannableStringBuilder(ss.text, 0, ss.textLength));
         }
 
@@ -7225,6 +7226,7 @@ public class BaseEditorView extends View implements ViewTreeObserver.OnPreDrawLi
                 return new SavedState[size];
             }
         };
+        private static final String TAG = "SavedState";
         int selStart;
         int selEnd;
         //        CharSequence text;
@@ -7239,11 +7241,13 @@ public class BaseEditorView extends View implements ViewTreeObserver.OnPreDrawLi
 
         private SavedState(Parcel in) {
             super(in);
+            if (DLog.DEBUG) DLog.d(TAG, "SavedState() called with: in = [" + in + "]");
+
             selStart = in.readInt();
             selEnd = in.readInt();
             frozenWithFocus = (in.readInt() != 0);
 //            text = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(in);
-            text = in.createCharArray();
+//            text = in.createCharArray();
             textLength = in.readInt();
 
             if (in.readInt() != 0) {
@@ -7254,11 +7258,13 @@ public class BaseEditorView extends View implements ViewTreeObserver.OnPreDrawLi
         @Override
         public void writeToParcel(Parcel out, int flags) {
             super.writeToParcel(out, flags);
+            if (DLog.DEBUG)
+                DLog.d(TAG, "writeToParcel() called with: out = [" + out + "], flags = [" + flags + "]");
             out.writeInt(selStart);
             out.writeInt(selEnd);
             out.writeInt(frozenWithFocus ? 1 : 0);
 //            TextUtils.writeToParcel(text, out, flags);
-            out.writeCharArray(this.text);
+//            out.writeCharArray(this.text);
             out.writeInt(this.textLength);
 
             if (error == null) {
