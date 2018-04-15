@@ -16,37 +16,46 @@
  * limitations under the License.
  */
 
-package com.duy.text.editor;
+package com.jecelyin.editor.v2.highlight.pack;
 
-import junit.framework.TestCase;
-
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.msgpack.core.MessagePack;
-import org.msgpack.core.MessageUnpacker;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashMap;
+import java.io.OutputStream;
+import java.util.Properties;
 
 /**
  * Created by Duy on 15-Apr-18.
  */
 
-public class MessagePackerTest extends TestCase {
-    public void testReadPascal() throws IOException, JSONException {
-        File pascalLang = new File("./app/src/main/assets/syntax/pascal.xml");
-        FileInputStream fileInputStream = new FileInputStream(pascalLang);
+class JsonPacker implements IPacker {
+    private JSONObject mJsonObject;
+    private OutputStream mOutputStream;
 
-        MessageUnpacker unpacker = MessagePack.newDefaultUnpacker(fileInputStream);
-
-
-
-        System.out.println(unpacker.toString());
-
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("", new HashMap<>());
+    JsonPacker(OutputStream out) {
+        this.mOutputStream = out;
+        mJsonObject = new JSONObject();
     }
 
+    @Override
+    public void close() throws IOException {
+        String content = mJsonObject.toString();
+        mOutputStream.write(content.getBytes());
+        mOutputStream.close();
+    }
+
+    @Override
+    public void packString(String string) throws IOException {
+    }
+
+    @Override
+    public void packMapHeader(int size) throws IOException {
+
+    }
+
+    @Override
+    public void packInt(int size) throws IOException {
+
+    }
 }
+

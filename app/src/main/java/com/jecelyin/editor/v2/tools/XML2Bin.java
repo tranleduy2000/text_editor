@@ -18,8 +18,9 @@
 
 package com.jecelyin.editor.v2.tools;
 
-import org.msgpack.core.MessagePack;
-import org.msgpack.core.MessagePacker;
+import com.jecelyin.editor.v2.highlight.pack.IPacker;
+import com.jecelyin.editor.v2.highlight.pack.PackFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -54,7 +55,7 @@ public class XML2Bin {
     private static File assetsPath;
     private static File highlightPath;
     private static File rawPath;
-    private static MessagePacker packer;
+    private static IPacker packer;
 
     public static void main(String[] args) {
         File f = new File(".");
@@ -120,7 +121,7 @@ public class XML2Bin {
                 if (!item.getNodeName().equals("MODE"))
                     throw new RuntimeException("!MODE: " + item.getNodeName());
                 File langFile = new File(rawPath, clsName);
-                packer = MessagePack.newDefaultPacker(new FileOutputStream(langFile));
+                packer = PackFactory.create(PackFactory.PackMode.JSON, new FileOutputStream(langFile));
 
                 handleChild(item);
 

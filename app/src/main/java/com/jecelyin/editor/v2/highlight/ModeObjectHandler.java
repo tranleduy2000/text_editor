@@ -20,8 +20,11 @@ package com.jecelyin.editor.v2.highlight;
 
 //{{{ Imports
 
-import com.jecelyin.editor.v2.TextEditorApplication;
 import com.jecelyin.common.utils.Log;
+import com.jecelyin.editor.v2.TextEditorApplication;
+import com.jecelyin.editor.v2.highlight.pack.IUnpacker;
+import com.jecelyin.editor.v2.highlight.pack.PackFactory;
+
 import org.gjt.sp.jedit.Mode;
 import org.gjt.sp.jedit.syntax.KeywordMap;
 import org.gjt.sp.jedit.syntax.ModeProvider;
@@ -29,9 +32,6 @@ import org.gjt.sp.jedit.syntax.ParserRule;
 import org.gjt.sp.jedit.syntax.ParserRuleSet;
 import org.gjt.sp.jedit.syntax.Token;
 import org.gjt.sp.jedit.syntax.TokenMarker;
-
-import org.msgpack.core.MessagePack;
-import org.msgpack.core.MessageUnpacker;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -92,7 +92,7 @@ public class ModeObjectHandler {
         startDocument();
 
         InputStream inputStream = TextEditorApplication.getContext().getResources().openRawResource(langRawResId);
-        MessageUnpacker unpacker = MessagePack.newDefaultUnpacker(inputStream);
+        IUnpacker unpacker = PackFactory.create(PackFactory.PackMode.JSON, inputStream);
 
         while (unpacker.hasNext()) {
             handleChild(unpacker);
@@ -108,7 +108,7 @@ public class ModeObjectHandler {
 
     //{{{ Private members
 
-    private void handleChild(MessageUnpacker unpacker) throws IOException {
+    private void handleChild(IUnpacker unpacker) throws IOException {
         String tagName = unpacker.unpackString();
         String text = unpacker.unpackString();
         int attrCount = unpacker.unpackMapHeader();
@@ -539,6 +539,7 @@ public class ModeObjectHandler {
         public String lastDigitRE;
         public String lastHashChar;
         public String lastHashChars;
+
         public TagDecl(String tagName, HashMap<String, String> attrs) {
             this.tagName = tagName;
 
