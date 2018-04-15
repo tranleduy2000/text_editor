@@ -22,6 +22,7 @@ package org.gjt.sp.jedit;
 
 import com.jecelyin.common.utils.L;
 import com.jecelyin.editor.v2.highlight.SyntaxParser;
+
 import org.gjt.sp.jedit.syntax.TokenMarker;
 
 import java.util.Hashtable;

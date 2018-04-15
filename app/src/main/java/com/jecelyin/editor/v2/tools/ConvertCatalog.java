@@ -32,9 +32,8 @@ public class ConvertCatalog {
         File f = new File(".");
         String path = f.getAbsolutePath();
 
-        File highlightPath = new File(path, "app/src/main/java/com/jecelyin/editor/v2/highlight");
         File assetsPath = new File(path, "tools/assets");
-        File jedit = new File(highlightPath, "jedit");
+        File jedit = new File(path, "app/src/main/java/org/gjt/sp/jedit");
 
         StringBuilder mapCode = new StringBuilder();
 

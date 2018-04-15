@@ -5,20 +5,12 @@
  ![Screenshot1](https://github.com/jecelyin/920-text-editor-v2/blob/master/ui/preview.png?raw=true)
 
 ### Features:
-- Multi Tab, you can open different files in different tabs to facilitate you in a different text of this switch to edit
-- syntax highlighting:ASP, ActionScript, C/C++, C#, Erlang, Frink, HTML/XML/WML, CSS, Javascript
--     , Java, JSP, Perl, PowerShell , PHP, Python, Shell/Bash, Lua, SQL, VB/VBS, Tcl, TeX/LaTeX, Verilog, AutoHotKey
--     , AutoLisp, Pascal, Fortran, ColdFusion, Smail etc...
+- Multi Tab, you can open different files in different tabs to facilitate you in a different text of this switch to edit syntax highlighting:ASP, ActionScript, C/C++, C#, Erlang, Frink, HTML/XML/WML, CSS, Javascript, Java, JSP, Perl, PowerShell , PHP, Python, Shell/Bash, Lua, SQL, VB/VBS, Tcl, TeX/LaTeX, Verilog, AutoHotKey, AutoLisp, Pascal, Fortran, ColdFusion, Smail etc...
 - show line numbers
 - show blank characters (tabs, line breaks)
 - code folding
-- automatically detects the open file encoding, and you can also convert the current file encoding support:
--      ISO-2022-CN, BIG5, EUC-TW, GBK, GB2312, ISO-8859-5, KOI8-R, WINDOWS-1251, MACCYRILLIC, IBM866, IBM855
--      , ISO-8859-7, WINDOWS-1253, ISO-8859-8, WINDOWS-1255, ISO-2022-JP, SHIFT_JIS, EUC-JP, ISO-2022-KR
--      , EUC-KR, UTF-8, UTF-16BE / UTF-16LE, UTF-32BE / UTF-32LE / X-ISO-10646-UCS-4-34121 / X-ISO-10646-UCS-4-21431
--      , WINDOWS-1252
-- easy toolbar, you can quickly doing a new file, open, save, save as, undo/redo
--      , and some commonly used symbols, back to last edit location, etc.
+- automatically detects the open file encoding, and you can also convert the current file encoding support: ISO-2022-CN, BIG5, EUC-TW, GBK, GB2312, ISO-8859-5, KOI8-R, WINDOWS-1251, MACCYRILLIC, IBM866, IBM855, ISO-8859-7, WINDOWS-1253, ISO-8859-8, WINDOWS-1255, ISO-2022-JP, SHIFT_JIS, EUC-JP, ISO-2022-KR, EUC-KR, UTF-8, UTF-16BE / UTF-16LE, UTF-32BE / UTF-32LE / X-ISO-10646-UCS-4-34121 / X-ISO-10646-UCS-4-21431, WINDOWS-1252
+- easy toolbar, you can quickly doing a new file, open, save, save as, undo/redo, and some commonly used symbols, back to last edit location, etc.
 - list of recently opened files history
 - regular search, replace or replace all
 - change the font and font size
@@ -35,7 +27,7 @@
 - preview the HTML file
 - Color Picker
 - Dark Theme
-- you can use the “Preferences” menu “Donate” page to the donate it
+you can use the “Preferences” menu “Donate” page to the donate it
 
 
 ##920文本编辑器
