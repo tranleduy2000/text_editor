@@ -68,11 +68,6 @@
         <activity android:name="com.jecelyin.editor.v2.ui.activities.AboutActivity" />
         <activity android:name="com.jecelyin.editor.v2.ui.activities.BrowserActivity" />
         <activity android:name="com.jecelyin.android.file_explorer.FileExplorerActivity" />
-        <activity
-            android:name=".TestActivity"
-            android:label="@string/title_activity_test">
-
-        </activity>
 
 
     </application>

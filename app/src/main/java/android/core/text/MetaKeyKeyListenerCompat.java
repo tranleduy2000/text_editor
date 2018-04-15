@@ -20,7 +20,6 @@ package android.core.text;
 
 import android.text.Spannable;
 import android.text.method.MetaKeyKeyListener;
-import android.text.method.TextKeyListener;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.View;
@@ -36,7 +35,7 @@ public class MetaKeyKeyListenerCompat extends MetaKeyKeyListener {
 
     private static int getMetaSelecting() {
         try {
-            return (int) MethodReflection.getField(TextKeyListener.class, "META_SELECTING");
+            return (int) MethodReflection.getField(MetaKeyKeyListener.class, "META_SELECTING");
         } catch (Throwable e) {
             DLog.e(e);
             return 0x800;
