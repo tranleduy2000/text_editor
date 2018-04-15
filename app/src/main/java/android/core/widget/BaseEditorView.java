@@ -7015,7 +7015,6 @@ public class BaseEditorView extends View implements ViewTreeObserver.OnPreDrawLi
     }
 
     private void init() {
-        setSaveEnabled(false);
         // 横屏的时候关闭完成按钮和编辑状态不使用系统的全屏编辑框
         setImeOptions(EditorInfo.IME_ACTION_DONE | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 

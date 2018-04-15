@@ -19,13 +19,10 @@ import java.io.ObjectOutput;
  */
 public class IOUtilities {
 
-    //{{{ fileLength() method
 
-    //{{{ IOUtilities() constructor
     private IOUtilities() {
-    } //}}}
+    }
 
-    //{{{ closeQuietly() methods
 
     /**
      * Returns the length of a file. If it is a directory it will calculate recursively the length.
@@ -101,5 +98,5 @@ public class IOUtilities {
                 // ignore
             }
         }
-    } //}}}
+    }
 }

@@ -36,7 +36,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import java.io.BufferedInputStream;
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -57,8 +56,8 @@ import javax.xml.parsers.SAXParserFactory;
  * @since jEdit 4.3pre10
  */
 public class ModeProvider {
+    private static final String TAG = "ModeProvider";
     public static ModeProvider instance = new ModeProvider();
-
     private final LinkedHashMap<String, Mode> modes;
 
     public ModeProvider() {
@@ -69,7 +68,6 @@ public class ModeProvider {
         modes.clear();
     }
 
-
     /**
      * Returns the edit mode with the specified name.
      *
@@ -79,7 +77,6 @@ public class ModeProvider {
     public Mode getMode(String name) {
         return modes.get(name);
     }
-
 
     /**
      * Get the appropriate mode that must be used for the file
@@ -92,7 +89,6 @@ public class ModeProvider {
     public Mode getModeForFile(String filename, String firstLine) {
         return getModeForFile(null, filename, firstLine);
     }
-
 
     /**
      * Get the appropriate mode that must be used for the file
@@ -154,7 +150,6 @@ public class ModeProvider {
         return null;
     }
 
-
     /**
      * Returns an array of installed edit modes.
      *
@@ -163,7 +158,6 @@ public class ModeProvider {
     public Mode[] getModes() {
         return modes.values().toArray(new Mode[modes.size()]);
     }
-
 
     /**
      * Do not call this method. It is only public so that classes
@@ -184,7 +178,7 @@ public class ModeProvider {
     }
 
     public void loadMode(Mode mode, XModeHandler xmh, IStreamProvider provider) {
-        String fileName = (String) mode.getFile();
+        String fileName = mode.getFile();
 
         DLog.log(Log.DEBUG, this, "Loading edit mode " + fileName);
 
@@ -194,8 +188,7 @@ public class ModeProvider {
             SAXParser newSAXParser = saxParserFactory.newSAXParser();
             parser = newSAXParser.getXMLReader();
         } catch (SAXException saxe) {
-            saxe.printStackTrace();
-            DLog.log(Log.ERROR, this, saxe);
+            if (DLog.DEBUG) DLog.e(TAG, "loadMode: ", saxe);
             return;
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -207,15 +200,14 @@ public class ModeProvider {
         try {
             grammar = new BufferedInputStream(provider.getFileInputStream(fileName));
         } catch (IOException e1) {
-            e1.printStackTrace();
-            InputStream resource = null;
+            if (DLog.DEBUG) DLog.w(TAG, "loadMode: ", e1);
+            InputStream resource;
             try {
                 resource = provider.getAssetInputStream("syntax/" + fileName);
             } catch (IOException e) {
-                e.printStackTrace();
+                if (DLog.DEBUG) DLog.e(TAG, "loadMode: ", e);
+                return;
             }
-            if (resource == null)
-                error(fileName, e1);
             grammar = new BufferedInputStream(resource);
         }
 
@@ -230,10 +222,9 @@ public class ModeProvider {
 
             mode.setProperties(xmh.getModeProperties());
         } catch (Throwable e) {
-            e.printStackTrace();
-            error(fileName, e);
+            if (DLog.DEBUG) DLog.e(TAG, "loadMode: ", e);
         } finally {
-            IOUtilities.closeQuietly((Closeable) grammar);
+            IOUtilities.closeQuietly(grammar);
         }
     }
 
@@ -241,7 +232,7 @@ public class ModeProvider {
         XModeHandler xmh = new XModeHandler(mode.getName()) {
             @Override
             public void error(String what, Object subst) {
-                DLog.log(Log.ERROR, this, subst);
+                if (DLog.DEBUG) DLog.e(TAG, "error: ", subst);
             }
 
             @Override
