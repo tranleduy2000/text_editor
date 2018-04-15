@@ -47,6 +47,7 @@ configurations {
 
 dependencies {
     testCompile 'org.json:json:20140107'
+    testCompile 'junit:junit:4.12'
 
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':common')
