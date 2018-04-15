@@ -56,13 +56,13 @@ class JsonPacker implements IPacker {
     @Override
     public void packString(String value) throws IOException, JSONException {
         Pair<Integer, JSONArray> pair = mStack.peek();
-        if (canPush(pair)) {
+        if (!canPush(pair)) {
             mStack.pop();
             packString(value);
             return;
         }
         JSONArray jsonArray = pair.second;
-        jsonArray.put(jsonArray);
+        jsonArray.put(value);
     }
 
     private boolean canPush(Pair<Integer, JSONArray> pair) {
@@ -80,13 +80,13 @@ class JsonPacker implements IPacker {
     @Override
     public void packInt(int value) throws IOException {
         Pair<Integer, JSONArray> pair = mStack.peek();
-        if (canPush(pair)) {
+        if (!canPush(pair)) {
             mStack.pop();
             packInt(value);
             return;
         }
         JSONArray jsonArray = pair.second;
-        jsonArray.put(jsonArray);
+        jsonArray.put(value);
     }
 }
 
