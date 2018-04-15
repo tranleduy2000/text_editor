@@ -16,9 +16,9 @@
  * limitations under the License.
  */
 
-package com.jecelyin.editor.v2.highlight.pack;
+package com.duy.text.editor.hightlight.pack;
 
-import org.msgpack.core.MessagePacker;
+import org.msgpack.core.MessageUnpacker;
 
 import java.io.IOException;
 
@@ -26,11 +26,17 @@ import java.io.IOException;
  * Created by Duy on 15-Apr-18.
  */
 
-class MessagePackWrapper implements IPacker {
-    private MessagePacker messageUnpacker;
+class MessageUnpackerWrapper implements IUnpacker {
+    private MessageUnpacker messageUnpacker;
 
-    MessagePackWrapper(MessagePacker messageUnpacker) {
+    public MessageUnpackerWrapper(MessageUnpacker messageUnpacker) {
+
         this.messageUnpacker = messageUnpacker;
+    }
+
+    @Override
+    public boolean hasNext() throws IOException {
+        return messageUnpacker.hasNext();
     }
 
     @Override
@@ -39,17 +45,17 @@ class MessagePackWrapper implements IPacker {
     }
 
     @Override
-    public void packString(String value) throws IOException {
-        messageUnpacker.packString(value);
+    public String unpackString() throws IOException {
+        return messageUnpacker.unpackString();
     }
 
     @Override
-    public void packMapHeader(int size) throws IOException {
-        messageUnpacker.packMapHeader(size);
+    public int unpackMapHeader() throws IOException {
+        return messageUnpacker.unpackMapHeader();
     }
 
     @Override
-    public void packInt(int value) throws IOException {
-        messageUnpacker.packInt(value);
+    public int unpackInt() throws IOException {
+        return messageUnpacker.unpackInt();
     }
 }

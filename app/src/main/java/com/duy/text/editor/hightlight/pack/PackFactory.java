@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.jecelyin.editor.v2.highlight.pack;
+package com.duy.text.editor.hightlight.pack;
 
 import org.msgpack.core.MessagePack;
 
@@ -42,7 +42,7 @@ public class PackFactory {
     }
 
 
-    public static IUnpacker create(PackMode mode, InputStream in) {
+    public static IUnpacker create(PackMode mode, InputStream in) throws Exception {
         switch (mode) {
             case JSON:
                 return new JsonUnpacker(in);

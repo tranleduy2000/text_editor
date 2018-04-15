@@ -20,8 +20,8 @@ package com.jecelyin.editor.v2.tools;
 
 import com.duy.text.editor.BuildConfig;
 import com.jecelyin.android.file_explorer.util.FileUtils;
-import com.jecelyin.editor.v2.highlight.pack.IPacker;
-import com.jecelyin.editor.v2.highlight.pack.PackFactory;
+import com.duy.text.editor.hightlight.pack.IPacker;
+import com.duy.text.editor.hightlight.pack.PackFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

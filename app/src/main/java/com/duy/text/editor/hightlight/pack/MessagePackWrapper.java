@@ -16,43 +16,40 @@
  * limitations under the License.
  */
 
-package com.jecelyin.editor.v2.highlight.pack;
+package com.duy.text.editor.hightlight.pack;
+
+import org.msgpack.core.MessagePacker;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * Created by Duy on 15-Apr-18.
  */
 
-public class MockPacker implements IPacker {
-    private OutputStream in;
+class MessagePackWrapper implements IPacker {
+    private MessagePacker messageUnpacker;
 
-    public MockPacker(OutputStream in) {
-
-        this.in = in;
+    MessagePackWrapper(MessagePacker messageUnpacker) {
+        this.messageUnpacker = messageUnpacker;
     }
 
     @Override
     public void close() throws IOException {
-        System.out.println("MockPacker.close");
+        messageUnpacker.close();
     }
 
     @Override
     public void packString(String value) throws IOException {
-        System.out.println("MockPacker.packString");
-        System.out.println("string = " + value);
+        messageUnpacker.packString(value);
     }
 
     @Override
     public void packMapHeader(int size) throws IOException {
-        System.out.println("MockPacker.packMapHeader");
-        System.out.println("size = " + size);
+        messageUnpacker.packMapHeader(size);
     }
 
     @Override
     public void packInt(int value) throws IOException {
-        System.out.println("MockPacker.packInt");
-        System.out.println("size = " + value);
+        messageUnpacker.packInt(value);
     }
 }

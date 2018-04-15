@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.jecelyin.editor.v2.highlight.pack;
+package com.duy.text.editor.hightlight.pack;
 
 import org.json.JSONException;
 

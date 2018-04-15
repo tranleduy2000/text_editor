@@ -22,8 +22,8 @@ package com.jecelyin.editor.v2.highlight;
 
 import com.jecelyin.common.utils.DLog;
 import com.jecelyin.editor.v2.TextEditorApplication;
-import com.jecelyin.editor.v2.highlight.pack.IUnpacker;
-import com.jecelyin.editor.v2.highlight.pack.PackFactory;
+import com.duy.text.editor.hightlight.pack.IUnpacker;
+import com.duy.text.editor.hightlight.pack.PackFactory;
 
 import org.gjt.sp.jedit.Mode;
 import org.gjt.sp.jedit.syntax.KeywordMap;
