@@ -18,6 +18,8 @@
 
 package com.jecelyin.editor.v2.tools;
 
+import com.duy.text.editor.BuildConfig;
+import com.jecelyin.android.file_explorer.util.FileUtils;
 import com.jecelyin.editor.v2.highlight.pack.IPacker;
 import com.jecelyin.editor.v2.highlight.pack.PackFactory;
 
@@ -64,7 +66,11 @@ public class XML2Bin {
         highlightPath = new File(path, "app/src/main/java/com/jecelyin/editor/v2/highlight");
         assetsPath = new File(path, "app/src/main/assets");
         syntaxPath = new File(assetsPath, "syntax");
-        rawPath = new File(path, "app/src/main/res/raw");
+        if (BuildConfig.DEBUG) {
+            rawPath = new File(path, "app/src/test/res/raw");
+        } else {
+            rawPath = new File(path, "app/src/main/res/raw");
+        }
     }
 
     public static void main(String[] args) {
@@ -125,6 +131,7 @@ public class XML2Bin {
                 if (!item.getNodeName().equals("MODE"))
                     throw new RuntimeException("!MODE: " + item.getNodeName());
                 File langFile = new File(rawPath, clsName);
+                FileUtils.createNewFile(langFile);
                 packer = PackFactory.create(PackFactory.PackMode.TEST, new FileOutputStream(langFile));
 
                 handleChild(item);

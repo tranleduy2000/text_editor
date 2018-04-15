@@ -19,9 +19,8 @@
 package com.jecelyin.editor.v2.highlight;
 
 import com.jecelyin.common.utils.DLog;
-import org.gjt.sp.jedit.Mode;
 
-import java.io.IOException;
+import org.gjt.sp.jedit.Mode;
 
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>
@@ -41,7 +40,7 @@ public class SyntaxParser {
         mode.setTokenMarker(handler.getTokenMarker());
         try {
             handler.process(langDefine);
-        } catch (IOException e) {
+        } catch (Exception e) {
             DLog.e(e);
         }
     }

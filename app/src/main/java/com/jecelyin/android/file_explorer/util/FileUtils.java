@@ -25,6 +25,7 @@ import com.jecelyin.android.file_explorer.listener.FileListResultListener;
 import com.stericson.RootTools.RootTools;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,7 +75,7 @@ public class FileUtils {
     }
 
     public static void copyDirectory(final JecFile srcDir, JecFile destDir
-                                     , final boolean moveFile) {
+            , final boolean moveFile) {
         if (srcDir == null) {
             throw new NullPointerException("Source must not be null");
         }
@@ -179,4 +180,11 @@ public class FileUtils {
         }
     }
 
+    public static boolean createNewFile(File file) throws IOException {
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+            return file.createNewFile();
+        }
+        return false;
+    }
 }

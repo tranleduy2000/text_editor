@@ -33,7 +33,6 @@ import org.gjt.sp.jedit.syntax.ParserRuleSet;
 import org.gjt.sp.jedit.syntax.Token;
 import org.gjt.sp.jedit.syntax.TokenMarker;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -88,10 +87,15 @@ public class ModeObjectHandler {
 
     //{{{ getTokenMarker() method
 
-    public void process(int langRawResId) throws IOException {
+    public void process(int langRawResId) throws Exception {
+        InputStream inputStream = TextEditorApplication.getContext().getResources().openRawResource(langRawResId);
+        process(inputStream);
+    }
+    //}}}
+
+    public void process(InputStream inputStream) throws Exception {
         startDocument();
 
-        InputStream inputStream = TextEditorApplication.getContext().getResources().openRawResource(langRawResId);
         IUnpacker unpacker = PackFactory.create(PackFactory.PackMode.JSON, inputStream);
 
         while (unpacker.hasNext()) {
@@ -102,13 +106,12 @@ public class ModeObjectHandler {
 
         endDocument();
     }
-    //}}}
 
     //}}}
 
     //{{{ Private members
 
-    private void handleChild(IUnpacker unpacker) throws IOException {
+    private void handleChild(IUnpacker unpacker) throws Exception {
         String tagName = unpacker.unpackString();
         String text = unpacker.unpackString();
         int attrCount = unpacker.unpackMapHeader();

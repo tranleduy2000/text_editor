@@ -33,6 +33,7 @@ import java.util.Stack;
  */
 
 class JsonPacker implements IPacker {
+    public static final String ROOT_KEY = "root";
     private JSONObject mJsonObject;
     private Stack<Pair<Integer, JSONArray>> mStack = new Stack<>();
     private OutputStream mOutputStream;
@@ -41,52 +42,60 @@ class JsonPacker implements IPacker {
         this.mOutputStream = out;
         mJsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
-        mJsonObject.put("root", jsonArray);
+        mJsonObject.put(ROOT_KEY, jsonArray);
         mStack.push(new Pair<>(Integer.MAX_VALUE, jsonArray));
     }
 
     @Override
-    public void close() throws IOException {
-        String content = mJsonObject.toString();
-//        mOutputStream.write(content.getBytes());
-//        mOutputStream.close();
+    public void close() throws IOException, JSONException {
+        String content = mJsonObject.toString(4);
         System.out.println(content);
+        mOutputStream.write(content.getBytes());
+        mOutputStream.close();
     }
 
     @Override
     public void packString(String value) throws IOException, JSONException {
+        checkStackSize();
+
         Pair<Integer, JSONArray> pair = mStack.peek();
-        if (!canPush(pair)) {
-            mStack.pop();
-            packString(value);
-            return;
-        }
         JSONArray jsonArray = pair.second;
         jsonArray.put(value);
+        checkStackSize();
     }
 
-    private boolean canPush(Pair<Integer, JSONArray> pair) {
-        return pair.first >= pair.second.length();
-    }
 
     @Override
     public void packMapHeader(int size) throws IOException {
-        JSONArray jsonArray = new JSONArray();
-        JSONArray parent = mStack.peek().second;
-        parent.put(jsonArray);
-        mStack.push(new Pair<>(size, jsonArray));
+        checkStackSize();
+
+        final JSONArray parent = mStack.peek().second;
+
+        JSONArray map = new JSONArray();
+        parent.put(map);
+        mStack.push(new Pair<>(size, map));
+
+        for (int i = 0; i < size; i++) {
+            JSONArray entry = new JSONArray();
+            map.put(entry);
+            mStack.push(new Pair<>(2, entry));
+        }
     }
 
     @Override
     public void packInt(int value) throws IOException {
+        checkStackSize();
         Pair<Integer, JSONArray> pair = mStack.peek();
-        if (!canPush(pair)) {
-            mStack.pop();
-            packInt(value);
-            return;
-        }
         JSONArray jsonArray = pair.second;
         jsonArray.put(value);
     }
-}
 
+    private void checkStackSize() {
+        if (!mStack.isEmpty()) {
+            Pair<Integer, JSONArray> pair = mStack.peek();
+            if (pair.first/*max size*/ <= pair.second.length()/*current length*/) {
+                mStack.pop();
+            }
+        }
+    }
+}

@@ -18,6 +18,8 @@
 
 package com.jecelyin.editor.v2.highlight.pack;
 
+import org.json.JSONException;
+
 import java.io.IOException;
 
 /**
@@ -28,9 +30,9 @@ public interface IUnpacker {
 
     void close() throws IOException;
 
-    String unpackString() throws IOException;
+    String unpackString() throws IOException, JSONException;
 
-    int unpackMapHeader() throws IOException;
+    int unpackMapHeader() throws IOException, JSONException;
 
-    int unpackInt() throws IOException;
+    int unpackInt() throws IOException, JSONException;
 }

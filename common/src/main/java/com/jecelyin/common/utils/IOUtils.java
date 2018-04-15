@@ -48,10 +48,15 @@ public class IOUtils {
     }
 
     public static String readFile(File file, String encoding) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), encoding));
+        FileInputStream fileInputStream = new FileInputStream(file);
+        return read(fileInputStream, encoding);
+    }
+
+    public static String read(InputStream in, String encoding) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(in, encoding));
         char[] buf = new char[8192];
         int size;
-        StringBuilder sb = new StringBuilder((int) file.length());
+        StringBuilder sb = new StringBuilder();
         while ((size = br.read(buf)) != -1) {
             sb.append(buf, 0, size);
         }
@@ -95,7 +100,7 @@ public class IOUtils {
     }
 
     public static String toString(InputStream inputStream) throws IOException {
-        return toString(inputStream, 16*1024, "UTF-8");
+        return toString(inputStream, 16 * 1024, "UTF-8");
     }
 
     public static String toString(InputStream inputStream, final int bufferSize, String encoding) throws IOException {
@@ -130,7 +135,7 @@ public class IOUtils {
         byte[] data = null;
         try {
             int size = in.available();
-            if(size > 1024) size = 1024;
+            if (size > 1024) size = 1024;
             data = new byte[size];
             in.read(data);
             in.close();
