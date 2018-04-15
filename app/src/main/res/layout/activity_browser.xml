@@ -23,12 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            style="@style/Light.Toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:theme="@style/Light.Toolbar" />
+        <include layout="@layout/appbar" />
 
         <WebView
             android:id="@+id/webView"

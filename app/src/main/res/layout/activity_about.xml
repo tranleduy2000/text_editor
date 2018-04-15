@@ -24,19 +24,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            style="@style/Light.Toolbar"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:theme="@style/Light.Toolbar"
-            app:title="@string/about" />
+            android:id="@+id/appbar"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                style="@style/Light.Toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="?attr/actionBarPopupTheme"
+                app:theme="?attr/actionBarTheme"
+                app:title="@string/about" />
+        </android.support.design.widget.AppBarLayout>
 
         <ImageView
             android:id="@+id/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar"
+            android:layout_below="@id/appbar"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
             android:src="@drawable/ic_launcher" />

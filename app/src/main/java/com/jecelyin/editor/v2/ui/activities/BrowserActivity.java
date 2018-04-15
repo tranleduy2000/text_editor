@@ -26,6 +26,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,8 +57,7 @@ public class BrowserActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         final ActivityBrowserBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_browser);
-        setSupportActionBar(binding.toolbar);
-
+        setSupportActionBar((Toolbar) findViewById(R.id.appbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();

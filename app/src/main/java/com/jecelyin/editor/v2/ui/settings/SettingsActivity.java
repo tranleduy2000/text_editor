@@ -56,10 +56,11 @@ public class SettingsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_setting);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle(R.string.settings);
 
         // Display the fragment as the main content.
         getFragmentManager().beginTransaction()

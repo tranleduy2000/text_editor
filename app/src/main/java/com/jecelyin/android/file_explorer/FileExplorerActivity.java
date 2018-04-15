@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,10 +54,10 @@ import java.util.SortedMap;
  * @author Jecelyin Peng <jecelyin@gmail.com>
  */
 public class FileExplorerActivity extends FullScreenActivity implements View.OnClickListener, OnClipboardDataChangedListener {
-    private ActivityFileExplorerBinding binding;
-    private FileListPagerAdapter adapter;
     private static final int MODE_PICK_FILE = 1;
     private static final int MODE_PICK_PATH = 2;
+    private ActivityFileExplorerBinding binding;
+    private FileListPagerAdapter adapter;
     private int mode;
     private String fileEncoding = null;
     private String lastPath;
@@ -84,7 +85,6 @@ public class FileExplorerActivity extends FullScreenActivity implements View.OnC
     }
 
     /**
-     *
      * @param it
      * @return null时为自动检测
      */
@@ -107,18 +107,18 @@ public class FileExplorerActivity extends FullScreenActivity implements View.OnC
         Intent it = getIntent();
         mode = it.getIntExtra("mode", MODE_PICK_FILE);
 
-        setSupportActionBar(binding.toolbar);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(mode == MODE_PICK_FILE ? R.string.open_file : R.string.save_file);
 
         lastPath = Pref.getInstance(this).getLastOpenPath();
-        if(TextUtils.isEmpty(lastPath)) {
+        if (TextUtils.isEmpty(lastPath)) {
             lastPath = Environment.getExternalStorageDirectory().getPath();
         }
 
         String destPath = it.getStringExtra("dest_file");
 
-        if(!TextUtils.isEmpty(destPath)) {
+        if (!TextUtils.isEmpty(destPath)) {
             File dest = new File(destPath);
             lastPath = dest.isFile() ? dest.getParent() : dest.getPath();
             binding.filenameEditText.setText(dest.getName());
@@ -132,7 +132,7 @@ public class FileExplorerActivity extends FullScreenActivity implements View.OnC
 
         String encoding = it.getStringExtra("encoding");
         fileEncoding = encoding;
-        if(TextUtils.isEmpty(encoding)) {
+        if (TextUtils.isEmpty(encoding)) {
             encoding = getString(R.string.auto_detection_encoding);
         }
         binding.fileEncodingTextView.setText(encoding);
@@ -203,7 +203,7 @@ public class FileExplorerActivity extends FullScreenActivity implements View.OnC
     }
 
     boolean onSelectFile(JecFile file) {
-        if(file.isFile()) {
+        if (file.isFile()) {
             if (mode == MODE_PICK_FILE) {
                 Intent it = new Intent();
                 it.putExtra("file", file.getPath());
@@ -215,7 +215,7 @@ public class FileExplorerActivity extends FullScreenActivity implements View.OnC
             }
 
             return true;
-        } else if(file.isDirectory()) {
+        } else if (file.isDirectory()) {
             lastPath = file.getPath();
         }
 
@@ -225,9 +225,9 @@ public class FileExplorerActivity extends FullScreenActivity implements View.OnC
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if(id == R.id.save_btn) {
+        if (id == R.id.save_btn) {
             onSave();
-        } else if(id == R.id.file_encoding_textView) {
+        } else if (id == R.id.file_encoding_textView) {
             onShowEncodingList();
         }
     }
@@ -243,7 +243,7 @@ public class FileExplorerActivity extends FullScreenActivity implements View.OnC
         int i = 1;
         while (iterator.hasNext()) {
             String n = (String) iterator.next();
-            if(n.equals(fileEncoding))
+            if (n.equals(fileEncoding))
                 selected = i;
             names[i++] = n;
         }
@@ -254,7 +254,7 @@ public class FileExplorerActivity extends FullScreenActivity implements View.OnC
                     @Override
                     public boolean onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
                         binding.fileEncodingTextView.setText(charSequence);
-                        if(i > 0)
+                        if (i > 0)
                             fileEncoding = charSequence.toString();
                         return true;
                     }
@@ -264,21 +264,21 @@ public class FileExplorerActivity extends FullScreenActivity implements View.OnC
 
     private void onSave() {
         String fileName = binding.filenameEditText.getText().toString().trim();
-        if(TextUtils.isEmpty(fileName)) {
+        if (TextUtils.isEmpty(fileName)) {
             binding.filenameEditText.setError(getString(R.string.can_not_be_empty));
             return;
         }
-        if(IOUtils.isInvalidFilename(fileName)) {
+        if (IOUtils.isInvalidFilename(fileName)) {
             binding.filenameEditText.setError(getString(R.string.illegal_filename));
             return;
         }
-        if(TextUtils.isEmpty(lastPath)) {
+        if (TextUtils.isEmpty(lastPath)) {
             binding.filenameEditText.setError(getString(R.string.unknown_path));
             return;
         }
 
         File f = new File(lastPath);
-        if(f.isFile()) {
+        if (f.isFile()) {
             f = f.getParentFile();
         }
 
