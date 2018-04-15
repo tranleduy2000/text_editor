@@ -68,7 +68,6 @@ dependencies {
     compile "com.android.support:design:$androidSupportVersion"
     compile 'com.github.afollestad.material-dialogs:commons:0.8.5.8'
     compile 'com.rengwuxian.materialedittext:library:2.0.3'
-    compile 'org.msgpack:msgpack-core:0.8.15'
 
     compile 'me.zhanghai.android.materialprogressbar:library:1.1.4'
     compile 'org.apmem.tools:layouts:1.10@aar'
