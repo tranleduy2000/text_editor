@@ -23,12 +23,28 @@ package org.gjt.sp.jedit.syntax;
 
 //{{{ Imports
 
+import android.util.Log;
+
 import com.jecelyin.common.utils.DLog;
+import com.jecelyin.editor.v2.TextEditorApplication;
+
 import org.gjt.sp.jedit.Catalog;
 import org.gjt.sp.jedit.Mode;
+import org.gjt.sp.jedit.util.IOUtilities;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
 
+import java.io.BufferedInputStream;
+import java.io.Closeable;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 //}}}
 
@@ -42,11 +58,12 @@ import java.util.List;
 public class ModeProvider {
     public static ModeProvider instance = new ModeProvider();
 
+    private final LinkedHashMap<String, Mode> modes = Catalog.modes;
+
     //{{{ removeAll() method
-//	public void removeAll()
-//	{
-//		modes.clear();
-//	} //}}}
+    public void removeAll() {
+        modes.clear();
+    } //}}}
 
     //{{{ getMode() method
 
@@ -57,7 +74,7 @@ public class ModeProvider {
      * @since jEdit 4.3pre10
      */
     public Mode getMode(String name) {
-        return Catalog.getModeByName(name);
+        return modes.get(name);
     } //}}}
 
     //{{{ getModeForFile() method
@@ -92,7 +109,7 @@ public class ModeProvider {
             filename = filename.substring(0, filename.length() - 3);
 
         List<Mode> acceptable = new ArrayList<Mode>(1);
-        for (Mode mode : Catalog.map.values()) {
+        for (Mode mode : modes.values()) {
             if (mode.accept(filepath, filename, firstLine)) {
                 acceptable.add(mode);
             }
@@ -136,9 +153,110 @@ public class ModeProvider {
         return null;
     } //}}}
 
+    //{{{ getModes() method
+
+    /**
+     * Returns an array of installed edit modes.
+     *
+     * @since jEdit 4.3pre10
+     */
+    public Mode[] getModes() {
+        return modes.values().toArray(new Mode[modes.size()]);
+    } //}}}
+
+    //{{{ addMode() method
+
+    /**
+     * Do not call this method. It is only public so that classes
+     * in the org.gjt.sp.jedit.syntax package can access it.
+     *
+     * @param mode The edit mode
+     *             see org.gjt.sp.jedit.jEdit#reloadModes reloadModes
+     * @since jEdit 4.3pre10
+     */
+    public void addMode(Mode mode) {
+        String name = mode.getName();
+
+        // The removal makes the "insertion order" in modes
+        // (LinkedHashMap) follow the order of addMode() calls.
+        modes.remove(name);
+
+        modes.put(name, mode);
+    } //}}}
+
+    //{{{ loadMode() method
+    public void loadMode(Mode mode, XModeHandler xmh) {
+        String fileName = (String) mode.getFile();
+
+//        Log.log(Log.NOTICE, this, "Loading edit mode " + fileName);
+
+        XMLReader parser;
+        try {
+            parser = XMLReaderFactory.createXMLReader();
+        } catch (SAXException saxe) {
+            DLog.log(Log.ERROR, this, saxe);
+            return;
+        }
+        mode.setTokenMarker(xmh.getTokenMarker());
+
+        InputStream grammar;
+
+        try {
+            grammar = new BufferedInputStream(
+                    new FileInputStream(fileName));
+        } catch (FileNotFoundException e1) {
+            InputStream resource = null;
+//            resource = ModeProvider.class.getResourceAsStream(fileName);
+            try {
+                resource = TextEditorApplication.getContext().getAssets().open("syntax" + fileName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (resource == null)
+                error(fileName, e1);
+            grammar = new BufferedInputStream(resource);
+        }
+
+        try {
+            InputSource isrc = new InputSource(grammar);
+            isrc.setSystemId("jedit.jar");
+            parser.setContentHandler(xmh);
+            parser.setDTDHandler(xmh);
+            parser.setEntityResolver(xmh);
+            parser.setErrorHandler(xmh);
+            parser.parse(isrc);
+
+            mode.setProperties(xmh.getModeProperties());
+        } catch (Throwable e) {
+            error(fileName, e);
+        } finally {
+            IOUtilities.closeQuietly((Closeable) grammar);
+        }
+    } //}}}
+
+    //{{{ loadMode() method
+    public void loadMode(Mode mode) {
+        XModeHandler xmh = new XModeHandler(mode.getName()) {
+            @Override
+            public void error(String what, Object subst) {
+                DLog.log(Log.ERROR, this, subst);
+            }
+
+            @Override
+            public TokenMarker getTokenMarker(String modeName) {
+                Mode mode = getMode(modeName);
+                if (mode == null)
+                    return null;
+                else
+                    return mode.getTokenMarker();
+            }
+        };
+        loadMode(mode, xmh);
+    } //}}}
+
     //{{{ error() method
     protected void error(String file, Throwable e) {
-        DLog.e(file, e);
+        DLog.log(Log.ERROR, this, e);
     } //}}}
 
 }

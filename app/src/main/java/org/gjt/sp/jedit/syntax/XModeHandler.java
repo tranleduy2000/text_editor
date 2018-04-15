@@ -20,7 +20,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package com.jecelyin.editor.v2.highlight;
+package org.gjt.sp.jedit.syntax;
 
 //{{{ Imports
 
@@ -57,7 +57,7 @@ import java.util.regex.PatternSyntaxException;
  *
  * @version $Id$
  */
-public class XModeHandler extends DefaultHandler {
+public abstract class XModeHandler extends DefaultHandler {
 
     /**
      * The token marker cannot be null.
@@ -99,59 +99,10 @@ public class XModeHandler extends DefaultHandler {
     } //}}}
     //}}}
 
-    //{{{ getTokenMarker() method
 
     //}}}
 
-//    public void process(Node root) throws Exception {
-//        startDocument();
-//
-//        NodeList childNodes = root.getChildNodes();
-//        for (int i = 0; i < childNodes.getLength(); i++) {
-//            Node child = childNodes.item(i);
-//            handleChild(child);
-//        }
-//
-////        while (unpacker.hasNext()) {
-////            handleChild(unpacker);
-////        }
-////
-////        unpacker.close();
-//
-//        endDocument();
-//    }
-
-    //}}}
-//
-//    //{{{ Private members
-//
-//    private void handleChild(Node node) throws Exception {
-//        String tagName = node.getNodeName();
-//        String text = node.getTextContent();
-//
-//        NamedNodeMap attributes = node.getAttributes();
-//        int attrCount = attributes != null ? attributes.getLength() : 0;
-//
-//        HashMap<String, String> attrs = new HashMap<>(attrCount);
-//        for (int i = 0; i < attrCount; i++) {
-//            Node attr = attributes.item(i);
-//            attrs.put(attr.getNodeName(), attr.getNodeValue());
-//        }
-//
-////        L.d("startElement: " + tagName);
-//        startElement(tagName, attrs);
-//        if (text != null && !text.isEmpty()) {
-//            characters(text);
-//        }
-//
-//        NodeList childNodes = node.getChildNodes();
-//        int childCount = childNodes.getLength();
-//        for (int i = 0; i < childCount; i++) {
-//            handleChild(childNodes.item(i));
-//        }
-//
-//        endElement(tagName);
-//    }
+    //{{{ Private members
 
     //{{{ resolveEntity() method
     public InputSource resolveEntity(String publicId, String systemId) {
@@ -476,25 +427,17 @@ public class XModeHandler extends DefaultHandler {
      *              containing specific information
      * @since jEdit 4.2pre1
      */
-    protected void error(String msg, Object subst) {
-        DLog.e(getClass().getName() + " error: " + msg + " obj: " + subst);
-    }
+    protected abstract void error(String msg, Object subst);
 
     /**
      * Returns the token marker for the given mode.
      * You must override this method so that the mode loader can resolve
      * delegate targets.
      *
-     * @param modeName The mode name
+     * @param mode The mode name
      * @since jEdit 4.2pre1
      */
-    protected TokenMarker getTokenMarker(String modeName) {
-        Mode mode = ModeProvider.instance.getMode(modeName);
-        if (mode == null)
-            return null;
-        else
-            return mode.getTokenMarker();
-    }
+    protected abstract TokenMarker getTokenMarker(String mode);
     //}}}
 
     //{{{ addKeyword() method
@@ -542,9 +485,6 @@ public class XModeHandler extends DefaultHandler {
 
     //}}}
 
-    public KeywordMap getKeywords() {
-        return keywords;
-    }
 
     /**
      * Hold info about what tag was read and what attributes were

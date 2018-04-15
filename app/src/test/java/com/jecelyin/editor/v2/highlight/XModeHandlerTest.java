@@ -18,10 +18,15 @@
 
 package com.jecelyin.editor.v2.highlight;
 
+import com.jecelyin.common.utils.DLog;
+
 import junit.framework.TestCase;
 
+import org.gjt.sp.jedit.Mode;
+import org.gjt.sp.jedit.syntax.ModeProvider;
 import org.gjt.sp.jedit.syntax.ParserRuleSet;
 import org.gjt.sp.jedit.syntax.TokenMarker;
+import org.gjt.sp.jedit.syntax.XModeHandler;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.EntityResolver;
@@ -63,9 +68,21 @@ public class XModeHandlerTest extends TestCase {
         root.normalize();
 
 
-        XModeHandler pascal = new XModeHandler("Pascal");
-        pascal.process(root);
+        XModeHandler pascal = new XModeHandler("Pascal"){
+            @Override
+            protected void error(String msg, Object subst) {
+                DLog.e(getClass().getName() + " error: " + msg + " obj: " + subst);
+            }
 
+            @Override
+            protected TokenMarker getTokenMarker(String modeName) {
+                Mode mode = ModeProvider.instance.getMode(modeName);
+                if (mode == null)
+                    return null;
+                else
+                    return mode.getTokenMarker();
+            }
+        };
 
         Hashtable<String, String> modeProperties = pascal.getModeProperties();
         System.out.println("modeProperties = " + modeProperties);
@@ -74,8 +91,6 @@ public class XModeHandlerTest extends TestCase {
         ParserRuleSet[] ruleSets = tokenMarker.getRuleSets();
         System.out.println("ruleSets = " + Arrays.toString(ruleSets));
 
-        String[] keywords = pascal.getKeywords().getKeywords();
-        System.out.println("keywords = " + Arrays.toString(keywords));
     }
 
 }

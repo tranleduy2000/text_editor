@@ -46,7 +46,7 @@ public class LangListDialog extends AbstractDialog {
     }
 
     private void initGrammarInfo() {
-        Set<String> strings = Catalog.map.keySet();
+        Set<String> strings = Catalog.modes.keySet();
         ArrayList<Grammar> list = new ArrayList<Grammar>(strings.size());
         Grammar g;
         for (String name : strings) {

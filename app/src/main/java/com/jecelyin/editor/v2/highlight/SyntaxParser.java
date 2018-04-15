@@ -18,24 +18,8 @@
 
 package com.jecelyin.editor.v2.highlight;
 
-import com.jecelyin.editor.v2.TextEditorApplication;
-
 import org.gjt.sp.jedit.Mode;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import static com.jecelyin.editor.v2.tools.XML2Bin.assetsPath;
+import org.gjt.sp.jedit.syntax.ModeProvider;
 
 /**
  * @author Jecelyin Peng <jecelyin@gmail.com>
@@ -43,46 +27,7 @@ import static com.jecelyin.editor.v2.tools.XML2Bin.assetsPath;
 
 public class SyntaxParser {
     public static void loadMode(Mode mode) {
-        String filename = mode.getFile();
-//        int langDefine = LangMap.get(filename);
-//        if (langDefine == 0) {
-//            DLog.d("Can't find a lang define: " + filename);
-//            return;
-//        }
-//        DLog.d("load mode: " + filename);
-
-//        ModeObjectHandler handler = new ModeObjectHandler(mode.getName());
-//        mode.setTokenMarker(handler.getTokenMarker());
-//        try {
-//            handler.process(langDefine);
-//        } catch (Exception e) {
-//            DLog.e(e);
-//        }
-        try {
-            InputStream inputStream = TextEditorApplication.getContext().getAssets().open("syntax/" + filename);
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            dBuilder.setEntityResolver(new EntityResolver() {
-                @Override
-                public InputSource resolveEntity(String s, String systemId) throws SAXException, IOException {
-                    if (systemId.contains("xmode.dtd")) {
-                        return new InputSource(new FileInputStream(new File(assetsPath, "xmode.dtd")));
-                    }
-                    return null;
-                }
-            });
-            Document doc = dBuilder.parse(inputStream);
-            Element rootNode = doc.getDocumentElement();
-            rootNode.normalize();
-
-            XModeHandler handler = new XModeHandler(mode.getName());
-            mode.setTokenMarker(handler.getTokenMarker());
-            handler.process(rootNode);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ModeProvider.instance.loadMode(mode);
     }
 
 
