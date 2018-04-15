@@ -24,8 +24,9 @@ package org.gjt.sp.jedit.syntax;
 
 import android.util.Log;
 
+import com.duy.text.editor.utils.IStreamProvider;
+import com.duy.text.editor.utils.StreamProviderFactory;
 import com.jecelyin.common.utils.DLog;
-import com.jecelyin.editor.v2.TextEditorApplication;
 
 import org.gjt.sp.jedit.Catalog;
 import org.gjt.sp.jedit.Mode;
@@ -36,8 +37,6 @@ import org.xml.sax.XMLReader;
 
 import java.io.BufferedInputStream;
 import java.io.Closeable;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -184,7 +183,7 @@ public class ModeProvider {
         modes.put(name, mode);
     }
 
-    public void loadMode(Mode mode, XModeHandler xmh) {
+    public void loadMode(Mode mode, XModeHandler xmh, IStreamProvider provider) {
         String fileName = (String) mode.getFile();
 
         DLog.log(Log.DEBUG, this, "Loading edit mode " + fileName);
@@ -206,14 +205,12 @@ public class ModeProvider {
         InputStream grammar;
 
         try {
-            grammar = new BufferedInputStream(
-                    new FileInputStream(fileName));
-        } catch (FileNotFoundException e1) {
+            grammar = new BufferedInputStream(provider.getFileInputStream(fileName));
+        } catch (IOException e1) {
             e1.printStackTrace();
             InputStream resource = null;
-//            resource = ModeProvider.class.getResourceAsStream(fileName);
             try {
-                resource = TextEditorApplication.getContext().getAssets().open("syntax/" + fileName);
+                resource = provider.getAssetInputStream("syntax/" + fileName);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -256,7 +253,7 @@ public class ModeProvider {
                     return mode.getTokenMarker();
             }
         };
-        loadMode(mode, xmh);
+        loadMode(mode, xmh, StreamProviderFactory.provider());
     }
 
     protected void error(String file, Throwable e) {

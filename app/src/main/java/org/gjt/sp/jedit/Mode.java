@@ -25,8 +25,8 @@ package org.gjt.sp.jedit;
 
 
 import com.jecelyin.common.utils.DLog;
-import com.jecelyin.editor.v2.highlight.SyntaxParser;
 
+import org.gjt.sp.jedit.syntax.ModeProvider;
 import org.gjt.sp.jedit.syntax.TokenMarker;
 import org.gjt.sp.jedit.util.TextUtilities;
 
@@ -138,8 +138,7 @@ public class Mode {
      */
     public void loadIfNecessary() {
         if (marker == null) {
-            SyntaxParser.loadMode(this);
-//			ModeProvider.instance.loadMode(this);
+			ModeProvider.instance.loadMode(this);
             if (marker == null)
                 DLog.e("Mode not correctly loaded, token marker is still null");
         }
