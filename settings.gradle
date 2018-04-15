@@ -1,1 +1,1 @@
-include ':common', ':app'
+include ':common', ':app', ':jedit'

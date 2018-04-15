@@ -1,27 +1,31 @@
 /*
- * Copyright (C) 2016 Jecelyin Peng <jecelyin@gmail.com>
+ * XModeHandler.java - XML handler for mode files
+ * :tabSize=4:indentSize=4:noTabs=false:
+ * :folding=explicit:collapseFolds=1:
  *
- * This file is part of 920 Text Editor.
+ * Copyright (C) 1999 mike dillon
+ * Portions copyright (C) 2000, 2001 Slava Pestov
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or any later version.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
 package com.jecelyin.editor.v2.highlight;
 
 //{{{ Imports
 
-import com.duy.text.editor.hightlight.pack.IUnpacker;
-import com.duy.text.editor.hightlight.pack.PackFactory;
+import android.util.Log;
+
 import com.jecelyin.common.utils.DLog;
 import com.jecelyin.editor.v2.TextEditorApplication;
 
@@ -32,8 +36,14 @@ import org.gjt.sp.jedit.syntax.ParserRule;
 import org.gjt.sp.jedit.syntax.ParserRuleSet;
 import org.gjt.sp.jedit.syntax.Token;
 import org.gjt.sp.jedit.syntax.TokenMarker;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.helpers.DefaultHandler;
 
-import java.io.InputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Stack;
@@ -45,9 +55,9 @@ import java.util.regex.PatternSyntaxException;
 /**
  * XML handler for mode definition files.
  *
- * @version $Id: XModeHandler.java 21831 2012-06-18 22:54:17Z ezust $
+ * @version $Id$
  */
-public class ModeObjectHandler {
+public class XModeHandler extends DefaultHandler {
 
     /**
      * The token marker cannot be null.
@@ -63,87 +73,111 @@ public class ModeObjectHandler {
     private String propName;
     private String propValue;
     private Hashtable<String, String> props;
+    //{{{ getTokenMarker() method
     private Hashtable<String, String> modeProps;
 
-    //{{{ getTokenMarker() method
     private ParserRuleSet rules;
-    /**
-     * A list of modes to be reloaded at the end, loaded through DELEGATEs
-     */
-    private Vector<Mode> reloadModes;
-
     //{{{ Protected members
 
     //{{{ error() method
+    /**
+     * A list of modes to be reloaded at the end, loaded through DELEGATEs
+     *
+     * @see http://sourceforge.net/tracker/index.php?func=detail&aid=1742250&group_id=588&atid=100588
+     */
+    private Vector<Mode> reloadModes;
+    //}}}
+
+    //{{{ getTokenMarker() method
 
     //{{{ XModeHandler constructor
-    public ModeObjectHandler(String modeName) {
+    public XModeHandler(String modeName) {
         this.modeName = modeName;
         marker = new TokenMarker();
         marker.addRuleSet(new ParserRuleSet(modeName, "MAIN"));
-        stateStack = new Stack<>();
+        stateStack = new Stack<TagDecl>();
     } //}}}
     //}}}
 
     //{{{ getTokenMarker() method
 
-    public void process(int langRawResId) throws Exception {
-        InputStream inputStream = TextEditorApplication.getContext().getResources().openRawResource(langRawResId);
-        process(inputStream);
-    }
     //}}}
 
-    public void process(InputStream inputStream) throws Exception {
-        startDocument();
-
-        IUnpacker unpacker = PackFactory.create(PackFactory.PackMode.TEST, inputStream);
-
-        while (unpacker.hasNext()) {
-            handleChild(unpacker);
-        }
-
-        unpacker.close();
-
-        endDocument();
-    }
+//    public void process(Node root) throws Exception {
+//        startDocument();
+//
+//        NodeList childNodes = root.getChildNodes();
+//        for (int i = 0; i < childNodes.getLength(); i++) {
+//            Node child = childNodes.item(i);
+//            handleChild(child);
+//        }
+//
+////        while (unpacker.hasNext()) {
+////            handleChild(unpacker);
+////        }
+////
+////        unpacker.close();
+//
+//        endDocument();
+//    }
 
     //}}}
+//
+//    //{{{ Private members
+//
+//    private void handleChild(Node node) throws Exception {
+//        String tagName = node.getNodeName();
+//        String text = node.getTextContent();
+//
+//        NamedNodeMap attributes = node.getAttributes();
+//        int attrCount = attributes != null ? attributes.getLength() : 0;
+//
+//        HashMap<String, String> attrs = new HashMap<>(attrCount);
+//        for (int i = 0; i < attrCount; i++) {
+//            Node attr = attributes.item(i);
+//            attrs.put(attr.getNodeName(), attr.getNodeValue());
+//        }
+//
+////        L.d("startElement: " + tagName);
+//        startElement(tagName, attrs);
+//        if (text != null && !text.isEmpty()) {
+//            characters(text);
+//        }
+//
+//        NodeList childNodes = node.getChildNodes();
+//        int childCount = childNodes.getLength();
+//        for (int i = 0; i < childCount; i++) {
+//            handleChild(childNodes.item(i));
+//        }
+//
+//        endElement(tagName);
+//    }
 
-    //{{{ Private members
-
-    private void handleChild(IUnpacker unpacker) throws Exception {
-        String tagName = unpacker.unpackString();
-        String text = unpacker.unpackString();
-        int attrCount = unpacker.unpackMapHeader();
-        HashMap<String, String> attrs = new HashMap<>(attrCount);
-        for (int i = 0; i < attrCount; i++) {
-            attrs.put(unpacker.unpackString(), unpacker.unpackString());
+    //{{{ resolveEntity() method
+    public InputSource resolveEntity(String publicId, String systemId) {
+//        return XMLUtilities.findEntity(systemId, "xmode.dtd", XModeHandler.class);
+        try {
+            return new InputSource(TextEditorApplication.getContext().getAssets().open("xmode.dtd"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-//        L.d("startElement: " + tagName);
-        startElement(tagName, attrs);
-        if (text != null && !text.isEmpty()) {
-            characters(text);
-        }
-
-        int childCount = unpacker.unpackInt();
-        for (int i = 0; i < childCount; i++) {
-            handleChild(unpacker);
-        }
-
-        endElement(tagName);
-    }
-
-    //{{{ characters() method 在每次解析到元素标签携带的内容时都会调用，即使该元素标签的内容为空或换行。而且如果元素内嵌套元素，在父元素结束标签前， characters()方法会再次被调用，此处需要注意。
-    public void characters(String text) {
-        peekElement().setText(text);
+        return null;
     } //}}}
 
-    //{{{ startElement() method 数据的解析工作主要由startElement这个方法完成，每个节点的解析都会调用此方法一次
-    public void startElement(String qName, HashMap<String, String> attrs) {
+    //{{{ characters() method
+    public void characters(char[] c, int off, int len) {
+        peekElement().setText(c, off, len);
+    } //}}}
+
+    //{{{ startElement() method
+    public void startElement(String uri, String localName,
+                             String qName, Attributes attrs) {
         TagDecl tag = pushElement(qName, attrs);
 
-        if (qName.equals("KEYWORDS")) {
+        if (qName.equals("WHITESPACE")) {
+            Log.w(this.getClass().getSimpleName(), modeName + ": WHITESPACE rule "
+                    + "no longer needed");
+        } else if (qName.equals("KEYWORDS")) {
             keywords = new KeywordMap(rules.getIgnoreCase());
         } else if (qName.equals("RULES")) {
             if (tag.lastSetName == null)
@@ -173,7 +207,7 @@ public class ModeObjectHandler {
     } //}}}
 
     //{{{ endElement() method
-    public void endElement(String name) {
+    public void endElement(String uri, String localName, String name) {
         TagDecl tag = popElement();
         if (name.equals(tag.tagName)) {
             if (tag.lastDelegateSet != null
@@ -206,7 +240,7 @@ public class ModeObjectHandler {
             //{{{ IMPORT
             else if (tag.tagName.equals("IMPORT")) {
                 // prevent lockups
-                if (!rules.equals(tag.lastDelegateSet) && tag.lastDelegateSet != null) {
+                if (!rules.equals(tag.lastDelegateSet)) {
                     rules.addRuleSet(tag.lastDelegateSet);
                 }
             } //}}}
@@ -401,9 +435,9 @@ public class ModeObjectHandler {
 
     //{{{ startDocument() method
     public void startDocument() {
-        props = new Hashtable<>();
+        props = new Hashtable<String, String>();
         pushElement(null, null);
-        reloadModes = new Vector<>();
+        reloadModes = new Vector<Mode>();
     } //}}}
 
     //{{{ endDocument() method
@@ -470,7 +504,7 @@ public class ModeObjectHandler {
     } //}}}
 
     //{{{ pushElement() method
-    private TagDecl pushElement(String name, HashMap<String, String> attrs) {
+    private TagDecl pushElement(String name, Attributes attrs) {
         if (name != null) {
             TagDecl tag = new TagDecl(name, attrs);
             stateStack.push(tag);
@@ -547,18 +581,16 @@ public class ModeObjectHandler {
         public String lastHashChar;
         public String lastHashChars;
 
-        public TagDecl(String tagName, HashMap<String, String> attrs) {
+        public TagDecl(String tagName, Attributes attrs) {
             this.tagName = tagName;
 
-            if (attrs == null)
-                return;
 
             String tmp;
 
-            propName = attrs.get("NAME");
-            propValue = attrs.get("VALUE");
+            propName = attrs.getValue("NAME");
+            propValue = attrs.getValue("VALUE");
 
-            tmp = attrs.get("TYPE");
+            tmp = attrs.getValue("TYPE");
             if (tmp != null) {
                 lastTokenID = Token.stringToToken(tmp);
                 if (lastTokenID == -1)
@@ -568,16 +600,16 @@ public class ModeObjectHandler {
             lastMatchType = ParserRule.MATCH_TYPE_RULE;
             // check for the deprecated "EXCLUDE_MATCH" and
             // warn if found.
-            tmp = attrs.get("EXCLUDE_MATCH");
+            tmp = attrs.getValue("EXCLUDE_MATCH");
             if (tmp != null) {
-                DLog.w(modeName + ": EXCLUDE_MATCH is deprecated");
+                DLog.log( this, modeName + ": EXCLUDE_MATCH is deprecated");
                 if ("TRUE".equalsIgnoreCase(tmp)) {
                     lastMatchType = ParserRule.MATCH_TYPE_CONTEXT;
                 }
             }
 
             // override with the newer MATCH_TYPE if present
-            tmp = attrs.get("MATCH_TYPE");
+            tmp = attrs.getValue("MATCH_TYPE");
             if (tmp != null) {
                 if ("CONTEXT".equals(tmp)) {
                     lastMatchType = ParserRule.MATCH_TYPE_CONTEXT;
@@ -590,22 +622,22 @@ public class ModeObjectHandler {
                 }
             }
 
-            lastAtLineStart = "TRUE".equals(attrs.get("AT_LINE_START"));
-            lastAtWhitespaceEnd = "TRUE".equals(attrs.get("AT_WHITESPACE_END"));
-            lastAtWordStart = "TRUE".equals(attrs.get("AT_WORD_START"));
-            lastNoLineBreak = "TRUE".equals(attrs.get("NO_LINE_BREAK"));
-            lastNoWordBreak = "TRUE".equals(attrs.get("NO_WORD_BREAK"));
-            lastIgnoreCase = (attrs.get("IGNORE_CASE") == null ||
-                    "TRUE".equals(attrs.get("IGNORE_CASE")));
-            lastHighlightDigits = "TRUE".equals(attrs.get("HIGHLIGHT_DIGITS"));
-            lastRegexp = "TRUE".equals(attrs.get("REGEXP"));
-            lastDigitRE = attrs.get("DIGIT_RE");
+            lastAtLineStart = "TRUE".equals(attrs.getValue("AT_LINE_START"));
+            lastAtWhitespaceEnd = "TRUE".equals(attrs.getValue("AT_WHITESPACE_END"));
+            lastAtWordStart = "TRUE".equals(attrs.getValue("AT_WORD_START"));
+            lastNoLineBreak = "TRUE".equals(attrs.getValue("NO_LINE_BREAK"));
+            lastNoWordBreak = "TRUE".equals(attrs.getValue("NO_WORD_BREAK"));
+            lastIgnoreCase = (attrs.getValue("IGNORE_CASE") == null ||
+                    "TRUE".equals(attrs.getValue("IGNORE_CASE")));
+            lastHighlightDigits = "TRUE".equals(attrs.getValue("HIGHLIGHT_DIGITS"));
+            lastRegexp = "TRUE".equals(attrs.getValue("REGEXP"));
+            lastDigitRE = attrs.getValue("DIGIT_RE");
 
-            tmp = attrs.get("NO_WORD_SEP");
+            tmp = attrs.getValue("NO_WORD_SEP");
             if (tmp != null)
                 lastNoWordSep = tmp;
 
-            tmp = attrs.get("AT_CHAR");
+            tmp = attrs.getValue("AT_CHAR");
             if (tmp != null) {
                 try {
                     termChar = Integer.parseInt(tmp);
@@ -615,10 +647,10 @@ public class ModeObjectHandler {
                 }
             }
 
-            lastEscape = attrs.get("ESCAPE");
-            lastSetName = attrs.get("SET");
+            lastEscape = attrs.getValue("ESCAPE");
+            lastSetName = attrs.getValue("SET");
 
-            tmp = attrs.get("DELEGATE");
+            tmp = attrs.getValue("DELEGATE");
             if (tmp != null) {
                 String delegateMode, delegateSetName;
 
@@ -652,7 +684,7 @@ public class ModeObjectHandler {
                 }
             }
 
-            tmp = attrs.get("DEFAULT");
+            tmp = attrs.getValue("DEFAULT");
             if (tmp != null) {
                 lastDefaultID = Token.stringToToken(tmp);
                 if (lastDefaultID == -1) {
@@ -661,15 +693,15 @@ public class ModeObjectHandler {
                 }
             }
 
-            lastHashChar = attrs.get("HASH_CHAR");
-            lastHashChars = attrs.get("HASH_CHARS");
+            lastHashChar = attrs.getValue("HASH_CHAR");
+            lastHashChars = attrs.getValue("HASH_CHARS");
             if ((null != lastHashChar) && (null != lastHashChars)) {
                 error("hash-char-and-hash-chars-mutually-exclusive", null);
                 lastHashChars = null;
             }
         }
 
-        public void setText(String text) {
+        public void setText(char[] c, int off, int len) {
             if (tagName.equals("EOL_SPAN") ||
                     tagName.equals("EOL_SPAN_REGEXP") ||
                     tagName.equals("MARK_PREVIOUS") ||
@@ -684,7 +716,7 @@ public class ModeObjectHandler {
 
                 if (target.lastStart == null) {
                     target.lastStart = new StringBuffer();
-                    target.lastStart.append(text);
+                    target.lastStart.append(c, off, len);
                     target.lastStartPosMatch = ((target.lastAtLineStart ? ParserRule.AT_LINE_START : 0)
                             | (target.lastAtWhitespaceEnd ? ParserRule.AT_WHITESPACE_END : 0)
                             | (target.lastAtWordStart ? ParserRule.AT_WORD_START : 0));
@@ -692,13 +724,13 @@ public class ModeObjectHandler {
                     target.lastAtWordStart = false;
                     target.lastAtWhitespaceEnd = false;
                 } else {
-                    target.lastStart.append(text);
+                    target.lastStart.append(c, off, len);
                 }
             } else if (tagName.equals("END")) {
                 TagDecl target = stateStack.get(stateStack.size() - 2);
                 if (target.lastEnd == null) {
                     target.lastEnd = new StringBuffer();
-                    target.lastEnd.append(text);
+                    target.lastEnd.append(c, off, len);
                     target.lastEndPosMatch = ((this.lastAtLineStart ? ParserRule.AT_LINE_START : 0)
                             | (this.lastAtWhitespaceEnd ? ParserRule.AT_WHITESPACE_END : 0)
                             | (this.lastAtWordStart ? ParserRule.AT_WORD_START : 0));
@@ -707,12 +739,12 @@ public class ModeObjectHandler {
                     target.lastAtWordStart = false;
                     target.lastAtWhitespaceEnd = false;
                 } else {
-                    target.lastEnd.append(text);
+                    target.lastEnd.append(c, off, len);
                 }
             } else {
                 if (lastKeyword == null)
                     lastKeyword = new StringBuffer();
-                lastKeyword.append(text);
+                lastKeyword.append(c, off, len);
             }
         }
     }

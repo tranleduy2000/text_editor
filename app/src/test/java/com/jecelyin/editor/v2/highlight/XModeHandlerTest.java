@@ -22,21 +22,50 @@ import junit.framework.TestCase;
 
 import org.gjt.sp.jedit.syntax.ParserRuleSet;
 import org.gjt.sp.jedit.syntax.TokenMarker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Hashtable;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import static com.jecelyin.editor.v2.tools.XML2Bin.assetsPath;
 
 /**
  * Created by Duy on 15-Apr-18.
  */
-public class ModeObjectHandlerTest extends TestCase {
-    public void testProcess() throws Exception {
-        File in = new File("./app/src/test/res/raw/pascal_lang");
-        FileInputStream inputStream = new FileInputStream(in);
-        ModeObjectHandler pascal = new ModeObjectHandler("Pascal");
-        pascal.process(inputStream);
+public class XModeHandlerTest extends TestCase {
+    public void testProcessPascal() throws Exception {
+        File file = new File(assetsPath, "syntax/pascal.xml");
+
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        dBuilder.setEntityResolver(new EntityResolver() {
+            @Override
+            public InputSource resolveEntity(String s, String systemId) throws SAXException, IOException {
+                if (systemId.contains("xmode.dtd")) {
+                    return new InputSource(new FileInputStream(new File(assetsPath, "xmode.dtd")));
+                }
+                return null;
+            }
+        });
+        Document doc = dBuilder.parse(file);
+        Element root = doc.getDocumentElement();
+        root.normalize();
+
+
+        XModeHandler pascal = new XModeHandler("Pascal");
+        pascal.process(root);
+
 
         Hashtable<String, String> modeProperties = pascal.getModeProperties();
         System.out.println("modeProperties = " + modeProperties);

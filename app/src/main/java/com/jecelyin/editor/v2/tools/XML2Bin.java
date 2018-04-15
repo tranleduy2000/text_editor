@@ -54,7 +54,7 @@ import static com.jecelyin.editor.v2.tools.Tool.writeFile;
 
 
 public class XML2Bin {
-    private static File assetsPath;
+    public static File assetsPath;
     private static File highlightPath;
     private static File rawPath;
     private static IPacker packer;

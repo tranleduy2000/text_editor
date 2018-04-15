@@ -140,4 +140,7 @@ public class DLog {
     private static int logError(String tag, String msg, Throwable t) {
         return android.util.Log.e(tag, msg, t);
     }
+
+    public static void log(Object... params) {
+    }
 }
